@@ -7,7 +7,7 @@ function App() {
 
   return (
     <div className="flex font-bold">
-      <div>안뇽</div>&nbsp;
+      <div>폰트 테스트</div>&nbsp;
       <div className="font-thin">tailwind</div>
     </div>
   );
