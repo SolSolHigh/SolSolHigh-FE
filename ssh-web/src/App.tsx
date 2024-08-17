@@ -1,14 +1,21 @@
+import { useEffect } from "react";
 import "./App.css";
-import { RecoilRoot } from "recoil";
+
+import { api } from "./apis/interceptors";
 
 function App() {
+  useEffect(() => {
+    const loginHandler = async () => {
+      await api.post("api/login");
+    };
+    loginHandler();
+  }, []);
+
   return (
-    <RecoilRoot>
-      <div className="flex font-bold">
-        <div>this is test</div>&nbsp;
-        <div className="font-thin">tailwind</div>
-      </div>
-    </RecoilRoot>
+    <div className="flex font-bold">
+      <div>this is test</div>&nbsp;
+      <div className="font-thin">tailwind</div>
+    </div>
   );
 }
 
