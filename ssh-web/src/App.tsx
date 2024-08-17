@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import "./App.css";
 
 import { api } from "./apis/interceptors";
-
+import REQUEST_DOMAINS from "./apis/axiosConfig";
 function App() {
   useEffect(() => {
     const loginHandler = async () => {
-      await api.post("api/login");
+      await api.post(REQUEST_DOMAINS.auth + "/login");
     };
     loginHandler();
   }, []);
