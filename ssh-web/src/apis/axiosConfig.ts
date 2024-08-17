@@ -1,6 +1,10 @@
-const REQUEST_DOMAINS = {
-  // 백엔드 도메인 합의 전, 임시 작성된 내용입니다.
-  // API 명세 합의 후, 하위 endpoint도 추가하면 좋을 것 같습니다.
+type Domain = "auth" | "users" | "quizs" | "accounts" | "promises" | "missions";
+
+/** 도메인 맵핑 객체
+ *
+ * API 명세가 합의되면 하위 엔드포인트도 추가로 만들어서 타이핑
+ */
+const REQUEST_DOMAINS: Record<Domain, Domain> = {
   auth: "auth",
   users: "users",
   quizs: "quizs",
