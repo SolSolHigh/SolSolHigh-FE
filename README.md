@@ -4,11 +4,11 @@
 
 ---
 
-| 이름   | 역할 |
-| ------ | ---- |
-| 조성우 |      |
-| 양규현 |      |
-| 최요하 |      |
+| 이름   | 역할                                         |
+| ------ | -------------------------------------------- |
+| 조성우 | Mocking, API 설계 및 관리, 요구사항 구현     |
+| 양규현 | 프로젝트 관리, Storybook 관리, 요구사항 구현 |
+| 최요하 | 인프라, 깃허브 관리, 요구사항 구현           |
 
 <br>
 
@@ -16,13 +16,13 @@
 
 ---
 
-|        항목        | 버전 |
-| :----------------: | :--: |
-|        Node        |      |
-|        Npm         |      |
-|       React        |      |
-|     TypeScript     |      |
-| Visual Studio Code |      |
+| 항목               | 버전    |
+| :----------------- | :------ |
+| Node               | 20.16.0 |
+| Npm                | 10.8.1  |
+| React              | 18      |
+| TypeScript         | 5.5.4   |
+| Visual Studio Code | 1.92    |
 
 <br>
 
@@ -30,12 +30,12 @@
 
 ---
 
-|       항목       |        도구        |
-| :--------------: | :----------------: |
-|    형상 관리     |       GitHub       |
-| 협업 & 문서 관리 |       Notion       |
-|      디자인      |       Figma        |
-|       IDE        | Visual Studio Code |
+| 항목             | 도구               |
+| :--------------- | :----------------- |
+| 형상 관리        | GitHub             |
+| 협업 & 문서 관리 | Notion             |
+| 디자인           | Figma              |
+| IDE              | Visual Studio Code |
 
 <br>
 
@@ -53,7 +53,7 @@
 <img src="./docs/mswjs.svg" alt="mswjs" width="60" height="60" />
 <br>
 <br>
-**Deploy**<br><br>
+**CI/CD**<br><br>
 <img src="./docs/githubactions.svg" alt="githubactions" width="60" height="60" />&emsp;
 <img src="./docs/docker.svg" alt="docker" width="60" height="60" />&emsp;
 <img src="./docs/nginx.svg" alt="nginx" width="60" height="60" />&emsp;
@@ -65,5 +65,5 @@
 
 ---
 
+[Project Convention](https://github.com/SolSolHigh/SolSolHigh-FE/wiki/SolSolHigh%E2%80%90FE-Project-Convention)<br>
 [GitHub Convention](https://github.com/SolSolHigh/SolSolHigh-FE/wiki/SolSolHigh%E2%80%90FE-GitHub-Repository-Convention)
-[Project Convention](https://github.com/SolSolHigh/SolSolHigh-FE/wiki/SolSolHigh%E2%80%90FE-Project-Convention)
