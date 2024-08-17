@@ -1,22 +1,20 @@
-import { useEffect } from "react";
 import "./App.css";
-
-import { api } from "./apis/interceptors";
+import axios from "axios";
+import { useEffect } from "react";
 
 function App() {
-  useEffect(() => {
-    const loginHandler = async () => {
-      await api.post("api/login");
-    };
-    loginHandler();
-  }, []);
+    useEffect(() => {
+        axios.get("/users").then((res) => {
+            console.log(res.data);
+        });
+    }, []);
 
-  return (
-    <div className="flex font-bold">
-      <div>this is test</div>&nbsp;
-      <div className="font-thin">tailwind</div>
-    </div>
-  );
+    return (
+        <div className="flex font-bold">
+            <div>this is test</div>&nbsp;
+            <div className="font-thin">tailwind</div>
+        </div>
+    );
 }
 
 export default App;
