@@ -11,7 +11,7 @@ function App() {
 
     return (
         <div className="flex font-bold">
-            <div>this is test</div>&nbsp;
+            <div>안뇽</div>&nbsp;
             <div className="font-thin">tailwind</div>
         </div>
     );
