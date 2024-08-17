@@ -1,19 +1,13 @@
-import { useEffect } from "react";
-import "./App.css";
+import './App.css';
+import { api } from './apis/interceptors';
+import REQUEST_DOMAINS from './apis/axiosConfig';
 
-import { api } from "./apis/interceptors";
-import REQUEST_DOMAINS from "./apis/axiosConfig";
 function App() {
-  useEffect(() => {
-    const loginHandler = async () => {
-      await api.post(REQUEST_DOMAINS.auth + "/login");
-    };
-    loginHandler();
-  }, []);
+  api.post(`${REQUEST_DOMAINS.auth}/users`).then((res) => console.log(res));
 
   return (
     <div className="flex font-bold">
-      <div>this is test</div>&nbsp;
+      <div>폰트 테스트</div>&nbsp;
       <div className="font-thin">tailwind</div>
     </div>
   );
