@@ -1,13 +1,9 @@
 import './App.css';
-import axios from 'axios';
-import { useEffect } from 'react';
+import { api } from './apis/interceptors';
+import REQUEST_DOMAINS from './apis/axiosConfig';
 
 function App() {
-  useEffect(() => {
-    axios.get('/users').then((res) => {
-      console.log(res.data);
-    });
-  }, []);
+  api.post(`${REQUEST_DOMAINS.auth}/users`).then((res) => console.log(res));
 
   return (
     <div className="flex font-bold">
