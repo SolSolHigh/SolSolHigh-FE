@@ -2,7 +2,7 @@ name: SolSolHigh-FE Deploy
 
 on:
     push:
-        branches: chore/#15-deploy
+        branches: develop
 
 jobs:
     build:
