@@ -1,17 +1,14 @@
-import "./App.css";
-
+import './App.css';
+import { api } from './apis/interceptors';
+import REQUEST_DOMAINS from './apis/axiosConfig';
 import { Button } from "./components/atoms/Button";
+    
 function App() {
-  //   useEffect(() => {
-  //     const loginHandler = async () => {
-  //       await api.post(REQUEST_DOMAINS.auth + "/login");
-  //     };
-  //     loginHandler();
-  //   }, []);
+  api.post(`${REQUEST_DOMAINS.auth}/users`).then((res) => console.log(res));
 
   return (
     <div className="flex font-bold">
-      <div>this is test</div>&nbsp;
+      <div>폰트 테스트</div>&nbsp;
       <div className="font-thin">tailwind</div>
       <div className="flex flex-col gap-3 ml-2 w-36 border-2 border-gray-400">
         <Button>버튼1</Button>
