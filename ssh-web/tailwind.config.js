@@ -2,6 +2,28 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
+    screens: {
+      mob: '480',
+      tablet: '768',
+      desktop: '1280',
+    },
+    extend: {
+      keyframes: {
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+      },
+      animation: {
+        shimmer: 'shimmer 2s infinite linear',
+      },
+      backgroundImage: {
+        'gradient-shimmer':
+          'linear-gradient(90deg, #e0e0e0 25%, #e8e8e8 50%, #e0e0e0 75%)',
+      },
+    },
+  },
+  extend: {
     colors: {
       primary: {
         100: '#E6EDFF',
@@ -46,26 +68,6 @@ module.exports = {
         700: '#F5C342',
         800: '#F1B33D',
         900: '#EA9635',
-      },
-    },
-    screens: {
-      mob: '480',
-      tablet: '768',
-      desktop: '1280',
-    },
-    extend: {
-      keyframes: {
-        shimmer: {
-          '0%': { backgroundPosition: '-200% 0' },
-          '100%': { backgroundPosition: '200% 0' },
-        },
-      },
-      animation: {
-        shimmer: 'shimmer 2s infinite linear',
-      },
-      backgroundImage: {
-        'gradient-shimmer':
-          'linear-gradient(90deg, #e0e0e0 25%, #e8e8e8 50%, #e0e0e0 75%)',
       },
     },
   },
