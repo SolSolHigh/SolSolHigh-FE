@@ -2,6 +2,11 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
+    screens: {
+      mob: '414',
+      tablet: '600',
+      desktop: '1280',
+    },
     extend: {
       keyframes: {
         shimmer: {

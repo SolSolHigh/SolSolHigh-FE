@@ -1,6 +1,5 @@
 import { mock } from './index';
 import REQUEST_DOMAINS from '../apis/axiosConfig';
-import { ExampleResponse } from '../interfaces/Example';
 
 mock.onGet(`/${REQUEST_DOMAINS.auth}/examples`).reply(() => {
   return new Promise((resolve) => {
