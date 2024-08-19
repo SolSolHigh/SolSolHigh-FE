@@ -1,9 +1,10 @@
+import React from 'react';
 import { toast, ToastOptions } from 'react-toastify';
 import { FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 
-export type ToastType = 'success' | 'error';
+export type TToast = 'success' | 'error';
 
-export const showToast = (type: ToastType, message: string) => {
+export const showToast = (type: TToast, message: string) => {
   const toastProps: ToastOptions = {
     style: { backgroundColor: '#fffff', color: 'black' },
     progressStyle: {
