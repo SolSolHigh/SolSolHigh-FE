@@ -1,10 +1,7 @@
-import axios from 'axios';
-import AxiosMockAdapter from 'axios-mock-adapter';
+import { mock } from './index';
 import REQUEST_DOMAINS from '../apis/axiosConfig';
-import { api } from '../apis/interceptors';
+import { UserResponse } from '../interfaces/User';
 
-export const userHandler = new AxiosMockAdapter(api);
-
-userHandler.onPost(`/${REQUEST_DOMAINS.auth}/users`).reply(200, {
+mock.onPost(`/${REQUEST_DOMAINS.auth}/users`).reply<UserResponse>(200, {
   users: [{ id: 1, name: 'John Smith' }],
 });

@@ -1,21 +1,31 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { RecoilRoot } from "recoil";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import { RecoilRoot } from 'recoil';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-if (process.env.NODE_ENV === "development") {
-    require("./mocks/userHandler");
+if (process.env.NODE_ENV === 'development') {
+  require('./mocks');
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+const queryClient = new QueryClient();
+
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement,
+);
 root.render(
-    <React.StrictMode>
-        <RecoilRoot>
-            <App />
-        </RecoilRoot>
-    </React.StrictMode>
+  <React.StrictMode>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <ToastContainer position="bottom-right" />
+        <App />
+      </QueryClientProvider>
+    </RecoilRoot>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
