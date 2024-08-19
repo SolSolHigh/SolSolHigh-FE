@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 if (process.env.NODE_ENV === 'development') {
   require('./mocks');
@@ -19,6 +21,7 @@ root.render(
   <React.StrictMode>
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
+        <ToastContainer position="bottom-right" />
         <App />
       </QueryClientProvider>
     </RecoilRoot>

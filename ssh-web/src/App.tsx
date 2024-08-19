@@ -1,9 +1,7 @@
 import './App.css';
-import { api } from './apis/interceptors';
-import REQUEST_DOMAINS from './apis/axiosConfig';
 import { Button } from './components/atoms/Button';
 import { Skeleton } from './components/atoms/Skeleton';
-import { ExampleResponse, Example } from './interfaces/Example';
+import { ExampleResponse } from './interfaces/Example';
 import { useQuery } from '@tanstack/react-query';
 import { getExamples } from './apis/Example';
 
@@ -23,7 +21,7 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col font-bold p-4">
+    <div className="flex flex-col p-4">
       <div className="flex flex-row gap-4">
         <div>폰트 테스트</div>
         <div className="font-thin">tailwind</div>
