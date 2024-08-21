@@ -1,6 +1,9 @@
 import { TColor } from '../../../themes/themeBase';
 
 export type TTypographySize =
+  | '6xs'
+  | '5xs'
+  | '4xs'
   | '3xs'
   | '2xs'
   | 'xs'
@@ -9,7 +12,11 @@ export type TTypographySize =
   | 'lg'
   | 'xl'
   | '2xl'
-  | '3xl';
+  | '3xl'
+  | '4xl'
+  | '5xl'
+  | '6xl'
+  | '7xl';
 
 export type TTypographyWeight =
   | 'light'
