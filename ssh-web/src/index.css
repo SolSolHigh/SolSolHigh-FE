@@ -3,17 +3,22 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: "Pretendard";
-    src: url("./fonts/PretendardVariable.ttf");
+  font-family: 'Pretendard';
+  src: url('./fonts/PretendardVariable.ttf');
 }
 
-body {
-    margin: 0;
-    font-family: "Pretendard";
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+body,
+#root {
+  margin: 0;
+  font-family: 'Pretendard';
+  width: 100vw;
+  height: 100vh;
+  background-color: #e6edff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }

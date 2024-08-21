@@ -7,6 +7,7 @@ import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BrowserRouter } from 'react-router-dom';
 
 if (process.env.NODE_ENV === 'development') {
   require('./mocks');
@@ -19,12 +20,14 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
-        <ToastContainer position="bottom-right" />
-        <App />
-      </QueryClientProvider>
-    </RecoilRoot>
+    <BrowserRouter>
+      <RecoilRoot>
+        <QueryClientProvider client={queryClient}>
+          <ToastContainer position="bottom-right" />
+          <App />
+        </QueryClientProvider>
+      </RecoilRoot>
+    </BrowserRouter>
   </React.StrictMode>,
 );
 
