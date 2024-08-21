@@ -2,7 +2,7 @@ import React from 'react';
 import { IconProps } from './Icon.types';
 import { iconStyles } from './Icon.styles';
 
-const Icon = ({
+export const Icon = ({
   children,
   size = 'md',
   color = 'primary',
@@ -14,5 +14,3 @@ const Icon = ({
   });
   return <span className={`${iconStyle} ${classNameStyles}`}>{children}</span>;
 };
-
-export default Icon;
