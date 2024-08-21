@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { TColor } from '../../../themes/themeBase';
 
 export type TTypographySize =
@@ -26,7 +27,7 @@ export type TTypographyWeight =
   | 'bold';
 
 export interface TypographyProps extends React.ComponentProps<'div'> {
-  children: string;
+  children: ReactNode;
   size?: TTypographySize;
   color?: TColor;
   weight?: TTypographyWeight;
