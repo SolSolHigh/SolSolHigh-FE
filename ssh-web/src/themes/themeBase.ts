@@ -5,5 +5,3 @@ export type TColor =
   | 'warning'
   | 'dark'
   | 'light';
-
-export type TPlatform = 'W' | 'T' | 'M';
