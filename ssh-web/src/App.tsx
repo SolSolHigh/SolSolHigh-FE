@@ -1,47 +1,40 @@
 import './App.css';
 import React from 'react';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { getExample2 } from './apis/exampleApi';
-import { Route, Routes } from 'react-router-dom';
-import { Home } from './pages/Home';
-import { Login } from './pages/Login';
-import { Signup } from './pages/Signup';
+import { Outlet, useLocation } from 'react-router-dom';
+
+import NavigationBar from './components/organisms/NavigationBar';
+import BackdropFilter from './components/atoms/BackdropFilter';
+
+import { useRecoilValue } from 'recoil';
+import { resizeState } from './atoms/resize';
+import { isModalOpenState } from './atoms/modal';
+import {
+  useCloseModalOnRouteChange,
+  useResizeDetection,
+  useLockBodyScroll,
+} from './hook';
 
 function App() {
-  /*const {
-    data: examplesData,
-    isLoading: isExamplesLoading,
-    error: examplesError,
-  } = useQuery<ExampleResponse>({
-    queryKey: ['examples'],
-    queryFn: getExamples,
-    staleTime: 1000 * 60,
-  });
+  useCloseModalOnRouteChange();
+  useResizeDetection();
+  useLockBodyScroll();
 
-  if (examplesError) {
-    console.error('Error fetching examples:', examplesError);
-  }*/
-
-  // ============= Example Test ======================
-  const exampleQuery = useSuspenseQuery({
-    queryKey: ['example'],
-    queryFn: async () => await getExample2(),
-  });
-
-  if (exampleQuery.error && !exampleQuery.isFetching) {
-    throw exampleQuery.error;
-  }
-  // ============= Example Test ======================
+  const isModalOpen = useRecoilValue(isModalOpenState);
+  const size = useRecoilValue(resizeState);
+  const location = useLocation();
 
   return (
-    <Routes>
-      {/* 홈화면 */}
-      <Route path="/" element={<Home />} />
-
-      {/* 인증/인가 */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-    </Routes>
+    <div className="w-full h-full">
+      {isModalOpen && <BackdropFilter />}
+      {!(location.pathname === '/login' || location.pathname === '/signup') && (
+        <NavigationBar />
+      )}
+      <div
+        className={`${size === 'M' || size === 'T' ? (location.pathname === '/login' || location.pathname === '/signup' ? 'pb-0' : 'pb-16') : 'pb-0'} BODY-LAYOUT relative w-full h-full flex flex-1 justify-center`}
+      >
+        <Outlet />
+      </div>
+    </div>
   );
 }
 
