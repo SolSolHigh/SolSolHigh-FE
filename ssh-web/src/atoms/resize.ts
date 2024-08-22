@@ -1,6 +1,7 @@
 import { atom } from 'recoil';
+import { EResize } from '../themes/themeBase';
 
-export const resizeState = atom({
+export const resizeState = atom<EResize>({
   key: 'resize',
-  default: 'M',
+  default: EResize.M,
 });
