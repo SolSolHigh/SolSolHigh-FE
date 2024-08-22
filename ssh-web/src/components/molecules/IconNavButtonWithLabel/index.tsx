@@ -20,7 +20,7 @@ const IconNavButtonWithLabel = ({ pathName }: { pathName: IPath }) => {
     <button className="">
       <Link to={pathName.path}>
         <Icon
-          size="2xl"
+          size="md"
           classNameStyles={`${currentPathname === pathName.path ? '!text-primary-600' : '!text-secondary-300'} transition-colors duration-200`}
         >
           {pathName.path === PathNames.HOME.path && <HiMiniHome />}
