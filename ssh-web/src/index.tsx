@@ -7,11 +7,54 @@ import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 if (process.env.NODE_ENV === 'development') {
   require('./mocks');
 }
 
+const PathNames = {
+  HOME: '/home',
+  MISSION: '/mission',
+  QUIZ: '/quiz',
+  EGG: '/egg',
+  MYPAGE: '/mypage',
+};
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <></>,
+    children: [
+      {
+        index: true,
+        path: '/',
+        element: <></>,
+      },
+      {
+        path: PathNames.HOME,
+        element: <></>,
+      },
+      {
+        path: PathNames.MISSION,
+        element: <></>,
+      },
+      {
+        path: PathNames.QUIZ,
+        element: <></>,
+      },
+      {
+        path: PathNames.EGG,
+        element: <></>,
+      },
+      {
+        path: PathNames.MYPAGE,
+        element: <></>,
+      },
+    ],
+  },
+]);
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
@@ -22,7 +65,7 @@ root.render(
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <ToastContainer position="bottom-right" />
-        <App />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </RecoilRoot>
   </React.StrictMode>,
