@@ -1,27 +1,89 @@
-import React from 'react';
-import { TextFieldProps } from './TextField.types';
-import { textFieldStyles,labelStyles } from './TextField.styles';
+import React, { useState } from 'react';
+import { TSize, TextFieldProps } from './TextField.types';
+import { textFieldStyles, labelStyles } from './TextField.styles';
 
-const TextField: React.FC<TextFieldProps> = ({ variant, state, size, label, value, onChange, classNameStyles, }) => {
-  const inputClassName = textFieldStyles({ variant, state, size });
-  const labelClassName = labelStyles({ state, size});
+// size에 따른 위치 조정 함수
+const getTranslateValue = (size: TSize, isFloating: boolean) => {
+  switch (size) {
+    case 'xs':
+      return isFloating ? '-translate-y-2' : 'translate-y-3';
+    case 'sm':
+      return isFloating ? '-translate-y-3' : 'translate-y-3';
+    case 'md':
+      return isFloating ? '-translate-y-3' : 'translate-y-3';
+    case 'lg':
+      return isFloating ? '-translate-y-3' : 'translate-y-3';
+    case 'xl':
+      return isFloating ? '-translate-y-4' : 'translate-y-3';
+  }
+};
+  
+
+const TextField: React.FC<TextFieldProps> = ({
+  variant,
+  state,
+  size ='md',
+  label,
+  value,
+  onChange,
+  disabled = false,
+  fullWidth = false,
+  classNameStyles,
+}) => {
+
+  const [focused, setFocused] = useState(false);
+  const isFloating = focused || value !== '';
+
+  const inputClassName = textFieldStyles({
+    variant,
+    state: isFloating ? state : 'unfocused',
+    size,
+    fullWidth,
+    disabled
+  });
+   const labelClassName = labelStyles({ 
+    state: isFloating ? state : 'unfocused', 
+    size,
+   });
+
+  const handleFocus = () => setFocused(true);
+  const handleBlur = () => setFocused(false);
+
+  const translateValue = getTranslateValue(size, isFloating);
 
   return (
-    <div className="mb-4">
-      { state !== 'unfocused' && 
-        <label className={labelClassName}>
-          {label}
-        </label>
-      }
-        <input
-          type="text"
-          className={`bg-transparent outline-none text-black
-          ${inputClassName} 
-          ${classNameStyles}`}
-          value={value}
-          onChange={onChange}
-          placeholder={label}
-        />
+    <div className={`relative mb-4 ${fullWidth ? 'w-full' : ''}`}>
+      <label
+        className={`
+          ${labelClassName}
+          absolute 
+          left-2 
+          transition-all 
+          duration-200
+          transform 
+          scale-90
+          ${translateValue}
+          ${variant === 'outlined' && isFloating ? 'bg-white px-1 z-20' : ''}
+          `}
+      >
+        {label}
+      </label>
+      <input
+        type="text"
+        className={`bg-transparent outline-none text-black  
+          ${inputClassName}
+          ${classNameStyles} 
+        ${
+          variant === 'outlined' ? 'pt-4 pb-2 border-2 rounded' : 'pt-2 pb-1'
+          } 
+        ${isFloating ? '' : 'border-secondary-400'}
+        `}
+        value={value}
+        onChange={onChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        disabled={disabled} 
+      />
     </div>
   );
 };

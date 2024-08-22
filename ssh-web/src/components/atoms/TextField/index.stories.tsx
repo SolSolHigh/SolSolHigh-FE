@@ -50,7 +50,6 @@ const StateList: TState[] = [
   'primary',
   'secondary',
   'danger',
-  'unfocused',
 ];
 
 // Outlined 스토리
@@ -63,7 +62,7 @@ export const Outlined: Story = {
   render: (args) => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
       {StateList.map((state) => (
-        <TextField {...args} key={state} state={state} variant="outlined" />
+        <TextField {...args}  key={state} state={state} variant="outlined" />
       ))}
     </div>
   ),
@@ -79,7 +78,7 @@ export const Standard: Story = {
   render: (args) => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
       {StateList.map((state) => (
-        <TextField {...args} key={state} state={state} variant="standard" />
+          <TextField {...args} key={state} state={state} variant="standard" />
       ))}
     </div>
   ),

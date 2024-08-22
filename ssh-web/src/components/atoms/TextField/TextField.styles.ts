@@ -2,41 +2,46 @@
 import { tv } from 'tailwind-variants';
 
 export const textFieldStyles = tv({
-  base: 'p-2 font-medium w-64 relative', 
+  base: 'p-2 font-medium relative', 
   variants: {
     variant: {
       outlined: 'border-2 rounded-md ',
       standard: 'border-b-2',
     },
     state: {
-      primary: 'border-blue-500',
-      secondary: 'border-gray-500',
-      danger: 'border-red-500',
-      unfocused: 'border-gray-300',
+      primary: 'border-primary-500',
+      secondary: 'border-secondary-800',
+      danger: 'border-danger-500',
+      unfocused: 'border-secondary-400',
     },
     size: {
-      xs: 'text-xs p-1 w-40',
-      sm: 'text-sm p-1.5 w-48',
-      md: 'text-base p-2 w-56',
-      lg: 'text-lg p-2.5 w-64',
-      xl: 'text-xl p-3 w-72',
+      xs: 'text-xs p-1',
+      sm: 'text-sm p-1.5',
+      md: 'text-base p-2',
+      lg: 'text-lg p-2.5',
+      xl: 'text-xl p-3',
+    },
+    fullWidth: {
+      true: 'w-full',   
+    },
+    disabled: {
+      true: 'bg-secondary-200 text-secondary-600 cursor-not-allowed rounded',
     },
   },
   defaultVariants: {
     variant: 'outlined',
-    state: 'secondary',
     size: 'md', 
   },
 });
-
+ 
 export const labelStyles = tv({
   base: 'block font-medium mb-1 transition-all', 
   variants: {
     state: {
-      primary: 'text-blue-500',
-      secondary: 'text-gray-500',
-      danger: 'text-red-500',
-      unfocused: 'text-gray-300',
+      primary: 'text-primary-500',
+      secondary: 'text-secondary-800',
+      danger: 'text-danger-500',
+      unfocused : 'text-secondary-600',
     },
     size: {
       xs: 'text-xs',

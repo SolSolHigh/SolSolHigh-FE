@@ -9,5 +9,7 @@ export interface TextFieldProps {
   label?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
+  fullWidth?: boolean;
   classNameStyles?: string;
 }
