@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { BrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './utils/router';
 
 if (process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   require('./mocks');
 }
 
@@ -20,14 +21,12 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <RecoilRoot>
-        <QueryClientProvider client={queryClient}>
-          <ToastContainer position="bottom-right" />
-          <App />
-        </QueryClientProvider>
-      </RecoilRoot>
-    </BrowserRouter>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <ToastContainer position="bottom-right" />
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </RecoilRoot>
   </React.StrictMode>,
 );
 

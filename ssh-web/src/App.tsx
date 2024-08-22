@@ -1,45 +1,37 @@
 import './App.css';
 import React from 'react';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { getExample2 } from './apis/exampleApi';
-import { Route, Routes } from 'react-router-dom';
-import { Home } from './pages/Home';
-import { Login } from './pages/Login';
+import { Outlet } from 'react-router-dom';
+
+import NavigationBar from './components/organisms/NavigationBar';
+import BackdropFilter from './components/atoms/BackdropFilter';
+
+import { useRecoilValue } from 'recoil';
+import { resizeState } from './atoms/resize';
+import { isModalOpenState } from './atoms/modal';
+import {
+  useCloseModalOnRouteChange,
+  useResizeDetection,
+  useLockBodyScroll,
+} from './hook';
 
 function App() {
-  /*const {
-    data: examplesData,
-    isLoading: isExamplesLoading,
-    error: examplesError,
-  } = useQuery<ExampleResponse>({
-    queryKey: ['examples'],
-    queryFn: getExamples,
-    staleTime: 1000 * 60,
-  });
+  useCloseModalOnRouteChange();
+  useResizeDetection();
+  useLockBodyScroll();
 
-  if (examplesError) {
-    console.error('Error fetching examples:', examplesError);
-  }*/
-
-  // ============= Example Test ======================
-  const exampleQuery = useSuspenseQuery({
-    queryKey: ['example'],
-    queryFn: async () => await getExample2(),
-  });
-
-  if (exampleQuery.error && !exampleQuery.isFetching) {
-    throw exampleQuery.error;
-  }
-  // ============= Example Test ======================
+  const isModalOpen = useRecoilValue(isModalOpenState);
+  const size = useRecoilValue(resizeState);
 
   return (
-    <Routes>
-      {/* 홈화면 */}
-      <Route path="/" element={<Home />} />
-
-      {/* 인증/인가 */}
-      <Route path="/login" element={<Login />} />
-    </Routes>
+    <div className="w-full h-full min-h-[100vh]">
+      {isModalOpen && <BackdropFilter />}
+      <NavigationBar />
+      <div
+        className={`${size === 'M' || size === 'T' ? 'pb-16' : 'pb-0 pt-14'} BODY-LAYOUT relative h-max min-h-[100vh] mobile:min-h-[calc(100vh-3.5rem)] tablet:min-h-[calc(100vh-3.5rem)] flex flex-1 justify-center`}
+      >
+        <Outlet />
+      </div>
+    </div>
   );
 }
 
