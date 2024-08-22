@@ -9,12 +9,15 @@ export const FormTitle = ({
   children,
   keyword,
   ment,
+  steps,
+  curStep,
+  onChangeStep,
   classNameStyles,
 }: FormTitleProps) => {
   return (
     <div className={`${formTitleStyles()} ${classNameStyles}`}>
-      <Icon size="sm" color="dark">
-        <HiArrowLeft />
+      <Icon size="sm" color={curStep ? 'dark' : 'secondary'}>
+        <HiArrowLeft onClick={() => curStep && onChangeStep(curStep - 1)} />
       </Icon>
       <Typography
         color="dark"
@@ -28,8 +31,10 @@ export const FormTitle = ({
         </Typography>
         {ment}
       </Typography>
-      <Icon size="sm" color="dark">
-        <HiArrowRight />
+      <Icon size="sm" color={curStep < steps - 1 ? 'dark' : 'secondary'}>
+        <HiArrowRight
+          onClick={() => curStep < steps - 1 && onChangeStep(curStep + 1)}
+        />
       </Icon>
       {children}
     </div>
