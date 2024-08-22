@@ -1,32 +1,28 @@
 import React from 'react';
 import { Typography } from '../../components/atoms/Typography';
 import { LoginNav } from '../../components/molecules/LoginNav';
-import { useRecoilValue } from 'recoil';
-import { platformState } from '../../atoms/platformAtom';
+import { containerStyles } from './styles';
 
 export const Login = () => {
-  const platform = useRecoilValue(platformState);
-
   return (
-    <div className="flex flex-col items-center w-full h-full desktop:justify-center tablet:mt-40">
+    <div className={containerStyles()}>
       <Typography
         color="dark"
         weight="bold"
-        size={platform === 'W' ? '7xl' : 'xl'}
+        size="7xl"
+        classNameStyles="tablet:text-xl"
       >
         쏠쏠-하이
       </Typography>
       <Typography
         color="dark"
         weight="medium"
-        size={platform === 'W' ? '2xl' : 'md'}
+        size="2xl"
+        classNameStyles="tablet:text-base"
       >
         반가워요! 찾아와줘서 고마워요
       </Typography>
-      <img
-        src="/assets/mascot_top.png"
-        className={`mt-4 ${platform === 'W' ? '' : 'w-80'}`}
-      />
+      <img src="/assets/mascot_top.png" className="mt-4 tablet:w-80" />
       <LoginNav />
     </div>
   );

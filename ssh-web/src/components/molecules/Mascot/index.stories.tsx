@@ -35,30 +35,12 @@ export default meta;
 
 type Story = StoryObj<typeof Mascot>;
 
-export const Web: Story = {
+export const Default: Story = {
   args: {
     nickname: '닉네임',
     ment: '반가워요! 몇 가지만 더 물어볼게요',
   },
   render: (args) => {
-    return <Mascot {...args} platform="W" />;
-  },
-};
-export const Tablet: Story = {
-  args: {
-    nickname: '닉네임',
-    ment: '반가워요! 몇 가지만 더 물어볼게요',
-  },
-  render: (args) => {
-    return <Mascot {...args} platform="T" />;
-  },
-};
-export const Mobile: Story = {
-  args: {
-    nickname: '닉네임',
-    ment: '반가워요! 몇 가지만 더 물어볼게요',
-  },
-  render: (args) => {
-    return <Mascot {...args} platform="M" />;
+    return <Mascot {...args} />;
   },
 };

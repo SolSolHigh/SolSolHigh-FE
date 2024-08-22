@@ -5,24 +5,27 @@ import { mascotImgStyles, mascotStyles } from './Mascot.styles';
 
 export const Mascot = ({
   children,
-  platform,
   nickname,
   ment,
   classNameStyles,
 }: MascotProps) => {
   return (
     <div className={`${mascotStyles()} ${classNameStyles}`}>
-      <img
-        src={`/assets/${platform === 'W' ? 'mascot.png' : 'mascot_top.png'}`}
-        className={`${mascotImgStyles({ platform })}`}
-      />
+      <picture>
+        <source
+          srcSet="/assets/mascot_top.png"
+          className="w-28 h-28"
+          media="(max-width: 1279px)"
+        />
+        <img src="/assets/mascot.png" className={`${mascotImgStyles()}`} />
+      </picture>
       <div>
-        <Typography color="dark" size={platform === 'W' ? 'md' : 'sm'}>
+        <Typography color="dark" size="md" classNameStyles="tablet:text-sm">
           <Typography
             color="dark"
             weight="bold"
-            size={platform === 'W' ? '7xl' : 'md'}
-            classNameStyles="inline"
+            size="7xl"
+            classNameStyles="inline tablet:text-base"
           >
             {nickname}
           </Typography>
@@ -30,8 +33,8 @@ export const Mascot = ({
         </Typography>
         <Typography
           color="dark"
-          size={platform === 'W' ? 'md' : 'sm'}
-          classNameStyles={`${platform === 'W' ? 'mt-4' : 'mt-2'}`}
+          size="md"
+          classNameStyles="tablet:text-sm desktop:mt-4 tablet:mt-2"
         >
           {ment}
         </Typography>

@@ -5,11 +5,5 @@ export const mascotStyles = tv({
 });
 
 export const mascotImgStyles = tv({
-  variants: {
-    platform: {
-      W: '',
-      T: 'w-28 h-28',
-      M: 'w-28 h-28',
-    },
-  },
+  base: 'tablet:w-28 tablet:h-28',
 });
