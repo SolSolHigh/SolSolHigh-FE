@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { TTextFieldSize, TextFieldProps } from './TextField.types';
 import { textFieldStyles, labelStyles } from './TextField.styles';
 
@@ -19,6 +19,7 @@ const getTranslateValue = (size: TTextFieldSize, isFloating: boolean) => {
 };
 
 const TextField = ({
+  inputType = 'text',
   variant = 'outlined',
   state = 'primary',
   size = 'md',
@@ -30,7 +31,8 @@ const TextField = ({
   classNameStyles,
 }: TextFieldProps) => {
   const [focused, setFocused] = useState(false);
-  const isFloating = focused || defaultValue !== '';
+  const [isFloating, setIsFloating] = useState<boolean>(defaultValue !== '');
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const inputClassName = textFieldStyles({
     variant,
@@ -44,8 +46,21 @@ const TextField = ({
     size,
   });
 
-  const handleFocus = () => setFocused(true);
-  const handleBlur = () => setFocused(false);
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setIsFloating(() => focused || e.target.value !== '');
+      if (onChange) onChange(e);
+    },
+    [focused],
+  );
+  const handleFocus = useCallback(() => {
+    setFocused(true);
+    setIsFloating(true);
+  }, [focused]);
+  const handleBlur = useCallback(() => {
+    setFocused(false);
+    setIsFloating(inputRef.current?.value !== '');
+  }, [focused]);
 
   const translateValue = getTranslateValue(size, isFloating);
 
@@ -67,7 +82,8 @@ const TextField = ({
         {label}
       </label>
       <input
-        type="text"
+        ref={inputRef}
+        type={inputType}
         className={`bg-transparent outline-none text-black  
           ${inputClassName}
           ${classNameStyles} 
@@ -75,7 +91,7 @@ const TextField = ({
         ${isFloating ? '' : 'border-secondary-400'}
         `}
         defaultValue={defaultValue}
-        onChange={onChange}
+        onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
         disabled={disabled}

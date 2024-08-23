@@ -3,6 +3,7 @@ export type TTextFieldState = 'primary' | 'secondary' | 'danger' | 'unfocused';
 export type TTextFieldSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export interface TextFieldProps {
+  inputType?: string;
   variant?: TTextFieldVariant;
   state?: TTextFieldState;
   size?: TTextFieldSize;
