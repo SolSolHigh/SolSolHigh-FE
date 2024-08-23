@@ -29,7 +29,7 @@ const IconNavButtonWithLabel = ({ pathName }: { pathName: IPath }) => {
           {pathName.path === PathNames.EGG.path && <HiChartBarSquare />}
           {pathName.path === PathNames.MYPAGE.path && <HiSquares2X2 />}
         </Icon>
-        <Typography size="sm" color="dark" classNameStyles="cursor-default">
+        <Typography size="xs" color="dark" classNameStyles="cursor-default">
           {pathName.name}
         </Typography>
       </Link>
