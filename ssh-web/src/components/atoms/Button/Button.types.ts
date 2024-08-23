@@ -1,14 +1,15 @@
-import React from "react";
+import React from 'react';
+import { TColor } from '../../../themes/themeBase';
 
-export type TButtonTypes = "button" | "submit" | "reset";
-export type TColors = "blue" | "gray";
-export type TSize = "sm" | "md" | "lg";
+export type TButtonTypes = 'button' | 'submit' | 'reset';
+export type TButtonSize = 'sm' | 'md' | 'lg';
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   type?: TButtonTypes;
-  color?: TColors;
-  size?: TSize;
+  color?: TColor;
+  size?: TButtonSize;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   outlined?: boolean;
