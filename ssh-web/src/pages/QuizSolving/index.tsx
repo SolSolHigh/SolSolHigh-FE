@@ -68,7 +68,9 @@ export const QuizSolving: React.FC = () => {
         <Modal>
           <div className={styles.container({ size })}>
             <h1 className={styles.title({ size })}>
-              {quizResult.isCorrect ? '정답입니다!' : '틀렸어요...'}
+              <Typography color='dark' size='2xl' weight='bold'>
+                {quizResult.isCorrect ? '정답입니다!' : '틀렸어요...'}
+              </Typography>
             </h1>
             <img
               src={
@@ -80,9 +82,11 @@ export const QuizSolving: React.FC = () => {
               className={styles.image({ size })}
             />
             <p className={styles.caption({ size })}>
+              <Typography color='secondary'>
               {quizResult.isCorrect
                 ? quizResult.quizExplanation || '맞아요!'
-                : '정답은 ' + (quizResult.realAnswer ? 'O' : 'X') + '에요'}
+                  : '정답은 ' + (quizResult.realAnswer ? 'O' : 'X') + '에요'}
+              </Typography>
             </p>
             <Button onClick={toggleModal}>
               확인

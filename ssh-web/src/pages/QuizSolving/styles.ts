@@ -3,12 +3,12 @@ import { tv } from 'tailwind-variants';
 
 export const styles = {
   container: tv({
-    base: 'flex flex-col items-center justify-center p-4',
+    base: 'flex flex-col items-center justify-center rounded-lg bg-white w-full',
     variants: {
       size: {
-        M: 'p-2',
-        T: 'p-4',
-        D: 'p-6',
+        M: 'p-4',
+        T: 'p-6',
+        D: 'p-8',
       },
     },
   }),

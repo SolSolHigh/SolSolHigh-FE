@@ -62,7 +62,7 @@ mock.onPost(`/${REQUEST_DOMAINS.quizs}/solve`).reply(config => {
           resolve([200, {
             realAnswer,
             isCorrect,
-            quizExplanation: "맞아요 ~ 좋은 설명입니다.",
+            quizExplanation: "맞아요 ~ [해설]입니다.",
           }]);
         } else {
           // 오답일 경우
