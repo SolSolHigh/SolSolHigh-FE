@@ -32,6 +32,6 @@ type Story = StoryObj<typeof UserInfoForm>;
 export const Default: Story = {
   args: {},
   render: () => {
-    return <UserInfoForm />;
+    return <>its userinfoform</>;
   },
 };

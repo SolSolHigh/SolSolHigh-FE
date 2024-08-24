@@ -10,7 +10,7 @@ const getTranslateValue = (size: TTextFieldSize, isFloating: boolean) => {
     case 'sm':
       return isFloating ? '-translate-y-3' : 'translate-y-3';
     case 'md':
-      return isFloating ? '-translate-y-3' : 'translate-y-3';
+      return isFloating ? '-translate-y-4' : 'translate-y-3';
     case 'lg':
       return isFloating ? '-translate-y-3' : 'translate-y-3';
     case 'xl':
@@ -65,7 +65,10 @@ const TextField = ({
   const translateValue = getTranslateValue(size, isFloating);
 
   return (
-    <div className={`relative mb-4 ${fullWidth ? 'w-full' : ''}`}>
+    <div
+      className={`relative mb-4 ${fullWidth ? 'w-full' : ''} 
+          ${classNameStyles} `}
+    >
       <label
         className={`
           ${labelClassName}
@@ -86,7 +89,6 @@ const TextField = ({
         type={inputType}
         className={`bg-transparent outline-none text-black  
           ${inputClassName}
-          ${classNameStyles} 
         ${variant === 'outlined' ? 'pt-4 pb-2 border-2 rounded' : 'pt-2 pb-1'} 
         ${isFloating ? '' : 'border-secondary-400'}
         `}
