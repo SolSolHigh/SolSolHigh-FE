@@ -1,7 +1,7 @@
 import { TColor } from '../../../themes/themeBase';
 import { ReactNode } from 'react';
 
-export interface BadgeProps {
+export interface IBadgeProps {
   text: string;
   color?: TColor;
   textColor?: TColor;

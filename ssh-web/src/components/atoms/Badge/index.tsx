@@ -1,5 +1,5 @@
 import React from 'react';
-import { BadgeProps } from './Badge.types';
+import { IBadgeProps } from './Badge.types';
 import { badgeStyles } from './Badge.styles';
 import { Typography } from '../Typography';
 
@@ -11,7 +11,7 @@ export const Badge = ({
   weight = 'light',
   startIcon,
   classNameStyles,
-}: BadgeProps) => {
+}: IBadgeProps) => {
   const className = badgeStyles({ color, textColor, size });
 
   return (
