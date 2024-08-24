@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import Home from '../pages/Home';
 import { IPathNames } from '../interfaces/routerInterface';
+import { QuizSolving } from '../pages/QuizSolving';
 
 export const PathNames: IPathNames = {
   HOME: {
@@ -42,7 +43,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PathNames.QUIZ.path,
-        element: <></>,
+        element: <QuizSolving/>,
       },
       {
         path: PathNames.EGG.path,
