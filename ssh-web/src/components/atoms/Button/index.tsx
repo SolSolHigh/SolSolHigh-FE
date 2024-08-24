@@ -5,7 +5,7 @@ import { ButtonProps } from './Button.types';
 export const Button = ({
   children,
   type = 'button',
-  color = 'blue',
+  color = 'primary',
   size = 'md',
   onClick,
   disabled = false,
@@ -15,9 +15,9 @@ export const Button = ({
   classNameStyles,
 }: ButtonProps) => {
   const className = buttonStyles({
-    bg: outlined ? 'none' : color,
-    borderColor: outlined ? color : 'none',
-    text: outlined ? `outlined_${color}` : color,
+    bg: disabled ? 'disabled' : outlined ? 'none' : color,
+    borderColor: disabled ? 'none' : outlined ? color : 'none',
+    text: disabled ? 'disabled' : outlined ? `outlined_${color}` : color,
     size,
     rounded,
     fullWidth,
