@@ -10,7 +10,9 @@ export interface TextFieldProps {
   label?: string;
   defaultValue?: string;
   disabled?: boolean;
+  readonly?: boolean;
   fullWidth?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onPageHandler?: () => void;
   classNameStyles?: string;
 }
