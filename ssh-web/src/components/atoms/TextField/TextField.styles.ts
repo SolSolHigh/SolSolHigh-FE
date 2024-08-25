@@ -2,7 +2,7 @@
 import { tv } from 'tailwind-variants';
 
 export const textFieldStyles = tv({
-  base: 'p-2 font-medium relative', 
+  base: 'p-2 font-medium relative',
   variants: {
     variant: {
       outlined: 'border-2 rounded-md ',
@@ -22,7 +22,7 @@ export const textFieldStyles = tv({
       xl: 'text-xl p-3',
     },
     fullWidth: {
-      true: 'w-full',   
+      true: 'w-full',
     },
     disabled: {
       true: 'bg-secondary-200 text-secondary-600 cursor-not-allowed rounded',
@@ -30,18 +30,18 @@ export const textFieldStyles = tv({
   },
   defaultVariants: {
     variant: 'outlined',
-    size: 'md', 
+    size: 'md',
   },
 });
- 
+
 export const labelStyles = tv({
-  base: 'block font-medium mb-1 transition-all', 
+  base: 'block font-medium mb-1 transition-all',
   variants: {
     state: {
       primary: 'text-primary-500',
       secondary: 'text-secondary-800',
       danger: 'text-danger-500',
-      unfocused : 'text-secondary-600',
+      unfocused: 'text-secondary-600',
     },
     size: {
       xs: 'text-xs',

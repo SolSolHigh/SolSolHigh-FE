@@ -3,6 +3,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import Home from '../pages/Home';
 import { IPathNames } from '../interfaces/routerInterface';
+import { QuizSolving } from '../pages/QuizSolving';
+import { Login } from '../pages/Login';
+import { Signup } from '../pages/Signup';
 
 export const PathNames: IPathNames = {
   HOME: {
@@ -19,6 +22,8 @@ export const PathNames: IPathNames = {
     path: '/mypage',
     name: '전체',
   },
+  LOGIN: { path: '/login', name: '로그인' },
+  SIGNUP: { path: '/signup', name: '회원가입' },
 };
 
 export const router = createBrowserRouter([
@@ -42,7 +47,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PathNames.QUIZ.path,
-        element: <></>,
+        element: <QuizSolving/>,
       },
       {
         path: PathNames.EGG.path,
@@ -51,6 +56,14 @@ export const router = createBrowserRouter([
       {
         path: PathNames.MYPAGE.path,
         element: <></>,
+      },
+      {
+        path: PathNames.LOGIN.path,
+        element: <Login />,
+      },
+      {
+        path: PathNames.SIGNUP.path,
+        element: <Signup />,
       },
     ],
   },

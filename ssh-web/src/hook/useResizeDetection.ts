@@ -27,7 +27,7 @@ export const useResizeDetection = () => {
     } else if (screen >= BreakPoints.DESKTOP) {
       setSize(EResize.D);
     }
-    console.log('resized', screen, size);
+    //console.log('resized', screen, size);
   }, [screen, setSize]);
 
   return size;

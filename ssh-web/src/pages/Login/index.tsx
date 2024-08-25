@@ -1,32 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { Typography } from '../../components/atoms/Typography';
 import { LoginNav } from '../../components/molecules/LoginNav';
+import { containerStyles } from './styles';
 
 export const Login = () => {
-  const pageRef = useRef<HTMLDivElement>(null);
-  const [isDesktop, setIsDesktop] = useState<boolean>(true);
-
-  useEffect(() => {
-    if (pageRef.current) {
-      setIsDesktop(pageRef.current.offsetWidth >= 1280);
-    }
-  }, []);
-
   return (
-    <div
-      ref={pageRef}
-      className="flex flex-col items-center w-full h-full desktop:justify-center tablet:mt-40"
-    >
-      <Typography color="dark" weight="bold" size={isDesktop ? '7xl' : 'xl'}>
+    <div className={containerStyles()}>
+      <Typography
+        color="dark"
+        weight="bold"
+        size="7xl"
+        classNameStyles="tablet:text-xl"
+      >
         쏠쏠-하이
       </Typography>
-      <Typography color="dark" weight="medium" size={isDesktop ? '2xl' : 'md'}>
+      <Typography
+        color="dark"
+        weight="medium"
+        size="2xl"
+        classNameStyles="tablet:text-base"
+      >
         반가워요! 찾아와줘서 고마워요
       </Typography>
-      <img
-        src="/assets/mascot_top.png"
-        className={`mt-4 ${isDesktop ? '' : 'w-80'}`}
-      />
+      <img src="/assets/mascot_top.png" className="mt-4 tablet:w-80" />
       <LoginNav />
     </div>
   );
