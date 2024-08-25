@@ -1,15 +1,15 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import TextField from './index';
-import { TState } from './TextField.types';
+import { TTextFieldState } from './TextField.types';
 
 const meta = {
   title: 'UI/Atoms/TextField',
   component: TextField,
   parameters: {
     controls: {
-      expanded : true
-    }
+      expanded: true,
+    },
   },
   decorators: [
     (Story) => (
@@ -30,9 +30,9 @@ const meta = {
       description: 'TextField의 전체적인 크기',
       control: { type: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl'] }, // 드롭다운 선택 가능
     },
-    value: {
-      description: '입력값',
-      control: 'text', 
+    defaultValue: {
+      description: '초기값',
+      control: 'text',
     },
     variant: {
       table: {
@@ -46,23 +46,19 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const StateList: TState[] = [
-  'primary',
-  'secondary',
-  'danger',
-];
+const StateList: TTextFieldState[] = ['primary', 'secondary', 'danger'];
 
 // Outlined 스토리
 export const Outlined: Story = {
   args: {
     label: '라벨',
-    value: '',
+    defaultValue: '',
     size: 'md',
   },
   render: (args) => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
       {StateList.map((state) => (
-        <TextField {...args}  key={state} state={state} variant="outlined" />
+        <TextField {...args} key={state} state={state} variant="outlined" />
       ))}
     </div>
   ),
@@ -72,13 +68,13 @@ export const Outlined: Story = {
 export const Standard: Story = {
   args: {
     label: '라벨',
-    value: '',
+    defaultValue: '',
     size: 'md',
   },
   render: (args) => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
       {StateList.map((state) => (
-          <TextField {...args} key={state} state={state} variant="standard" />
+        <TextField {...args} key={state} state={state} variant="standard" />
       ))}
     </div>
   ),

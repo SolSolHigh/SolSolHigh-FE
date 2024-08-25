@@ -1,15 +1,16 @@
-export type TVariant = 'outlined' | 'standard';
-export type TState = 'primary' | 'secondary' | 'danger' | 'unfocused';
-export type TSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type TTextFieldVariant = 'outlined' | 'standard';
+export type TTextFieldState = 'primary' | 'secondary' | 'danger' | 'unfocused';
+export type TTextFieldSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export interface TextFieldProps {
-  variant?: TVariant;
-  state?: TState;
-  size?: TSize;
+  inputType?: string;
+  variant?: TTextFieldVariant;
+  state?: TTextFieldState;
+  size?: TTextFieldSize;
   label?: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  defaultValue?: string;
   disabled?: boolean;
   fullWidth?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   classNameStyles?: string;
 }
