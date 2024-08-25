@@ -66,7 +66,7 @@ export const Signup = React.memo(() => {
   });
 
   return (
-    <div className="flex items-center justify-center w-full h-full tablet:flex-col">
+    <div className="flex items-center justify-center w-full h-auto tablet:flex-col">
       <Mascot nickname="닉네임" ment="반가워요! 몇 가지만 더 물어볼게요" />
       <div className={contentStyles()}>
         <UserInfoForm
