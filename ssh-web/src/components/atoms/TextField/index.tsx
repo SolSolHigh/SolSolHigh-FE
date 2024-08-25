@@ -26,8 +26,10 @@ const TextField = ({
   label = '라벨',
   defaultValue = '',
   disabled = false,
+  readonly = false,
   fullWidth = false,
   onChange,
+  onPageHandler,
   classNameStyles,
 }: TextFieldProps) => {
   const [focused, setFocused] = useState(false);
@@ -68,6 +70,7 @@ const TextField = ({
     <div
       className={`relative mb-4 ${fullWidth ? 'w-full' : ''} 
           ${classNameStyles} `}
+      onClick={onPageHandler}
     >
       <label
         className={`
@@ -97,6 +100,7 @@ const TextField = ({
         onFocus={handleFocus}
         onBlur={handleBlur}
         disabled={disabled}
+        readOnly={readonly}
       />
     </div>
   );

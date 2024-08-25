@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NumberDialProps } from './NumberDial.types';
 import {
   containerStyles,
@@ -37,9 +37,8 @@ export const NumberDial = ({
   const handleDragMove = (y: number) => {
     if (startY.current !== null) {
       const diff = startY.current - y;
-      const step = Math.round(diff / 40); // 64px마다 숫자가 바뀌도록 설정
+      const step = Math.round(diff / 40);
       const newValue = startValue.current + step;
-
       handleSelect(newValue);
     }
   };
@@ -56,13 +55,13 @@ export const NumberDial = ({
     else return undefined;
   };
 
+  useEffect(() => {
+    if (currentValue > max) setCurrentValue(max);
+  }, [max]);
+
   return (
     <div
       className={containerStyles()}
-      onMouseDown={(e) => handleDragStart(e.clientY)}
-      onMouseMove={(e) => e.buttons === 1 && handleDragMove(e.clientY)}
-      onMouseUp={handleDragEnd}
-      onMouseLeave={handleDragEnd}
       onTouchStart={(e) => handleDragStart(e.touches[0].clientY)}
       onTouchMove={(e) => handleDragMove(e.touches[0].clientY)}
       onTouchEnd={handleDragEnd}
@@ -70,13 +69,15 @@ export const NumberDial = ({
       {Array.from({ length: max! - min! + 1 }, (_, i) => i + min!).map(
         (num) => {
           const position = num - currentValue;
-
           if (Math.abs(position) > 2) return null;
 
           return (
             <div
               key={num}
               className={numberBoxStyles({ position: getPosition(position) })}
+              onMouseDown={(e) => handleDragStart(e.clientY)}
+              onMouseMove={(e) => handleDragMove(e.clientY)}
+              onMouseUp={handleDragEnd}
             >
               <div
                 className={specifiedStyles({
