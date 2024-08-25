@@ -79,5 +79,33 @@ mock.onPost(`/${REQUEST_DOMAINS.quizs}/solve`).reply(config => {
   });
 });
 
+const childId = 1; 
+//퀴즈 풀이 내역 조회
+mock.onGet(`api/child/${childId}/quizzes/solved?page=0`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,[
+        {
+          "description": "문제~~~~~~~~ 나갑니다!",
+          "keyword" : "이자",
+          "quizId" : 1,
+          "isCorrect" : true,
+          "quizExplanation" : "맞아요, ~~~~~",
+          "correctedAt" : "2024-08-26 06:05:22"
+          },
+          {
+          "description": "문제~~~~~~~~ 나갑니다!",
+          "keyword" : "이자",
+          "quizId" : 2,
+          "isCorrect" : true,
+          "quizExplanation" : "맞아요, ~~~~~",
+          "correctedAt" : "2024-08-25 06:05:22"
+        }],
+      ]);
+    }, 500);
+  })
+})
+
 // ========== 퀴즈 도메인 ==========
 
