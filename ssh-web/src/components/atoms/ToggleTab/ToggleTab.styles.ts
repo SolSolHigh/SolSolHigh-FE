@@ -5,7 +5,7 @@ export const toggleTabContainerStyles = tv({
 });
 
 export const toggleTabStyles = tv({
-  base: 'relative flex overflow-hidden w-full h-12',
+  base: 'relative flex overflow-hidden w-full h-14',
   variants: {
     outlined: {
       true: 'bg-transparent rounded-none border-b-[0.05rem] border-b-secondary-300',
