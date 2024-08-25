@@ -2,25 +2,25 @@ import React from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { isModalOpenState } from '../../../atoms/modal';
 import { resizeState } from '../../../atoms/resize';
-import { EResize } from '../../../themes/themeBase';
 import { ModalContent } from './ModalContent';
+
 interface IModalProps {
-  children: React.ReactNode;
+  color?: 'primary' | 'light';
 }
 
-export const Modal = ({ children }: IModalProps) => {
-  const [isModalOpen, setIsModalOpen] = useRecoilState(isModalOpenState);
-  const size = useRecoilValue<EResize>(resizeState);
+export const Modal = ({ color = 'primary' }: IModalProps) => {
+  const [modalState, setModalState] = useRecoilState(isModalOpenState);
+  const size = useRecoilValue(resizeState);
 
-  if (!isModalOpen) return null;
+  if (!modalState.isOpen) return null;
 
   const handleModalClose = () => {
-    setIsModalOpen(false);
+    setModalState({ isOpen: false, content: null });
   };
 
   return (
-    <ModalContent size={size} onClose={handleModalClose}>
-      {children}
+    <ModalContent size={size} onClose={handleModalClose} color={color}>
+      {modalState.content}
     </ModalContent>
   );
 };

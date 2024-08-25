@@ -19,7 +19,7 @@ const textVariants = {
 };
 
 export const badgeStyles = tv({
-  base: 'inline-flex items-center justify-center rounded-full px-2 py-1 h-max transition-colors duration-300 ease-in-out cursor-default',
+  base: 'inline-flex items-center justify-center rounded-full px-2 py-1 w-max h-max transition-colors duration-300 ease-in-out cursor-default',
   variants: {
     color: {
       primary: backgroundVariants.primary,
