@@ -6,9 +6,9 @@ export const Main = {
     variants: {
       size: {
         M: 'p-4',
-        T: 'p-6',
-        D: 'p-8',
+        T: 'p-6 mt-16',
+        D: 'p-8 mt-16',
       },
     },
   }),
-}
+};

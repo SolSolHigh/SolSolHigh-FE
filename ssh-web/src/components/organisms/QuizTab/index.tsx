@@ -1,17 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography } from '../../../components/atoms/Typography';
 import { useNavigate } from 'react-router-dom';
 import { PathNames } from '../../../utils/router';
 import { QuizTabProps } from './QuizTabProps.types';
 import { Button } from '../../atoms/Button';
+import { api } from '../../../apis/interceptors';
+import { IStrickResponseList } from '../../../interfaces/quizInterface';
 
 export const QuizTab: React.FC<QuizTabProps> = ({
   size,
   isTodayQuiz,
+  childId,
   loading,
+  setLoading,
 }) => {
   const navigate = useNavigate();
   const today = new Date();
+  const [strick, setStrick] = useState<IStrickResponseList>([]);
+
+  useEffect(() => {
+    setLoading(true);
+    api.get(`api/child/${childId}/quizzes/strick`).then((response) => {
+      setStrick(response.data);
+      console.log(response.data);
+      setLoading(false);
+    });
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -60,7 +74,7 @@ export const QuizTab: React.FC<QuizTabProps> = ({
           {[...Array(7)].map((_, index) => (
             <div
               key={index}
-              className={`w-8 h-8 flex items-center justify-center rounded-full ${index < 4 ? 'bg-primary-500 text-white' : 'bg-gray-200 text-gray-600'}`}
+              className={`w-8 h-8 flex items-center justify-center rounded-full ${index < strick.length ? 'bg-primary-500 text-white' : 'bg-gray-200 text-gray-600'}`}
             >
               {index + 1}일
             </div>

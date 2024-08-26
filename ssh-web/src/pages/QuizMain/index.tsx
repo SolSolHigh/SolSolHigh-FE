@@ -16,7 +16,8 @@ import {
 } from '../../interfaces/quizInterface';
 const labels = ['쏠쏠 퀴즈', '키워드 및 내역'];
 
-const checkIfTodayQuiz = (
+//퀴즈 로그를 통해 오늘 퀴즈를 풀었는지 체크하는 함수
+const checkTodayQuiz = (
   quizLogs: IQuizLogResponseList,
   setIsTodayQuiz: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
@@ -69,7 +70,7 @@ export const QuizMain: React.FC = () => {
 
   useEffect(() => {
     if (quizLogs.length > 0) {
-      checkIfTodayQuiz(quizLogs, setIsTodayQuiz);
+      checkTodayQuiz(quizLogs, setIsTodayQuiz);
     }
   }, [quizLogs]); // quizLogs가 업데이트될 때마다 실행
 
@@ -109,9 +110,20 @@ export const QuizMain: React.FC = () => {
 
       <div>
         {activeTab === 0 ? (
-          <QuizTab size={size} isTodayQuiz={isTodayQuiz} loading={loading} />
+          <QuizTab
+            size={size}
+            isTodayQuiz={isTodayQuiz}
+            childId={childId}
+            loading={loading}
+            setLoading={setLoading}
+          />
         ) : (
-          <KeywordsTab size={size} quizLogs={quizLogs} />
+          <KeywordsTab
+            size={size}
+            quizLogs={quizLogs}
+            childId={childId}
+            setLoading={setLoading}
+          />
         )}
       </div>
     </div>

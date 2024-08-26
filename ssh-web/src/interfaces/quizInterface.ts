@@ -5,12 +5,12 @@ export interface IDailyQuizResponse {
 }
 
 export interface IQuizResultResponse {
-    realAnswer: boolean;
-    isCorrect: boolean;
-    quizExplanation?: string;
+  realAnswer: boolean;
+  isCorrect: boolean;
+  quizExplanation?: string;
 }
 
-export interface IQuizLogResponse{
+export interface IQuizLogResponse {
   description: string;
   keyword: string;
   quizId: number;
@@ -20,3 +20,10 @@ export interface IQuizLogResponse{
 }
 
 export type IQuizLogResponseList = IQuizLogResponse[];
+
+export interface IStrickResponse {
+  day: number;
+  isCorrect: boolean;
+}
+
+export type IStrickResponseList = IStrickResponse[];
