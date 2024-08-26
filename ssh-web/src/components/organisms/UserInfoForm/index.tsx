@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useState } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import TextField from '../../atoms/TextField';
 import { FormTitle } from '../../molecules/FormTitle';
 import { containerStyles, contentStyles } from './UserInfoForm.styles';
@@ -6,6 +6,8 @@ import { Button } from '../../atoms/Button';
 import { Typography } from '../../atoms/Typography';
 import { UserInfoFormProps } from './UserInfoForm.types';
 import { IContent } from '../../../interfaces/userInterface';
+import { useRecoilState } from 'recoil';
+import { signupAtom } from '../../../atoms/signup';
 
 export const UserInfoForm = ({
   contents,
@@ -14,7 +16,7 @@ export const UserInfoForm = ({
   children,
   classNameStyles,
 }: UserInfoFormProps) => {
-  const [step, setStep] = useState<number>(0);
+  const [step, setStep] = useRecoilState(signupAtom);
   const onChangeStep = useCallback(
     (nextStep: number) => {
       setStep(() => nextStep);
@@ -33,16 +35,19 @@ export const UserInfoForm = ({
           onChangeStep={onChangeStep}
         />
         {contents.map((content: IContent, idx: number) => {
-          return content.contentType === 'textfield' ? (
+          return content.contentType === 'textfield' ||
+            content.contentType === 'numberdial' ? (
             <TextField
               key={idx}
               label={content.keyword}
               variant="standard"
+              defaultValue={content.value as string}
               fullWidth
               classNameStyles={contentStyles({
                 contentType: 'textfield',
                 step: step >= idx,
               })}
+              onPageHandler={() => content.dialPage?.('birthday')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 onContentHandler(idx, e.target.value)
               }

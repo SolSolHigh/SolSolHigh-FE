@@ -3,10 +3,11 @@ import { ReactNode } from 'react';
 export interface IContent {
   key: string;
   keyword: string;
-  contentType: 'textfield' | 'buttons';
+  contentType: 'textfield' | 'buttons' | 'numberdial';
   ment: string;
   value: ReactNode;
   valueList?: ReactNode[];
+  dialPage?: (page: string) => void;
 }
 
 export interface IContentHandler {

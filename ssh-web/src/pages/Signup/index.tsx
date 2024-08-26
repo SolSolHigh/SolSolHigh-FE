@@ -8,8 +8,10 @@ import {
   ISignupRequest,
 } from '../../interfaces/userInterface';
 import dayjs from 'dayjs';
+import { BirthdayForm } from '../../components/organisms/BirthdayForm';
 
-export const Signup = React.memo(() => {
+export const Signup = () => {
+  const [pageType, setPageType] = useState<string>('info');
   const [contents, setContents] = useState<IContent[]>([
     {
       key: 'nickname',
@@ -22,8 +24,9 @@ export const Signup = React.memo(() => {
       key: 'birthday',
       keyword: '생일',
       ment: '은 언제에요?',
-      contentType: 'textfield',
-      value: dayjs(new Date()).format('YYYY년 MM월 DD일'),
+      contentType: 'numberdial',
+      value: dayjs(new Date()).format('YYYY-MM-DD'),
+      dialPage: (page: string) => setPageType(page),
     },
     {
       key: 'gender',
@@ -42,6 +45,7 @@ export const Signup = React.memo(() => {
       valueList: ['부모', '자녀'],
     },
   ]);
+
   const onContentHandler = useCallback(
     (idx: number, value: ReactNode) => {
       setContents((prev) => {
@@ -64,19 +68,36 @@ export const Signup = React.memo(() => {
       console.log(info);
     },
   });
+  const birthdayHandler = (year: number, month: number, day: number) => {
+    setContents((prev) => {
+      const newContents = [...prev];
+      newContents[1].value = dayjs(`${year}-${month}-${day}`).format(
+        'YYYY-MM-DD',
+      );
+      return newContents;
+    });
+    setPageType('info');
+  };
 
   return (
     <div className="flex items-center justify-center w-full h-full tablet:flex-col">
       <Mascot nickname="닉네임" ment="반가워요! 몇 가지만 더 물어볼게요" />
       <div className={contentStyles()}>
-        <UserInfoForm
-          contents={contents}
-          onContentHandler={onContentHandler}
-          handler={handler}
-        />
+        {pageType === 'info' ? (
+          <UserInfoForm
+            contents={contents}
+            onContentHandler={onContentHandler}
+            handler={handler}
+          />
+        ) : (
+          <BirthdayForm
+            defaultYear={dayjs(contents[1].value as string).year()}
+            defaultMonth={dayjs(contents[1].value as string).month()}
+            defaultDay={dayjs(contents[1].value as string).date()}
+            handler={birthdayHandler}
+          />
+        )}
       </div>
     </div>
   );
-});
-
-Signup.displayName = 'Signup';
+};

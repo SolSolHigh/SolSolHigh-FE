@@ -32,6 +32,6 @@ type Story = StoryObj<typeof BirthdayForm>;
 export const Default: Story = {
   args: {},
   render: () => {
-    return <BirthdayForm />;
+    return <>birthday form</>;
   },
 };
