@@ -9,7 +9,7 @@ import { isModalOpenState } from '../../atoms/modal';
 import { api } from '../../apis/interceptors';
 import REQUEST_DOMAINS from '../../apis/axiosConfig';
 import { QuizDetail } from '../../components/molecules/QuizDetail';
-import { styles, container, title, button } from './styles';
+import { ModalContentStyles, container, title, button } from './styles';
 import {
   IDailyQuizResponse,
   IQuizResultResponse,
@@ -59,8 +59,8 @@ export const QuizSolving: React.FC = () => {
           setIsModalOpen({
             isOpen: true,
             content: (
-              <div className={styles.container({ size })}>
-                <h1 className={styles.title({ size })}>
+              <div className={ModalContentStyles.container({ size })}>
+                <h1 className={ModalContentStyles.title({ size })}>
                   <Typography color="dark" size="2xl" weight="bold">
                     {response.data.isCorrect ? '정답입니다!' : '틀렸어요...'}
                   </Typography>
@@ -74,9 +74,9 @@ export const QuizSolving: React.FC = () => {
                   alt={
                     response.data.isCorrect ? '기뻐하는 페페' : '슬퍼하는 페페'
                   }
-                  className={styles.image({ size })}
+                  className={ModalContentStyles.image({ size })}
                 />
-                <div className={styles.caption({ size })}>
+                <div className={ModalContentStyles.caption({ size })}>
                   <Typography color="secondary">
                     {response.data.isCorrect
                       ? response.data.quizExplanation || '맞아요!'

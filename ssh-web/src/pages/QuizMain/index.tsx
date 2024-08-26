@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ToggleTab } from '../../components/atoms/ToggleTab';
 import { Typography } from '../../components/atoms/Typography';
 import { resizeState } from '../../atoms/resize';
@@ -9,12 +9,21 @@ import { AvatarWithLabel } from '../../components/molecules/AvatarWithLabel';
 import { Button } from '../../components/atoms/Button';
 import { Main } from './styles';
 import { QuizTab } from '../../components/organisms/QuizTab';
-import { KeywordsTab } from '../../components/organisms/QuizKeywordTab';
+import {
+  KeywordEditModal,
+  KeywordsTab,
+} from '../../components/organisms/QuizKeywordTab';
+import {
+  IKeywordResponseList,
+  IStrickResponseList,
+} from '../../interfaces/quizInterface';
 import {
   IQuizLogResponse,
   IQuizLogResponseList,
 } from '../../interfaces/quizInterface';
-import { Modal } from '../../components/molecules/Modal';
+import { Modal } from '../../components/molecules/QuizModal';
+import { QuizLogsDetailModal } from '../../components/organisms/QuizLogsDetailModal';
+
 const labels = ['쏠쏠 퀴즈', '키워드 및 내역'];
 
 //퀴즈 로그를 통해 오늘 퀴즈를 풀었는지 체크하는 함수
@@ -50,14 +59,41 @@ export const QuizMain: React.FC = () => {
   const [quizLogs, setQuizLog] = useState<IQuizLogResponseList>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const [childId, setChildId] = useState<number>(1);
-
+  const [childNickname, setChildNickname] = useState<string>('chacha');
+  const [strick, setStrick] = useState<IStrickResponseList>([]);
+  const [keywords, setKeywords] = useState<IKeywordResponseList>([]);
+  const [ownKeywords, setOwnKeywords] = useState<IKeywordResponseList>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openQuizId, setOpenQuizId] = useState<number>(0);
+  const [isKeywordModal, setIsKeywordModal] = useState(false);
   const size = useRecoilValue<EResize>(resizeState);
 
-  useEffect(() => {
+  const onRemoveKeyword = () => {};
+
+  const onAddKeyword = () => {};
+
+  const onClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const openKeywordModal = () => {
+    setIsKeywordModal(true);
+    setIsModalOpen(true);
+  };
+
+  const openQuizLogsModal = () => {
+    setIsKeywordModal(false);
+    setIsModalOpen(true);
+  };
+
+  const toggleQuizDetail = (quizId: number) => {
+    setOpenQuizId(openQuizId === quizId ? 0 : quizId);
+  };
+
+  useMemo(() => {
     setLoading(true);
     api
-      .get(`api/child/${childId}/quizzes/solved?page=0`)
+      .get(`api/child/${childNickname}/quizzes/solved?page=0`)
       .then((response) => {
         setQuizLog(response.data);
         setLoading(false);
@@ -66,7 +102,28 @@ export const QuizMain: React.FC = () => {
         setError(error.message || '퀴즈 로그 조회 실패');
         setLoading(false);
       });
+  }, [childNickname]);
+
+  useMemo(() => {
+    api.get(`api/child/${childNickname}/quizzes/strick`).then((response) => {
+      setStrick(response.data);
+      setLoading(false);
+    });
+  }, [childNickname]);
+
+  useMemo(() => {
+    api.get(`api/quizzes/keywords`).then((response) => {
+      setKeywords(response.data);
+      setLoading(false);
+    });
   }, []);
+
+  useMemo(() => {
+    api.get(`api/children/${childNickname}/keywords`).then((response) => {
+      setOwnKeywords(response.data);
+      setLoading(false);
+    });
+  }, [childNickname]);
 
   useEffect(() => {
     if (quizLogs.length > 0) {
@@ -76,8 +133,25 @@ export const QuizMain: React.FC = () => {
 
   return (
     <>
+      <Modal color="primary" isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+        {isKeywordModal ? (
+          <KeywordEditModal
+            keywords={keywords}
+            ownKeywords={ownKeywords}
+            onRemoveKeyword={onRemoveKeyword}
+            onAddKeyword={onAddKeyword}
+            onClose={onClose}
+          />
+        ) : (
+          <QuizLogsDetailModal
+            quizLogs={quizLogs}
+            openQuizId={openQuizId}
+            toggleQuizDetail={toggleQuizDetail}
+          />
+        )}
+      </Modal>
       <div className={Main.container({ size })}>
-        <div className="flex flex-row justify-between">
+        <div className={Main.content({ size })}>
           <Typography size="2xl" weight="bold" color="dark">
             쏠쏠 퀴즈
           </Typography>
@@ -92,7 +166,7 @@ export const QuizMain: React.FC = () => {
               labelWeight="bold"
               labelColor="dark"
             ></AvatarWithLabel>
-            <Button size="sm" classNameStyles="ml-2">
+            <Button size="sm" classNameStyles="ml-4">
               변경
             </Button>
           </div>
@@ -114,23 +188,27 @@ export const QuizMain: React.FC = () => {
             <QuizTab
               size={size}
               isTodayQuiz={isTodayQuiz}
-              childId={childId}
+              childNickname={childNickname}
               loading={loading}
               setLoading={setLoading}
               isParent={true}
+              strick={strick}
             />
           ) : (
             <KeywordsTab
               size={size}
               quizLogs={quizLogs}
-              childId={childId}
+              childNickname={childNickname}
               setLoading={setLoading}
+              keywords={keywords}
+              ownKeywords={ownKeywords}
               isParent={true}
+              openKeywordModal={openKeywordModal}
+              openQuizLogsModal={openQuizLogsModal}
             />
           )}
         </div>
       </div>
-      <Modal />
     </>
   );
 };

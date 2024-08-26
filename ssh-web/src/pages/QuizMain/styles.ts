@@ -7,7 +7,17 @@ export const Main = {
       size: {
         M: 'p-4',
         T: 'p-6 mt-16',
-        D: 'p-8 mt-16',
+        D: 'p-8 mt-16 max-h-[48rem]',
+      },
+    },
+  }),
+  content: tv({
+    base: 'flex flex-row justify-between',
+    variants: {
+      size: {
+        M: '',
+        T: 'p-4',
+        D: 'p-8',
       },
     },
   }),

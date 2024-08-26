@@ -27,3 +27,10 @@ export interface IStrickResponse {
 }
 
 export type IStrickResponseList = IStrickResponse[];
+
+export interface IKeywordResponse {
+  keywordId: number;
+  keyword: string;
+}
+
+export type IKeywordResponseList = IKeywordResponse[];

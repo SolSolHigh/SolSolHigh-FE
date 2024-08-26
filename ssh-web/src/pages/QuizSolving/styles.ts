@@ -1,6 +1,6 @@
 import { tv } from 'tailwind-variants';
 
-export const styles = {
+export const ModalContentStyles = {
   container: tv({
     base: 'flex flex-col items-center justify-center rounded-lg bg-white w-full',
     variants: {
@@ -49,7 +49,7 @@ export const container = tv({
     size: {
       M: 'p-4 max-w-screen-sm',
       T: 'p-6 max-w-[768px]',
-      D: 'p-8 max-w-[768px]',
+      D: 'p-8 mt-16 max-w-[768px] max-h-[48rem]',
     },
   },
 });

@@ -1,32 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Typography } from '../../../components/atoms/Typography';
 import { useNavigate } from 'react-router-dom';
 import { PathNames } from '../../../utils/router';
 import { QuizTabProps } from './QuizTabProps.types';
 import { Button } from '../../atoms/Button';
-import { api } from '../../../apis/interceptors';
-import { IStrickResponseList } from '../../../interfaces/quizInterface';
+
+import { Skeleton } from '../../atoms/Skeleton';
+import { LoadingSkeleton } from '../../../pages/Mission/children/LoadingSkeleton';
 
 export const QuizTab: React.FC<QuizTabProps> = ({
   size,
   isTodayQuiz,
-  childId,
+  childNickname,
   loading,
   isParent,
   setLoading,
+  strick,
 }) => {
   const navigate = useNavigate();
   const today = new Date();
-  const [strick, setStrick] = useState<IStrickResponseList>([]);
-
-  useEffect(() => {
-    setLoading(true);
-    api.get(`api/child/${childId}/quizzes/strick`).then((response) => {
-      setStrick(response.data);
-      console.log(response.data);
-      setLoading(false);
-    });
-  }, []);
 
   return (
     <div className="space-y-4">
@@ -39,10 +31,14 @@ export const QuizTab: React.FC<QuizTabProps> = ({
               day: '2-digit',
             })}
           </Typography>
-          <Typography>
-            {isTodayQuiz
-              ? '오늘은 퀴즈를 풀었어요!'
-              : '오늘은 아직 퀴즈를 풀지 않았어요'}
+          <Typography className="flex justify-center w-full">
+            {loading ? (
+              <Skeleton width={'95%'} />
+            ) : isTodayQuiz ? (
+              '오늘은 퀴즈를 풀었어요!'
+            ) : (
+              '오늘은 아직 퀴즈를 풀지 않았어요'
+            )}
           </Typography>
 
           <div className="flex items-center mt-4">
@@ -52,7 +48,8 @@ export const QuizTab: React.FC<QuizTabProps> = ({
                 navigate(PathNames.QUIZ.path + '/solve');
               }}
               classNameStyles="mr-4"
-              disabled={isTodayQuiz || loading || isParent}
+              //todo : 부모로 접속해도 막아야함
+              disabled={isTodayQuiz || loading}
             >
               풀러가기
             </Button>
