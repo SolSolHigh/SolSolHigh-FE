@@ -6,16 +6,12 @@ import axios from 'axios';
 export const LoginNav = ({ children, classNameStyles }: LoginNavProps) => {
   return (
     <div className={`${loginNavStyles()} ${classNameStyles}`}>
-      <a href="https://www.solsol-high.kro.kr/api/oauth2/authorization/naver">
-        helo
-      </a>
+      <a href="https://solsol-high.com/api/oauth2/authorization/naver">helo</a>
       <img
         src="/assets/naver_login.png"
         className="w-full max-w-[22.5rem]"
         onClick={async () => {
-          await fetch(
-            'https://www.solsol-high.kro.kr/api/oauth2/authorization/naver',
-          )
+          await fetch('https://solsol-high.com/api/oauth2/authorization/naver')
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
         }}
@@ -25,9 +21,7 @@ export const LoginNav = ({ children, classNameStyles }: LoginNavProps) => {
         className="w-full max-w-[22.5rem]"
         onClick={async () => {
           await axios
-            .get(
-              'https://www.solsol-high.kro.kr/api/oauth2/authorization/naver',
-            )
+            .get('https://solsol-high.com/api/oauth2/authorization/naver')
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
         }}
