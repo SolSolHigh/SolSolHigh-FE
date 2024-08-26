@@ -6,7 +6,7 @@ import axios from 'axios';
 export const LoginNav = ({ children, classNameStyles }: LoginNavProps) => {
   return (
     <div className={`${loginNavStyles()} ${classNameStyles}`}>
-      <a href="https://www.solsol-high.kro.kr/api/oauth2/authorization/kakao">
+      <a href="https://www.solsol-high.kro.kr/api/oauth2/authorization/naver">
         helo
       </a>
       <img
