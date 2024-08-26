@@ -29,10 +29,11 @@ function App() {
       {!(
         location.pathname === '/login' ||
         location.pathname === '/signup' ||
-        location.pathname === '/mypage'
+        location.pathname === '/mypage' ||
+        location.pathname === '/manage'
       ) && <NavigationBar />}
       <div
-        className={`${size === 'M' || size === 'T' ? (location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/mypage' ? '!min-h-full' : 'pb-[4rem]') : 'pb-0'} BODY-LAYOUT h-[calc(100%-3.5rem)] desktop:flex-1 relative w-full flex justify-center`}
+        className={`${size === 'M' || size === 'T' ? (location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/mypage' || location.pathname === '/manage' ? '!min-h-full' : 'pb-[4rem]') : 'pb-0'} BODY-LAYOUT h-[calc(100%-3.5rem)] desktop:flex-1 relative w-full flex justify-center`}
       >
         <Outlet />
       </div>

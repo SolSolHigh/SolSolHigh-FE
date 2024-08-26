@@ -31,3 +31,9 @@ export interface IUserInfoMascot {
   src: string;
   label: string;
 }
+
+export interface IChild {
+  name: string;
+  nickname: string;
+  birthday: string;
+}
