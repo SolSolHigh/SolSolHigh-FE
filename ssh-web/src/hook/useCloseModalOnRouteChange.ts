@@ -8,7 +8,7 @@ export const useCloseModalOnRouteChange = () => {
   const setIsModalOpen = useSetRecoilState(isModalOpenState);
 
   useEffect(() => {
-    setIsModalOpen(false);
+    setIsModalOpen({ isOpen: false, content: null });
   }, [location, setIsModalOpen]);
 
   return null;

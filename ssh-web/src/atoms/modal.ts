@@ -1,6 +1,11 @@
 import { atom } from 'recoil';
 
-export const isModalOpenState = atom({
+interface ModalState {
+  isOpen: boolean;
+  content?: React.ReactNode;
+}
+
+export const isModalOpenState = atom<ModalState>({
   key: 'isModalOpen',
-  default: false,
+  default: { isOpen: false, content: null },
 });
