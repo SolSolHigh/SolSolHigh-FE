@@ -23,6 +23,7 @@ export const InfoList = ({
   infos,
   mascotType,
   mascots,
+  hasMore,
   children,
   classNameStyles,
 }: InfoListProps) => {
@@ -33,9 +34,11 @@ export const InfoList = ({
         <Typography weight="bold" size="sm" color="dark">
           {title}
         </Typography>
-        <Icon color="dark" size="sm">
-          <HiChevronRight />
-        </Icon>
+        {hasMore && (
+          <Icon color="dark" size="sm">
+            <HiChevronRight />
+          </Icon>
+        )}
       </div>
 
       {/* 정보 리스트 */}
@@ -43,7 +46,11 @@ export const InfoList = ({
         infos?.map((info: IUserInfoInfo) => {
           return (
             <div key={info.label} className={infoStyles()}>
-              <Typography size="sm" color="dark" classNameStyles="w-1/3">
+              <Typography
+                size="sm"
+                color="dark"
+                classNameStyles="w-1/3 max-w-[5rem]"
+              >
                 {info.label}
               </Typography>
               <Typography size="sm" color="dark">

@@ -26,11 +26,13 @@ function App() {
   return (
     <div className="w-full h-full">
       {isModalOpen.isOpen && <BackdropFilter />}
-      {!(location.pathname === '/login' || location.pathname === '/signup') && (
-        <NavigationBar />
-      )}
+      {!(
+        location.pathname === '/login' ||
+        location.pathname === '/signup' ||
+        location.pathname === '/mypage'
+      ) && <NavigationBar />}
       <div
-        className={`${size === 'M' || size === 'T' ? (location.pathname === '/login' || location.pathname === '/signup' ? '!min-h-full' : '') : 'pb-0'} BODY-LAYOUT h-[calc(100%-3.5rem)] desktop:flex-1 pb-[4rem] desktop:pb-0 relative w-full flex justify-center`}
+        className={`${size === 'M' || size === 'T' ? (location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/mypage' ? '!min-h-full' : 'pb-[4rem]') : 'pb-0'} BODY-LAYOUT h-[calc(100%-3.5rem)] desktop:flex-1 relative w-full flex justify-center`}
       >
         <Outlet />
       </div>

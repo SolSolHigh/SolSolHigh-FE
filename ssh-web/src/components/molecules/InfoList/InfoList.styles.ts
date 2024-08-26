@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 export const containerStyles = tv({
-  base: 'flex flex-col w-full px-8 py-4 bg-white gap-y-4',
+  base: 'flex flex-col w-full desktop:px-44 tabletB:px-20 mob:px-8 py-4 bg-white gap-y-4',
 });
 
 export const titleStyles = tv({

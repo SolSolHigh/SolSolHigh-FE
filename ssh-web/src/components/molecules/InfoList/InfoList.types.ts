@@ -10,6 +10,7 @@ export interface InfoListProps extends React.ComponentProps<'div'> {
   infos?: IUserInfoInfo[];
   mascotType?: string;
   mascots?: IUserInfoMascot[];
+  hasMore?: boolean;
   children?: ReactNode;
   classNameStyles?: string;
 }
