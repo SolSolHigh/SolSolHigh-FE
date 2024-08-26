@@ -20,7 +20,7 @@ const NavigationBar = () => {
       {(size === EResize.M || size === EResize.T) && (
         <>
           <div
-            className={`MOB-NOTIFICATION-BAR h-14 px-5 animate-popIn w-full sticky top-0`}
+            className={`MOB-NOTIFICATION-BAR h-14 px-5 animate-popIn w-full sticky top-0 bg-white z-30`}
           >
             <div className="w-full h-full flex justify-end items-end py-2">
               <Icon size="xl" classNameStyles="text-primary-400">
@@ -29,7 +29,7 @@ const NavigationBar = () => {
             </div>
           </div>
           <div
-            className={`MOB-NAVIGATION-BAR bottom-0 h-16 bg-white border rounded-t-3xl animate-popIn ${baseLayoutStyles}`}
+            className={`MOB-NAVIGATION-BAR bottom-0 h-16 !bg-white border rounded-t-3xl animate-popIn ${baseLayoutStyles}`}
           >
             <div className="BOX w-full h-full px-6">
               <div
@@ -48,7 +48,7 @@ const NavigationBar = () => {
 
       {size === EResize.D && (
         <div
-          className={`top-0 h-14 border-b-2 border-secondary-200 ${baseLayoutStyles}`}
+          className={`top-0 h-14 border-b-2 border-secondary-200 z-30 sticky w-full`}
         >
           <div className="DESKTOP-NAVIGATION-BAR w-full bg-white h-full flex flex-row justify-center gap-12 items-center">
             <TextNavButton pathName={PathNames.HOME} />
@@ -59,7 +59,7 @@ const NavigationBar = () => {
             <div className="absolute right-12 h-max flex items-center py-2">
               <Icon
                 size="md"
-                classNameStyles="text-secondary-600 hover:text-primary-600 transition-colors duration-300  cursor-pointer"
+                classNameStyles="text-secondary-600 hover:text-primary-600 transition-colors duration-300 cursor-pointer"
               >
                 <MdOutlineNotifications />
               </Icon>

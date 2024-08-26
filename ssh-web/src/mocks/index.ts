@@ -159,3 +159,141 @@ mock.onGet(`api/child/${childId}/quizzes/strick`).reply(() => {
 });
 
 // ========== 퀴즈 도메인 ==========
+// ========== 미션 조회 ==========
+// API: /api/children/missions?page=0&size=20&is-finished=false
+mock.onGet('/api/children/missions').reply((config) => {
+  const isFinished =
+    config.params['is-finished'] === true ||
+    config.params['is-finished'] === 'true';
+
+  const missions = [
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+      },
+      missionId: 5,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+      },
+      missionId: 6,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+      },
+      missionId: 7,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+      },
+      missionId: 8,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+      },
+      missionId: 9,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 2,
+        name: '이슬기',
+      },
+      missionId: 2,
+      description: '책 읽기.',
+      isFinished: true,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: '2026-02-04 08:20:20',
+      missionLevel: '3', // 어려움
+    },
+    {
+      childInfo: {
+        childId: 3,
+        name: '박소연',
+      },
+      missionId: 3,
+      description: '방 청소하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 07:00:00',
+      missionEndAt: '2026-02-04 09:00:00',
+      missionFinishedAt: null,
+      missionLevel: '2', // 중간
+    },
+    {
+      childInfo: {
+        childId: 4,
+        name: '김유진',
+      },
+      missionId: 4,
+      description: '숙제하기.',
+      isFinished: true,
+      missionStartAt: '2026-02-04 10:00:00',
+      missionEndAt: '2026-02-04 12:00:00',
+      missionFinishedAt: '2026-02-04 11:30:00',
+      missionLevel: '2', // 중간
+    },
+  ];
+
+  const filteredMissions = missions.filter(
+    (mission) => mission.isFinished === isFinished,
+  );
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([200, filteredMissions]);
+    }, 500);
+  });
+});
+// ========== 미션 조회 ==========

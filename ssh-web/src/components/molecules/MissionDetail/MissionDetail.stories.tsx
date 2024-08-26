@@ -1,0 +1,73 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import { MissionDetail } from './index';
+import { IMission } from '../../../interfaces/missionInterfaces';
+import { EResize } from '../../../themes/themeBase';
+
+const meta: Meta<typeof MissionDetail> = {
+  title: 'UI/Molecules/MissionDetail',
+  component: MissionDetail,
+  parameters: {
+    controls: {
+      expanded: true,
+    },
+  },
+  argTypes: {
+    mission: {
+      description: '미션 데이터 객체',
+      control: 'object',
+    },
+    size: {
+      description: '플랫폼에 따른 사이즈',
+      control: {
+        type: 'radio',
+        options: [EResize.M, EResize.T, EResize.D],
+      },
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof MissionDetail>;
+
+const completedMission: IMission = {
+  missionId: 1,
+  description: '양치하기',
+  isFinished: true,
+  missionStartAt: '2026-02-04 06:20:20',
+  missionEndAt: '2026-02-04 06:30:20',
+  missionFinishedAt: '2026-02-04 06:25:20',
+  missionLevel: '1',
+  childInfo: {
+    childId: 1,
+    name: '차은우',
+  },
+};
+
+const activeMission: IMission = {
+  missionId: 2,
+  description: '책 읽기',
+  isFinished: false,
+  missionStartAt: '2026-02-04 07:00:00',
+  missionEndAt: '2026-02-04 07:30:00',
+  missionFinishedAt: null,
+  missionLevel: '2',
+  childInfo: {
+    childId: 2,
+    name: '고영희',
+  },
+};
+
+export const CompletedMission: Story = {
+  args: {
+    mission: completedMission,
+    size: EResize.D,
+  },
+};
+
+export const ActiveMission: Story = {
+  args: {
+    mission: activeMission,
+    size: EResize.D,
+  },
+};
