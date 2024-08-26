@@ -14,6 +14,7 @@ import {
   IQuizLogResponse,
   IQuizLogResponseList,
 } from '../../interfaces/quizInterface';
+import { Modal } from '../../components/molecules/Modal';
 const labels = ['쏠쏠 퀴즈', '키워드 및 내역'];
 
 //퀴즈 로그를 통해 오늘 퀴즈를 풀었는지 체크하는 함수
@@ -59,7 +60,6 @@ export const QuizMain: React.FC = () => {
       .get(`api/child/${childId}/quizzes/solved?page=0`)
       .then((response) => {
         setQuizLog(response.data);
-        console.log(response.data);
         setLoading(false);
       })
       .catch((error: Error) => {
@@ -75,57 +75,62 @@ export const QuizMain: React.FC = () => {
   }, [quizLogs]); // quizLogs가 업데이트될 때마다 실행
 
   return (
-    <div className={Main.container({ size })}>
-      <div className="flex flex-row justify-between">
-        <Typography size="2xl" weight="bold" color="dark">
-          쏠쏠 퀴즈
-        </Typography>
-        <div className="flex flex-row items-center mb-2 p-2 px-4 bg-primary-100 rounded-lg p">
-          <AvatarWithLabel
-            imageUrl="https://media1.tenor.com/m/o2nJ-w0v7lAAAAAC/teemo.gif"
-            altText="캐릭터"
-            size="md"
-            bgColor="blue"
-            label="차은우"
-            labelSize="md"
-            labelWeight="bold"
-            labelColor="dark"
-          ></AvatarWithLabel>
-          <Button size="sm" classNameStyles="ml-2">
-            변경
-          </Button>
+    <>
+      <div className={Main.container({ size })}>
+        <div className="flex flex-row justify-between">
+          <Typography size="2xl" weight="bold" color="dark">
+            쏠쏠 퀴즈
+          </Typography>
+          <div className="flex flex-row items-center mb-2 p-2 px-4 bg-primary-100 rounded-lg p">
+            <AvatarWithLabel
+              imageUrl="https://media1.tenor.com/m/o2nJ-w0v7lAAAAAC/teemo.gif"
+              altText="캐릭터"
+              size="md"
+              bgColor="blue"
+              label="차은우"
+              labelSize="md"
+              labelWeight="bold"
+              labelColor="dark"
+            ></AvatarWithLabel>
+            <Button size="sm" classNameStyles="ml-2">
+              변경
+            </Button>
+          </div>
+        </div>
+        <div className="flex mb-4">
+          <ToggleTab
+            activeTab={activeTab}
+            onTabChange={(index: number) => {
+              setActiveTab(index);
+            }}
+            labels={labels}
+            outlined={false}
+            color="dark"
+          />
+        </div>
+
+        <div>
+          {activeTab === 0 ? (
+            <QuizTab
+              size={size}
+              isTodayQuiz={isTodayQuiz}
+              childId={childId}
+              loading={loading}
+              setLoading={setLoading}
+              isParent={true}
+            />
+          ) : (
+            <KeywordsTab
+              size={size}
+              quizLogs={quizLogs}
+              childId={childId}
+              setLoading={setLoading}
+              isParent={true}
+            />
+          )}
         </div>
       </div>
-      <div className="flex mb-4">
-        <ToggleTab
-          activeTab={activeTab}
-          onTabChange={(index: number) => {
-            setActiveTab(index);
-          }}
-          labels={labels}
-          outlined={false}
-          color="dark"
-        />
-      </div>
-
-      <div>
-        {activeTab === 0 ? (
-          <QuizTab
-            size={size}
-            isTodayQuiz={isTodayQuiz}
-            childId={childId}
-            loading={loading}
-            setLoading={setLoading}
-          />
-        ) : (
-          <KeywordsTab
-            size={size}
-            quizLogs={quizLogs}
-            childId={childId}
-            setLoading={setLoading}
-          />
-        )}
-      </div>
-    </div>
+      <Modal />
+    </>
   );
 };

@@ -34,6 +34,7 @@ export const QuizSolving: React.FC = () => {
       .then((response) => {
         setQuizData(response.data);
         setLoading(false);
+        console.log(response);
       })
       .catch((error: Error) => {
         setError(error.message || '퀴즈를 불러오지 못했습니다.');
@@ -75,7 +76,7 @@ export const QuizSolving: React.FC = () => {
                   }
                   className={styles.image({ size })}
                 />
-                <p className={styles.caption({ size })}>
+                <div className={styles.caption({ size })}>
                   <Typography color="secondary">
                     {response.data.isCorrect
                       ? response.data.quizExplanation || '맞아요!'
@@ -83,7 +84,7 @@ export const QuizSolving: React.FC = () => {
                         (response.data.realAnswer ? 'O' : 'X') +
                         '에요'}
                   </Typography>
-                </p>
+                </div>
                 <Button
                   onClick={() =>
                     setIsModalOpen({ isOpen: false, content: null })
@@ -120,7 +121,7 @@ export const QuizSolving: React.FC = () => {
         >
           <></>
         </QuizDetail>
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-around align gap-4">
           <button
             className={button({
               variant: selectedOption === 'O' ? 'correct' : 'default',
@@ -142,7 +143,8 @@ export const QuizSolving: React.FC = () => {
             X
           </button>
         </div>
-
+        <div />
+        <div />
         <Button fullWidth={true} onClick={handleSubmitAnswer}>
           정답확인
         </Button>

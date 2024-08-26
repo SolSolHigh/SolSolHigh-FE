@@ -1,6 +1,5 @@
 import { tv } from 'tailwind-variants';
 
-
 export const styles = {
   container: tv({
     base: 'flex flex-col items-center justify-center rounded-lg bg-white w-full',
@@ -45,12 +44,12 @@ export const styles = {
 };
 
 export const container = tv({
-  base: 'bg-secondary-100 rounded-lg relative shadow-md w-full', 
+  base: 'bg-secondary-100 rounded-lg flex flex-col justify-around shadow-md w-full',
   variants: {
     size: {
       M: 'p-4 max-w-screen-sm',
       T: 'p-6 max-w-[768px]',
-      D: 'p-8 max-w-[768px]', 
+      D: 'p-8 max-w-[768px]',
     },
   },
 });
@@ -79,9 +78,9 @@ export const button = tv({
       false: '',
     },
     size: {
-      M: 'w-12 h-12',
-      T: 'w-14 h-14',
-      D: 'w-16 h-16',
+      M: 'w-16 h-16',
+      T: 'w-18 h-18',
+      D: 'w-20 h-20',
     },
   },
 });

@@ -12,6 +12,7 @@ export const QuizTab: React.FC<QuizTabProps> = ({
   isTodayQuiz,
   childId,
   loading,
+  isParent,
   setLoading,
 }) => {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ export const QuizTab: React.FC<QuizTabProps> = ({
                 navigate(PathNames.QUIZ.path + '/solve');
               }}
               classNameStyles="mr-4"
-              disabled={isTodayQuiz || loading}
+              disabled={isTodayQuiz || loading || isParent}
             >
               풀러가기
             </Button>

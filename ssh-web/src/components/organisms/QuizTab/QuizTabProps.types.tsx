@@ -6,4 +6,5 @@ export interface QuizTabProps {
   childId: number;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  isParent: boolean;
 }

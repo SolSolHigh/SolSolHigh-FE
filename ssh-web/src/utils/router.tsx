@@ -5,6 +5,9 @@ import Home from '../pages/Home';
 import { IPathNames } from '../interfaces/routerInterface';
 import { Login } from '../pages/Login';
 import { Signup } from '../pages/Signup';
+import { QuizMain } from '../pages/QuizMain';
+import { QuizSolving } from '../pages/QuizSolving';
+import { MissionChildren } from '../pages/Mission/children';
 
 export const PathNames: IPathNames = {
   HOME: {
@@ -46,6 +49,10 @@ export const router = createBrowserRouter([
       },
       {
         path: PathNames.QUIZ.path,
+        element: <QuizMain />,
+      },
+      {
+        path: PathNames.QUIZ.path + '/solve',
         element: <QuizSolving />,
       },
       {

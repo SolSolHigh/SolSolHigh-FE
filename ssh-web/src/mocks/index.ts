@@ -101,7 +101,7 @@ mock.onGet(`api/child/${childId}/quizzes/solved?page=0`).reply(() => {
             quizId: 1,
             isCorrect: true,
             quizExplanation: '맞아요, ~~~~~',
-            correctedAt: '2024-08-25 06:05:22',
+            correctedAt: '2024-08-26 06:05:22',
           },
           {
             description: '문제~~~~~~~~ 나갑니다!',

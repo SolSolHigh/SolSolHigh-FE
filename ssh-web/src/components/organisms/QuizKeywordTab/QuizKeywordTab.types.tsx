@@ -6,4 +6,5 @@ export interface KeywordsProps {
   quizLogs: IQuizLogResponseList;
   childId: number;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  isParent: boolean;
 }
