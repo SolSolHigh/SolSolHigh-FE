@@ -5,6 +5,6 @@ export const checkSession = async () => {
   return await api.options('/api/users/info');
 };
 
-export const signup = async (signupRequest: ISignupRequest) => {
-  return await api.post('/api/users', { data: signupRequest });
+export const signup = (signupRequest: ISignupRequest) => {
+  return api.post('/api/users', { data: signupRequest });
 };

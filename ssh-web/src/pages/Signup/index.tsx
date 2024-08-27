@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { ReactNode, useCallback, useState } from 'react';
 import { Mascot } from '../../components/molecules/Mascot';
 import { contentStyles } from './style';
 import { UserInfoForm } from '../../components/organisms/UserInfoForm';
@@ -9,21 +9,17 @@ import {
 } from '../../interfaces/userInterface';
 import dayjs from 'dayjs';
 import { BirthdayForm } from '../../components/organisms/BirthdayForm';
-import { useMutation } from '@tanstack/react-query';
 import { signup } from '../../apis/userApi';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 
 export const Signup = () => {
-  const nav = useNavigate();
   const location = useLocation();
-  useEffect(() => {
-    console.log(location);
-    console.log(location.state);
-  }, []);
+  const nav = useNavigate();
   const { mutate } = useMutation({
     mutationFn: async (request: ISignupRequest) => await signup(request),
     onSuccess: () => nav('/'),
-    onError: () => alert('오류가 발생하였습니다.'),
+    onError: (err) => console.log(err),
   });
   const [pageType, setPageType] = useState<string>('info');
   const [contents, setContents] = useState<IContent[]>([
@@ -71,17 +67,14 @@ export const Signup = () => {
   );
   const [handler, setHandler] = useState<IContentHandler>({
     label: '회원가입',
-    handler: async () => {
-      const info: ISignupRequest = {
+    handler: () => {
+      mutate({
         code: location.state?.code,
         nickname: contents[0].value as string,
         birthday: contents[1].value as string,
         gender: contents[2].value === '남' ? 'MALE' : 'FEMALE',
         type: contents[3].value === '부모' ? 'parent' : 'child',
-      };
-      await signup(info)
-        .then((res) => console.log(res.data))
-        .catch((err) => console.log(err));
+      });
     },
   });
   const birthdayHandler = (year: number, month: number, day: number) => {

@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { showToast } from '../utils/toastUtil';
-import { checkSession } from './userApi';
 
 export const api = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'https://www.solsol-high.kro.kr',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -12,7 +11,6 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    await checkSession();
     return config;
   },
   (error) => {
