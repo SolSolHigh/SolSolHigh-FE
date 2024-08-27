@@ -9,6 +9,7 @@ import { Signup } from '../pages/Signup';
 import { MissionChildren } from '../pages/Mission/children';
 import { Information } from '../pages/Information';
 import { Manage } from '../pages/Information/Manage';
+import { Egg } from '../pages/Egg';
 
 export const PathNames: IPathNames = {
   HOME: {
@@ -54,7 +55,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PathNames.EGG.path,
-        element: <></>,
+        element: <Egg />,
       },
       {
         path: PathNames.MYPAGE.path,

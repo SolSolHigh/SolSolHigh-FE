@@ -6,6 +6,7 @@ export const CircularImage = ({
   imageUrl,
   altText,
   size = 'md',
+  imgWidth = '100%',
   bgColor = 'blue',
   classNameStyles,
   children,
@@ -13,11 +14,15 @@ export const CircularImage = ({
   const className = circularImageStyles({ size, bgColor });
 
   return (
-    <div className={`relative ${className} ${classNameStyles}`}>
+    <div
+      className={`relative flex items-center justify-center overflow-hidden ${className} ${classNameStyles}`}
+      style={{ borderRadius: '50%' }}
+    >
       <img
         src={imageUrl}
         alt={altText}
-        className="rounded-full object-cover w-full h-full"
+        style={{ width: imgWidth, objectFit: 'cover' }}
+        className="rounded-full"
       />
       {children && (
         <div className="absolute inset-0 flex items-center justify-center">

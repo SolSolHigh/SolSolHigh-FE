@@ -4,6 +4,7 @@ export interface ICircularImageProps {
   imageUrl: string;
   altText: string;
   size?: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  imgWidth?: string;
   bgColor?:
     | 'pink'
     | 'blue'

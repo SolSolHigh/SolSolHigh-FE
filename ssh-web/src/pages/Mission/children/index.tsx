@@ -1,5 +1,5 @@
 import React, { useState, Suspense } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import {
   containerStyles,
@@ -18,6 +18,10 @@ import { MissionList } from '../../../components/molecules/MissionList';
 import { LoadingSkeleton } from './LoadingSkeleton';
 import { IMission } from '../../../interfaces/missionInterfaces';
 import { api } from '../../../apis/interceptors';
+import {
+  ENavigationBgColors,
+  navigationBgColorState,
+} from '../../../atoms/navigation';
 
 const fetchMissions = async (isFinished: boolean): Promise<IMission[]> => {
   const response = await api.get<IMission[]>('/api/children/missions', {
@@ -54,6 +58,13 @@ export const MissionChildren: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const size = useRecoilValue(resizeState);
 
+  const setNavigationBgColor = useSetRecoilState(navigationBgColorState);
+  setNavigationBgColor(ENavigationBgColors.light);
+
+  const handleTabChange = (index: number) => {
+    setActiveTab(index);
+  };
+
   return (
     <div className={containerStyles()}>
       {size === EResize.D && (
@@ -69,7 +80,7 @@ export const MissionChildren: React.FC = () => {
           </Typography>
           <ToggleTab
             activeTab={activeTab}
-            onTabChange={setActiveTab}
+            onTabChange={handleTabChange}
             labels={['쏠쏠한 미션 보기', '미션 추억 돌아보기']}
           />
         </div>
