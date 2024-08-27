@@ -8,6 +8,8 @@ import { Signup } from '../pages/Signup';
 import { QuizMain } from '../pages/QuizMain';
 import { QuizSolving } from '../pages/QuizSolving';
 import { MissionChildren } from '../pages/Mission/children';
+import { Information } from '../pages/Information';
+import { Manage } from '../pages/Information/Manage';
 
 export const PathNames: IPathNames = {
   HOME: {
@@ -61,7 +63,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PathNames.MYPAGE.path,
-        element: <></>,
+        element: <Information />,
       },
       {
         path: PathNames.LOGIN.path,
@@ -70,6 +72,10 @@ export const router = createBrowserRouter([
       {
         path: PathNames.SIGNUP.path,
         element: <Signup />,
+      },
+      {
+        path: '/manage',
+        element: <Manage />,
       },
     ],
   },
