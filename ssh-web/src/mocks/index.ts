@@ -488,7 +488,7 @@ mock.onGet('/api/users/info').reply((config) => {
           name: '이유승',
           gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
           birthday: '1998-04-29',
-          type: Math.floor(Math.random() * 2) ? 'PARENT' : 'CHILD', // "CHILD"
+          type: Math.floor(Math.random() * 2) ? 'PARENT' : 'CHILD',
         },
       ]);
     }, 500);
@@ -505,13 +505,13 @@ mock.onGet('/api/parents/children').reply((config) => {
             name: '김다운',
             nickname: '흑룡',
             birthday: '1999-06-30',
-            gender: 'M',
+            gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
           },
           {
             name: '양규현',
             nickname: '백룡',
             birthday: '1999-05-30',
-            gender: 'F',
+            gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
           },
         ],
       ]);
@@ -528,7 +528,63 @@ mock.onGet('/api/children/parents').reply((config) => {
           name: '부모님',
           nickname: '부모님닉네임',
           birthday: '1970-03-13',
-          gender: 'M',
+          gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+        },
+      ]);
+    }, 500);
+  });
+});
+
+mock.onGet('/api/parents/children/waiting').reply((config) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            name: '권용진',
+            nickname: '흑룡도포기한남자',
+            birthday: '1997-05-17',
+            gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+          },
+          {
+            name: '이유승',
+            nickname: '뼛속까지섹시녀',
+            birthday: '1998-04-29',
+            gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+          },
+        ],
+      ]);
+    }, 500);
+  });
+});
+
+mock.onPatch('/api/parents/children').reply((config) => {
+  const target = JSON.parse(config.data).nickname;
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        201,
+        {
+          code: null,
+          description: '등록된 자식 삭제 성공',
+        },
+      ]);
+    }, 500);
+  });
+});
+
+mock.onPatch('/api/parents/children/waiting').reply((config) => {
+  const target = JSON.parse(config.data).nickname;
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        201,
+        {
+          code: null,
+          description: '등록된 자식 신청 삭제 성공',
         },
       ]);
     }, 500);

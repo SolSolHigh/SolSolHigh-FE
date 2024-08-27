@@ -29,3 +29,15 @@ export const getMyChildren = () => {
 export const getMyParents = () => {
   return api.get<IParent>('/api/children/parents');
 };
+
+export const getMyWaitingChildren = () => {
+  return api.get<IChild[]>('/api/parents/children/waiting');
+};
+
+export const deleteMyChild = (nickname: string) => {
+  return api.patch('/api/parents/children', { nickname: nickname });
+};
+
+export const deleteMyWaitingChild = (nickname: string) => {
+  return api.patch('/api/parents/children/waiting', { nickname: nickname });
+};
