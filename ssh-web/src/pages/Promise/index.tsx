@@ -1,71 +1,117 @@
-import React from 'react';
-import { containerStyles, contentStyles, layoutStyles } from './styles';
+import React, { useEffect, useState } from 'react';
+import {
+  containerStyles,
+  contentStyles,
+  gridStyles,
+  layoutStyles,
+} from './styles';
 import { EResize } from '../../themes/themeBase';
 import { resizeState } from '../../atoms/resize';
 import { useRecoilValue } from 'recoil';
 import { Typography } from '../../components/atoms/Typography';
+import { Modal } from '../../components/molecules/QuizModal';
+import { Mascot } from '../../components/molecules/Mascot';
+import { AddPromiseModal } from '../../components/organisms/AddPromiseModal';
+import { AddPromiseCard } from '../../components/molecules/AddPromiseCard';
+import { PromiseItem } from '../../components/molecules/PromiseItem';
+import { api } from '../../apis/interceptors';
+import {
+  IPromiseLogs,
+  IPromiseLogsList,
+} from '../../interfaces/promiseTicketInterface';
+import { PromiseDetailModal } from '../../components/organisms/PromiseDetailModal';
+import { ChangeChild } from '../../components/molecules/ChangeChild';
 
 export const PromiseTicket = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
+  const [promiseLogs, setPromiseLogs] = useState<IPromiseLogsList>([]);
+  const [countTicket, setCountTicket] = useState<number>(0);
+  const [selectedPromise, setSelectedPromise] = useState<IPromiseLogs | null>(
+    null,
+  );
+
   const size = useRecoilValue<EResize>(resizeState);
 
+  useEffect(() => {
+    api.get(`/api/promise-tickets/count`).then((response) => {
+      setCountTicket(response.data.count);
+    });
+  }, []);
+
+  useEffect(() => {
+    api.get(`/api/promise-tickets?page=0&size=5`).then((response) => {
+      setPromiseLogs(response.data.content);
+      console.log(response.data.content);
+    });
+  }, []);
+
+  const handleDetailModal = (log: IPromiseLogs) => {
+    setIsOpen(true);
+    setIsDetailModal(true);
+    setSelectedPromise(log);
+  };
+
+  const handleAddModal = () => {
+    setIsOpen(true);
+  };
+
   return (
-    <div className={layoutStyles({ size })}>
-      <div className={containerStyles({ size })}>
-        <div className={contentStyles({ size })}>
-          <Typography weight="bold" color="dark" size="lg">
-            보유한 약속권
-          </Typography>
-          <div className="flex items-center space-x-2">
-            <Typography color="dark" classNameStyles="mr-8">
-              1
+    <>
+      <Modal color="primary" isOpen={isOpen} setIsOpen={setIsOpen}>
+        {isDetailModal ? (
+          <PromiseDetailModal log={selectedPromise} />
+        ) : (
+          <AddPromiseModal />
+        )}
+      </Modal>
+      <div className={layoutStyles({ size })}>
+        {size === EResize.D && (
+          <Mascot
+            nickname="닉네임"
+            ment="부모님과 어떤 약속을 하고 싶으세요?"
+          />
+        )}
+        <div className={containerStyles({ size })}>
+          <div className="flex flex-row justify-between w-[95%] mt-4">
+            <Typography size="2xl" weight="bold" color="dark">
+              쏠쏠 퀴즈
             </Typography>
-            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-              <Typography size="xs" weight="semibold">
-                TICKET
+            <ChangeChild />
+          </div>
+          <div className={contentStyles({ size })}>
+            <Typography weight="bold" color="dark" size="lg" classNameStyles="">
+              보유한 약속권
+            </Typography>
+            <div className="flex items-center space-x-2">
+              <Typography
+                color="primary"
+                size="xl"
+                weight="semibold"
+                classNameStyles="mr-8"
+              >
+                {countTicket}개
               </Typography>
+              <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                <Typography size="xs" weight="semibold">
+                  TICKET
+                </Typography>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="grid grid-cols-2 gap-8">
-          <AddPromise />
-          <PromiseItem />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const AddPromise = () => {
-  return (
-    <div className="flex justify-center cursor-pointer">
-      <div className="flex flex-col p-4 bg-primary-100 items-center w-32 h-48 rounded-lg shadow-md">
-        <div className="w-24 h-24 bg-secondary-300 rounded-lg flex items-center justify-center">
-          <span className="text-lg text-gray-500">+</span>
-        </div>
-        <div className="text-center">
-          <Typography color="dark" size="sm">
-            약속 요청하기
-          </Typography>
+          <div className={gridStyles({ size })}>
+            <AddPromiseCard handleModal={handleAddModal} />
+            {promiseLogs.map((log) => (
+              <PromiseItem
+                key={log.id}
+                handleModal={handleDetailModal}
+                isConfirm={log.usedAt ? true : false}
+                log={log}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-const PromiseItem = () => {
-  return (
-    <div className="flex justify-center cursor-pointer">
-      <div className="flex flex-col p-4 bg-primary-100 items-center w-32 h-48 rounded-lg shadow-md">
-        <div className="w-24 h-24 rounded-lg bg-cover bg-center">
-          <img
-            src="https://media1.tenor.com/m/imFIc3R5UY8AAAAC/pepe-pepe-wink.gif"
-            className="w-full h-full bg-red-600 bg-opacity-50 flex items-center justify-center rounded-lg"
-          />
-        </div>
-        <Typography color="dark" size="sm">
-          햄스터 키우기
-        </Typography>
-      </div>
-    </div>
+    </>
   );
 };

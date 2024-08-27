@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 export const layoutStyles = tv({
-  base: 'flex items-center justify-center w-full h-auto',
+  base: 'flex items-center justify-center w-full h-auto ',
   variants: {
     size: {
       M: '',
@@ -12,7 +12,7 @@ export const layoutStyles = tv({
 });
 
 export const containerStyles = tv({
-  base: 'bg-white flex flex-col items-center w-full ',
+  base: 'bg-white flex flex-col items-center w-full overflow-y-auto',
   variants: {
     size: {
       M: 'h-full p-4 ',
@@ -23,12 +23,23 @@ export const containerStyles = tv({
 });
 
 export const contentStyles = tv({
-  base: 'flex justify-between items-center w-full mb-4',
+  base: 'flex justify-around items-center w-full my-8 px-4',
   variants: {
     size: {
       M: '',
       T: '',
       D: '',
+    },
+  },
+});
+
+export const gridStyles = tv({
+  base: 'grid ',
+  variants: {
+    size: {
+      M: 'grid-cols-2 gap-8',
+      T: 'grid-cols-4 gap-12',
+      D: 'grid-cols-4 gap-12',
     },
   },
 });

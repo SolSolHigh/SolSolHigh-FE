@@ -18,9 +18,12 @@ export const ModalContent = ({
   const [startY, setStartY] = useState<number | null>(null);
   const [moveY, setMoveY] = useState<number>(0);
   const modalRef = useRef<HTMLDivElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    setStartY(e.touches[0].clientY);
+    if (headerRef.current && headerRef.current.contains(e.target as Node)) {
+      setStartY(e.touches[0].clientY);
+    }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -48,6 +51,7 @@ export const ModalContent = ({
       }
       setMoveY(0);
     }
+    setStartY(null);
   };
 
   const backgroundColors = {
@@ -56,9 +60,9 @@ export const ModalContent = ({
   };
 
   const modalStyles = {
-    M: `fixed px-4 pt-8 bottom-0 rounded-t-3xl z-20 w-full mob:h-[81%] ${backgroundColors[color]} transition-transform overflow-auto`,
+    M: `fixed px-4 pt-0 bottom-0 rounded-t-3xl z-20 w-full mob:h-[90%] ${backgroundColors[color]} transition-transform`,
     T: `absolute px-[5%] py-[2%] max-w-[700px] min-w-[430px] z-20 top-12 left-1/2 -translate-x-1/2 w-2/3 h-max min-h-[calc(100vh-24rem)] flex justify-center items-center rounded-xl ${backgroundColors[color]}`,
-    D: `absolute px-[5%] py-[2%] max-w-[700px] min-w-[430px] z-20 top-10 left-1/2 -translate-x-1/2 w-2/3 h-max min-h-[calc(100vh-12rem)] flex justify-center items-center rounded-xl ${backgroundColors[color]}`,
+    D: `absolute px-[5%] py-[2%] max-w-[700px] min-w-[430px] z-20 top-10 left-1/2 -translate-x-1/2 w-2/3 h-max min-h-[calc(100vh-10rem)] flex justify-center items-center rounded-xl ${backgroundColors[color]}`,
   };
 
   return (
@@ -69,10 +73,14 @@ export const ModalContent = ({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {size === EResize.M && (
-        <div className="w-12 h-1 bg-gray-400 rounded-full mt-2 mb-4 mx-auto" />
-      )}
-      {size !== EResize.M && <ModalCloseButton onClose={onClose} />}
+      <div ref={headerRef} className="cursor-move">
+        {size === EResize.M && (
+          <div className="w-full h-14 flex flex-col justify-center items-center">
+            <div className="w-24 h-1 bg-gray-400 rounded-full mb-1 mx-auto" />
+          </div>
+        )}
+        {size !== EResize.M && <ModalCloseButton onClose={onClose} />}
+      </div>
       {children}
     </div>
   );
