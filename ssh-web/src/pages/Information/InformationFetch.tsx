@@ -81,7 +81,10 @@ export const InformationFetch = () => {
           type="mascot"
           title={`${userinfoQuery.data.data.type === 'PARENT' ? '자녀' : '부모'} 정보`}
           mascots={related}
-          hasMore
+          mascotType={
+            userinfoQuery.data.data.type === 'PARENT' ? '자녀' : '부모'
+          }
+          hasMore={userinfoQuery.data.data.type === 'PARENT'}
         />
       </div>
     </div>

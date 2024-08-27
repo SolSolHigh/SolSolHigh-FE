@@ -1,6 +1,6 @@
 export const getImgSrc = (gender: string, type: string) => {
   const baseSrc =
-    'https://solsolhighasset.s3.ap-northease-2.amazonaws.com/images/models/';
+    'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/models/';
 
   if (gender === 'M') {
     if (type === 'PARENT') return baseSrc + 'man1.png';
