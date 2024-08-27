@@ -23,6 +23,15 @@ export interface ISignupRequest {
   type: 'PARENT' | 'CHILD';
 }
 
+export interface IUserInfo {
+  nickname: string;
+  email: string;
+  name: string;
+  gender: string;
+  birthday: string;
+  type: string;
+}
+
 export interface IUserInfoInfo {
   label: string;
   content: string;
@@ -37,4 +46,5 @@ export interface IChild {
   name: string;
   nickname: string;
   birthday: string;
+  gender: string;
 }
