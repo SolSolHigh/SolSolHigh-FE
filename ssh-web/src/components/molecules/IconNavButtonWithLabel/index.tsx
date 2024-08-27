@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Icon } from '../../atoms/Icon';
 import {
   HiChartBarSquare,
@@ -14,26 +14,28 @@ import { PathNames } from '../../../utils/router';
 
 const IconNavButtonWithLabel = ({ pathName }: { pathName: IPath }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPathname = location.pathname;
 
+  const handleClick = () => {
+    navigate(pathName.path, { state: { type: 'parent' } });
+  };
   return (
-    <button className="">
-      <Link to={pathName.path}>
-        <Icon
-          size="md"
-          classNameStyles={`${currentPathname === pathName.path ? '!text-primary-600' : '!text-secondary-300'} transition-colors duration-200`}
-        >
-          {pathName.path === PathNames.HOME.path && <HiMiniHome />}
-          {pathName.path === PathNames.MISSION.path && <HiCheckCircle />}
-          {pathName.path === PathNames.QUIZ.path && <HiPuzzlePiece />}
-          {pathName.path === PathNames.EGG.path && <HiChartBarSquare />}
-          {pathName.path === PathNames.MYPAGE.path && <HiSquares2X2 />}
-        </Icon>
-        <Typography size="xs" color="dark" classNameStyles="cursor-default">
-          {pathName.name}
-        </Typography>
-      </Link>
-    </button>
+    <div onClick={handleClick} className="cursor-pointer">
+      <Icon
+        size="md"
+        classNameStyles={`${currentPathname === pathName.path ? '!text-primary-600' : '!text-secondary-300'} transition-colors duration-200`}
+      >
+        {pathName.path === PathNames.HOME.path && <HiMiniHome />}
+        {pathName.path === PathNames.MISSION.path && <HiCheckCircle />}
+        {pathName.path === PathNames.QUIZ.path && <HiPuzzlePiece />}
+        {pathName.path === PathNames.EGG.path && <HiChartBarSquare />}
+        {pathName.path === PathNames.MYPAGE.path && <HiSquares2X2 />}
+      </Icon>
+      <Typography size="xs" color="dark" classNameStyles="cursor-default">
+        {pathName.name}
+      </Typography>
+    </div>
   );
 };
 

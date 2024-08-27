@@ -17,6 +17,7 @@ export const NumberDial = ({
   specialNumber,
   specialMent,
   onChangeNumber,
+  labels,
 }: NumberDialProps) => {
   const [currentValue, setCurrentValue] = useState<number>(defaultNumber);
   const startY = useRef<number | null>(null);
@@ -106,7 +107,7 @@ export const NumberDial = ({
                 color={num === currentValue ? 'dark' : 'secondary'}
                 classNameStyles={`${numberStyles({ selected: num === currentValue })}`}
               >
-                {num}
+                {labels && labels[num - min] ? labels[num - min] : num}
               </Typography>
             </div>
           );

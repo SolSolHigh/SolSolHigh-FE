@@ -1,6 +1,10 @@
 import AxiosMockAdapter from 'axios-mock-adapter';
 import { api } from '../apis/interceptors';
 import REQUEST_DOMAINS from '../apis/axiosConfig';
+import {
+  IMissionCreateRequest,
+  IMissionUpdateRequest,
+} from '../interfaces/missionInterfaces';
 
 export const mock = new AxiosMockAdapter(api);
 
@@ -89,9 +93,10 @@ mock.onPost(`/${REQUEST_DOMAINS.quizs}/solve`).reply((config) => {
 
 // ========== 퀴즈 도메인 ==========
 
-// ========== 미션 조회 ==========
-// API: /api/children/missions?page=0&size=20&is-finished=false
+// ========== 미션 도메인 ==========
+// 미션 조회
 mock.onGet('/api/children/missions').reply((config) => {
+  // /api/children/missions?page=0&size=20&is-finished=false
   const isFinished =
     config.params['is-finished'] === true ||
     config.params['is-finished'] === 'true';
@@ -226,4 +231,54 @@ mock.onGet('/api/children/missions').reply((config) => {
     }, 500);
   });
 });
-// ========== 미션 조회 ==========
+
+// 미션 등록
+mock.onPost('/api/children/missions').reply((config) => {
+  const requestData: IMissionCreateRequest = JSON.parse(config.data);
+
+  const createdMission = {
+    ...requestData,
+    missionId: Math.floor(Math.random() * 1000), // 랜덤 missionId 생성
+    isFinished: false,
+    missionFinishedAt: null,
+  };
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([201, createdMission]);
+    }, 500);
+  });
+});
+
+// 미션 삭제
+mock.onDelete(/\/api\/missions\/\d+/).reply((config) => {
+  const missionId = config.url?.split('/').pop();
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        204,
+        { message: `미션 ${missionId}이 성공적으로 삭제되었습니다.` },
+      ]);
+    }, 500);
+  });
+});
+
+// 미션 수정 (상태 변경 포함)
+mock.onPatch(/\/api\/missions\/\d+/).reply((config) => {
+  const missionId = config.url?.split('/').pop();
+  const requestData: IMissionUpdateRequest = JSON.parse(config.data);
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        202,
+        {
+          message: `미션 ${missionId}이 성공적으로 수정되었습니다.`,
+          updatedData: requestData,
+        },
+      ]);
+    }, 500);
+  });
+});
+// ========== 미션 도메인 ==========

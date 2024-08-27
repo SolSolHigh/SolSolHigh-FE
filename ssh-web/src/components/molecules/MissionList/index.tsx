@@ -8,14 +8,17 @@ import { MissionDetail } from '../MissionDetail';
 import { IMissionListProps } from './MissionList.types';
 import { missionListStyles } from './MissionList.styles';
 
-export const MissionList: React.FC<IMissionListProps> = ({ missions }) => {
+export const MissionList: React.FC<IMissionListProps> = ({
+  missions,
+  role,
+}) => {
   const setModalState = useSetRecoilState(isModalOpenState);
   const size = useRecoilValue(resizeState);
 
   const openMissionDetail = (mission: IMission) => {
     setModalState({
       isOpen: true,
-      content: <MissionDetail mission={mission} size={size} />,
+      content: <MissionDetail mission={mission} size={size} role={role} />,
     });
   };
 
