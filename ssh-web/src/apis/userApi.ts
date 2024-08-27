@@ -6,5 +6,5 @@ export const checkSession = async () => {
 };
 
 export const signup = (signupRequest: ISignupRequest) => {
-  return api.post('/api/users', { data: signupRequest });
+  return api.post('/api/users', signupRequest);
 };
