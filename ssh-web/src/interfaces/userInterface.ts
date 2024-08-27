@@ -16,6 +16,7 @@ export interface IContentHandler {
 }
 
 export interface ISignupRequest {
+  code: string;
   nickname: string;
   birthday: string;
   gender: 'MALE' | 'FEMALE';
