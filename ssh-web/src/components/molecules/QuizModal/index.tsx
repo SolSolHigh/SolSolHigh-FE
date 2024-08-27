@@ -31,8 +31,11 @@ export const Modal = ({
   };
 
   return (
-    <ModalContent size={size} onClose={handleModalClose} color={color}>
-      {children}
-    </ModalContent>
+    <>
+      <div className="fixed inset-0 z-20 bg-black bg-opacity-10 animate-fadeIn"></div>
+      <ModalContent size={size} onClose={handleModalClose} color={color}>
+        {children}
+      </ModalContent>
+    </>
   );
 };

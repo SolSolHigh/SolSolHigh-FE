@@ -6,7 +6,7 @@ import { QuizTabProps } from './QuizTabProps.types';
 import { Button } from '../../atoms/Button';
 
 import { Skeleton } from '../../atoms/Skeleton';
-import { LoadingSkeleton } from '../../../pages/Mission/children/LoadingSkeleton';
+import dayjs from 'dayjs';
 
 export const QuizTab: React.FC<QuizTabProps> = ({
   size,
@@ -21,17 +21,17 @@ export const QuizTab: React.FC<QuizTabProps> = ({
   const today = new Date();
 
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-3 bg-white p-4 rounded-lg">
+    <div className="space-y-8">
+      <div className="grid grid-cols-3 bg-primary-100 p-6 rounded-lg mt-8 shadow-md">
         <div className="col-span-2 text-center">
-          <Typography color="secondary" weight="regular">
-            {today.toLocaleDateString('ko-KR', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-            })}
+          <Typography color="secondary" weight="semibold">
+            {dayjs(today).format('YYYY년 M월 D일')}
           </Typography>
-          <Typography className="flex justify-center w-full">
+          <Typography
+            weight="semibold"
+            className="flex justify-center w-full"
+            classNameStyles="mt-2"
+          >
             {loading ? (
               <Skeleton width={'95%'} />
             ) : isTodayQuiz ? (
@@ -64,17 +64,17 @@ export const QuizTab: React.FC<QuizTabProps> = ({
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-lg">
+      <div className="bg-primary-100 p-6 rounded-lg shadow-md">
         <Typography weight="bold" classNameStyles="mb-6 text-center">
           일주일을 모두 채우면 약속권을 받아요!
         </Typography>
-        <div className="flex justify-around mb-2">
+        <div className="flex justify-around mb-2 bg-primary-200 p-4 rounded-md">
           {[...Array(7)].map((_, index) => (
             <div
               key={index}
-              className={`w-8 h-8 flex items-center justify-center rounded-full ${index < strick.length ? 'bg-primary-500 text-white' : 'bg-gray-200 text-gray-600'}`}
+              className={`w-8 h-8 flex items-center justify-center rounded-full ${index < strick.length ? 'bg-primary-500 text-white' : 'bg-secondary-100 text-gray-600'}`}
             >
-              {index + 1}일
+              {index === 6 ? '🏆' : index + 1 + '일'}
             </div>
           ))}
         </div>

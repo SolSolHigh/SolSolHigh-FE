@@ -21,7 +21,7 @@ export const KeywordsTab: React.FC<KeywordsProps> = ({
   return (
     <>
       <div className="space-y-4">
-        <div className="bg-white p-4 rounded-lg">
+        <div className="bg-primary-100 p-6 rounded-lg">
           <Typography
             size="xl"
             weight="semibold"
@@ -46,7 +46,7 @@ export const KeywordsTab: React.FC<KeywordsProps> = ({
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-lg">
+        <div className="bg-primary-100 p-6 rounded-lg">
           <div className="flex justify-between items-center mb-4">
             <Typography size="xl" weight="semibold" color="dark">
               퀴즈 내역
@@ -59,7 +59,7 @@ export const KeywordsTab: React.FC<KeywordsProps> = ({
             </button>
           </div>
           <div className="space-y-2">
-            {quizLogs.slice(0, 10).map((history, index) => (
+            {quizLogs.slice(0, 8).map((history, index) => (
               <div
                 key={index}
                 className="flex justify-between text-secondary-600"

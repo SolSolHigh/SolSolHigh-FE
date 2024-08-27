@@ -7,7 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { api } from '../../apis/interceptors';
 import { AvatarWithLabel } from '../../components/molecules/AvatarWithLabel';
 import { Button } from '../../components/atoms/Button';
-import { Main } from './styles';
+import { Main, containerStyles } from './styles';
 import { QuizTab } from '../../components/organisms/QuizTab';
 import {
   KeywordEditModal,
@@ -23,6 +23,9 @@ import {
 } from '../../interfaces/quizInterface';
 import { Modal } from '../../components/molecules/QuizModal';
 import { QuizLogsDetailModal } from '../../components/organisms/QuizLogsDetailModal';
+import { ChangeChild } from '../../components/molecules/ChangeChild';
+import { mascotWrapperStyles } from '../QuizSolving/styles';
+import { Mascot } from '../../components/molecules/Mascot';
 
 const labels = ['쏠쏠 퀴즈', '키워드 및 내역'];
 
@@ -132,7 +135,7 @@ export const QuizMain: React.FC = () => {
   }, [quizLogs]); // quizLogs가 업데이트될 때마다 실행
 
   return (
-    <>
+    <div className={containerStyles()}>
       <Modal color="primary" isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
         {isKeywordModal ? (
           <KeywordEditModal
@@ -150,26 +153,15 @@ export const QuizMain: React.FC = () => {
           />
         )}
       </Modal>
+      {size === EResize.D && (
+        <Mascot nickname="닉네임" ment="오늘의 퀴즈를 한번 풀어보세요!" />
+      )}
       <div className={Main.container({ size })}>
         <div className={Main.content({ size })}>
           <Typography size="2xl" weight="bold" color="dark">
             쏠쏠 퀴즈
           </Typography>
-          <div className="flex flex-row items-center mb-2 p-2 px-4 bg-primary-100 rounded-lg p">
-            <AvatarWithLabel
-              imageUrl="https://media1.tenor.com/m/o2nJ-w0v7lAAAAAC/teemo.gif"
-              altText="캐릭터"
-              size="md"
-              bgColor="blue"
-              label="차은우"
-              labelSize="md"
-              labelWeight="bold"
-              labelColor="dark"
-            ></AvatarWithLabel>
-            <Button size="sm" classNameStyles="ml-4">
-              변경
-            </Button>
-          </div>
+          <ChangeChild />
         </div>
         <div className="flex mb-4">
           <ToggleTab
@@ -209,6 +201,6 @@ export const QuizMain: React.FC = () => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };

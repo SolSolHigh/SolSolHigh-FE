@@ -225,6 +225,26 @@ mock.onGet(`api/quizzes/keywords`).reply(() => {
             keywordId: 5,
             keyword: '적금',
           },
+          {
+            keywordId: 6,
+            keyword: '금리',
+          },
+          {
+            keywordId: 7,
+            keyword: '화폐',
+          },
+          {
+            keywordId: 8,
+            keyword: '물가',
+          },
+          {
+            keywordId: 9,
+            keyword: '대출',
+          },
+          {
+            keywordId: 10,
+            keyword: '투자',
+          },
         ],
       ]);
     }, 500);

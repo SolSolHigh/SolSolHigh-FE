@@ -56,9 +56,9 @@ export const ModalContent = ({
   };
 
   const modalStyles = {
-    M: `fixed px-4 pt-8 bottom-0 rounded-t-3xl z-20 w-full mob:h-[81%] ${backgroundColors[color]} transition-transform`,
+    M: `fixed px-4 pt-8 bottom-0 rounded-t-3xl z-20 w-full mob:h-[81%] ${backgroundColors[color]} transition-transform overflow-auto`,
     T: `absolute px-[5%] py-[2%] max-w-[700px] min-w-[430px] z-20 top-12 left-1/2 -translate-x-1/2 w-2/3 h-max min-h-[calc(100vh-24rem)] flex justify-center items-center rounded-xl ${backgroundColors[color]}`,
-    D: `absolute px-[5%] py-[2%] max-w-[700px] min-w-[430px] z-20 top-10 left-1/2 -translate-x-1/2 w-2/3 h-max min-h-[calc(100vh-10rem)] flex justify-center items-center rounded-xl ${backgroundColors[color]}`,
+    D: `absolute px-[5%] py-[2%] max-w-[700px] min-w-[430px] z-20 top-10 left-1/2 -translate-x-1/2 w-2/3 h-max min-h-[calc(100vh-12rem)] flex justify-center items-center rounded-xl ${backgroundColors[color]}`,
   };
 
   return (

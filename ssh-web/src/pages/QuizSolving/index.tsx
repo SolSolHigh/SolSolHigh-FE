@@ -9,11 +9,19 @@ import { isModalOpenState } from '../../atoms/modal';
 import { api } from '../../apis/interceptors';
 import REQUEST_DOMAINS from '../../apis/axiosConfig';
 import { QuizDetail } from '../../components/molecules/QuizDetail';
-import { ModalContentStyles, container, title, button } from './styles';
+import {
+  ModalContentStyles,
+  container,
+  title,
+  button,
+  mascotWrapperStyles,
+  containerStyles,
+} from './styles';
 import {
   IDailyQuizResponse,
   IQuizResultResponse,
 } from '../../interfaces/quizInterface';
+import { Mascot } from '../../components/molecules/Mascot';
 
 export const QuizSolving: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<'O' | 'X' | null>(null);
@@ -86,6 +94,7 @@ export const QuizSolving: React.FC = () => {
                   </Typography>
                 </div>
                 <Button
+                  fullWidth={true}
                   onClick={() =>
                     setIsModalOpen({ isOpen: false, content: null })
                   }
@@ -104,7 +113,10 @@ export const QuizSolving: React.FC = () => {
   };
 
   return (
-    <>
+    <div className={containerStyles()}>
+      {size === EResize.D && (
+        <Mascot nickname="닉네임" ment="오늘의 퀴즈를 한번 풀어보세요!" />
+      )}
       <div className={container({ size })}>
         <div className={title({ size })}>
           <Typography weight="bold" size="3xl">
@@ -150,6 +162,6 @@ export const QuizSolving: React.FC = () => {
         </Button>
       </div>
       <Modal />
-    </>
+    </div>
   );
 };
