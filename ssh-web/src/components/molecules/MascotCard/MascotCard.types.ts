@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
-import { IChild } from '../../../interfaces/userInterface';
+import { IChild, IParent } from '../../../interfaces/userInterface';
 
 export interface MascotCardProps extends React.ComponentProps<'div'> {
-  childInfo: IChild;
+  info: IChild | IParent;
+  type: 'PARENT' | 'CHILD';
   isWaiting?: boolean;
   withTrash?: boolean;
   children?: ReactNode;

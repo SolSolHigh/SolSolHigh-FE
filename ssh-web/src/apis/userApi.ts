@@ -34,6 +34,10 @@ export const getMyWaitingChildren = () => {
   return api.get<IChild[]>('/api/parents/children/waiting');
 };
 
+export const getMyWaitingParent = () => {
+  return api.get<IParent>('/api/children/parents/waiting');
+};
+
 export const deleteMyChild = (nickname: string) => {
   return api.patch('/api/parents/children', { nickname: nickname });
 };

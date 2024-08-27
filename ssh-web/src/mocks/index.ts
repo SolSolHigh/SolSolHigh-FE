@@ -559,6 +559,22 @@ mock.onGet('/api/parents/children/waiting').reply((config) => {
   });
 });
 
+mock.onGet('/api/children/parents/waiting').reply((config) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        {
+          name: '권용진',
+          nickname: '흑룡도포기한남자',
+          birthday: '1997-05-17',
+          gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+        },
+      ]);
+    }, 500);
+  });
+});
+
 mock.onPatch('/api/parents/children').reply((config) => {
   const target = JSON.parse(config.data).nickname;
 

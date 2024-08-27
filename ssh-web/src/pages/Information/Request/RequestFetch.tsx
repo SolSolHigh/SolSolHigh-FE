@@ -45,7 +45,7 @@ export const RequestFetch = () => {
     mutationFn: async (nickname: string) => await requestChild(nickname),
     onSuccess: (res) => {
       showToast('success', res.data.description);
-      nav('/manage');
+      nav('/manage', { state: { type: userinfoQuery.data.data.type } });
     },
     onError: () => showToast('error', '자식 신청에 실패했습니다'),
   });
@@ -64,7 +64,13 @@ export const RequestFetch = () => {
               color="dark"
               classNameStyles="absolute desktop:left-36 tabletB:left-20 mob:left-8"
             >
-              <HiChevronLeft onClick={() => nav('/manage')} />
+              <HiChevronLeft
+                onClick={() =>
+                  nav('/manage', {
+                    state: { type: userinfoQuery.data.data.type },
+                  })
+                }
+              />
             </Icon>
             <Typography weight="bold" size="xl" color="dark">
               자녀 초대하기
@@ -99,7 +105,8 @@ export const RequestFetch = () => {
             {child ? (
               <MascotCard
                 key={child.nickname}
-                childInfo={child}
+                info={child}
+                type="CHILD"
                 withTrash={false}
               />
             ) : (

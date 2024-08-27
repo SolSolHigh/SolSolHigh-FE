@@ -18,7 +18,7 @@ import { getImgSrc } from '../../../utils/userUtil';
 import { IChild } from '../../../interfaces/userInterface';
 import { useNavigate } from 'react-router-dom';
 
-export const ManageFetch = () => {
+export const ManageChildFetch = () => {
   const [userinfoQuery, childrenQuery, waitingQuery] = useSuspenseQueries({
     queries: [
       {
@@ -93,7 +93,8 @@ export const ManageFetch = () => {
               return (
                 <MascotCard
                   key={child.nickname}
-                  childInfo={child}
+                  info={child}
+                  type="CHILD"
                   isWaiting={activeTab ? true : false}
                 />
               );

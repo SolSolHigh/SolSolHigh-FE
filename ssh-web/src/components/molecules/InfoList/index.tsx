@@ -39,7 +39,9 @@ export const InfoList = ({
         </Typography>
         {hasMore && (
           <Icon color="dark" size="sm">
-            <HiChevronRight onClick={() => nav('/manage')} />
+            <HiChevronRight
+              onClick={() => nav('/manage', { state: { type: mascotType } })}
+            />
           </Icon>
         )}
       </div>
