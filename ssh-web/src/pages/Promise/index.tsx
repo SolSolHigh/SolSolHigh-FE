@@ -1,38 +1,70 @@
 import React from 'react';
+import { containerStyles, contentStyles, layoutStyles } from './styles';
+import { EResize } from '../../themes/themeBase';
+import { resizeState } from '../../atoms/resize';
+import { useRecoilValue } from 'recoil';
+import { Typography } from '../../components/atoms/Typography';
 
-export const PromiseTicket: React.FC = () => {
+export const PromiseTicket = () => {
+  const size = useRecoilValue<EResize>(resizeState);
+
   return (
-    <div className="p-4 bg-blue-100 min-h-screen flex flex-col items-center">
-      <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-md">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">보유한 약속권</h2>
+    <div className={layoutStyles({ size })}>
+      <div className={containerStyles({ size })}>
+        <div className={contentStyles({ size })}>
+          <Typography weight="bold" color="dark" size="lg">
+            보유한 약속권
+          </Typography>
           <div className="flex items-center space-x-2">
-            <span className="text-lg">1</span>
+            <Typography color="dark" classNameStyles="mr-8">
+              1
+            </Typography>
             <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-              <span className="text-xs font-semibold">TICKET</span>
+              <Typography size="xs" weight="semibold">
+                TICKET
+              </Typography>
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col items-center">
-            <div className="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center">
-              <span className="text-lg text-gray-500">+</span>
-            </div>
-            <span className="mt-2 text-sm text-gray-600">약속 요청하기</span>
-          </div>
+        <div className="grid grid-cols-2 gap-8">
+          <AddPromise />
+          <PromiseItem />
+        </div>
+      </div>
+    </div>
+  );
+};
 
-          <div className="flex flex-col items-center">
-            <div
-              className="w-24 h-24 rounded-lg bg-cover bg-center"
-              style={{ backgroundImage: "url('/path/to/image3.jpg')" }}
-            >
-              <div className="w-full h-full bg-red-600 bg-opacity-50 flex items-center justify-center">
-                <span className="text-white font-bold text-xl">확인</span>
-              </div>
-            </div>
-            <span className="mt-2 text-sm text-blue-600">햄스터 키우기</span>
-          </div>
+const AddPromise = () => {
+  return (
+    <div className="flex justify-center cursor-pointer">
+      <div className="flex flex-col p-4 bg-primary-100 items-center w-32 h-48 rounded-lg shadow-md">
+        <div className="w-24 h-24 bg-secondary-300 rounded-lg flex items-center justify-center">
+          <span className="text-lg text-gray-500">+</span>
         </div>
+        <div className="text-center">
+          <Typography color="dark" size="sm">
+            약속 요청하기
+          </Typography>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PromiseItem = () => {
+  return (
+    <div className="flex justify-center cursor-pointer">
+      <div className="flex flex-col p-4 bg-primary-100 items-center w-32 h-48 rounded-lg shadow-md">
+        <div className="w-24 h-24 rounded-lg bg-cover bg-center">
+          <img
+            src="https://media1.tenor.com/m/imFIc3R5UY8AAAAC/pepe-pepe-wink.gif"
+            className="w-full h-full bg-red-600 bg-opacity-50 flex items-center justify-center rounded-lg"
+          />
+        </div>
+        <Typography color="dark" size="sm">
+          햄스터 키우기
+        </Typography>
       </div>
     </div>
   );
