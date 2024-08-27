@@ -91,10 +91,10 @@ export const InfoList = ({
             >
               <Typography color="dark" weight="semibold" size="sm">
                 {mascotType === 'PARENT'
-                  ? '아직 연결해주신 부모님이 없어요!'
-                  : '아직 연결된 자녀가 없어요!'}
+                  ? '아직 연결된 자녀가 없어요!'
+                  : '아직 연결해주신 부모님이 없어요!'}
               </Typography>
-              {mascotType === 'CHILD' && (
+              {mascotType === 'PARENT' && (
                 <Button size="sm">자녀 초대하기</Button>
               )}
             </div>

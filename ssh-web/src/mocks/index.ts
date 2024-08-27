@@ -501,4 +501,20 @@ mock.onGet('/api/parents/childrens').reply((config) => {
   });
 });
 
+mock.onGet('/api/children/parents').reply((config) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        {
+          name: '부모님',
+          nickname: '부모님닉네임',
+          birthday: '1970-03-13',
+          gender: 'M',
+        },
+      ]);
+    }, 500);
+  });
+});
+
 // ========== 사용자 도메인 ==========

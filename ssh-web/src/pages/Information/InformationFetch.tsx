@@ -4,7 +4,7 @@ import { CircularImage } from '../../components/atoms/CircularImage';
 import { Mascot } from '../../components/molecules/Mascot';
 import { InfoList } from '../../components/molecules/InfoList';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { getMyChildren, getUserInfo } from '../../apis/userApi';
+import { getMyChildren, getMyParents, getUserInfo } from '../../apis/userApi';
 import { getImgSrc } from '../../utils/userUtil';
 import dayjs from 'dayjs';
 import { IChild, IUserInfoMascot } from '../../interfaces/userInterface';
@@ -38,6 +38,16 @@ export const InformationFetch = () => {
           });
         })
         .catch((err) => console.log(err));
+    } else {
+      getMyParents().then((res) => {
+        setRelated(() => {
+          const newUserInfoMascot: IUserInfoMascot = {
+            src: getImgSrc(res.data.gender, 'PARENT'),
+            label: res.data.nickname,
+          };
+          return [newUserInfoMascot];
+        });
+      });
     }
   }, []);
 
@@ -81,9 +91,7 @@ export const InformationFetch = () => {
           type="mascot"
           title={`${userinfoQuery.data.data.type === 'PARENT' ? '자녀' : '부모'} 정보`}
           mascots={related}
-          mascotType={
-            userinfoQuery.data.data.type === 'PARENT' ? '자녀' : '부모'
-          }
+          mascotType={userinfoQuery.data.data.type}
           hasMore={userinfoQuery.data.data.type === 'PARENT'}
         />
       </div>

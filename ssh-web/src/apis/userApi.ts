@@ -1,4 +1,9 @@
-import { IChild, ISignupRequest, IUserInfo } from '../interfaces/userInterface';
+import {
+  IChild,
+  IParent,
+  ISignupRequest,
+  IUserInfo,
+} from '../interfaces/userInterface';
 import { api } from './interceptors';
 
 export const checkSession = async () => {
@@ -19,4 +24,8 @@ export const getUserInfo = () => {
 
 export const getMyChildren = () => {
   return api.get<IChild[]>('/api/parents/childrens');
+};
+
+export const getMyParents = () => {
+  return api.get<IParent>('/api/children/parents');
 };

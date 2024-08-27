@@ -48,3 +48,10 @@ export interface IChild {
   birthday: string;
   gender: string;
 }
+
+export interface IParent {
+  name: string;
+  nickname: string;
+  birthday: string;
+  gender: string;
+}
