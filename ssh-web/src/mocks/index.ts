@@ -591,4 +591,48 @@ mock.onPatch('/api/parents/children/waiting').reply((config) => {
   });
 });
 
+mock.onPost('/api/children').reply((config) => {
+  const target = JSON.parse(config.data).nickname;
+
+  return target === '귀요미요하'
+    ? new Promise((resolve) => {
+        setTimeout(() => {
+          resolve([
+            200,
+            {
+              name: '김다운',
+              nickname: '귀욤다운',
+              birthday: '1999-06-30',
+              gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+            },
+          ]);
+        }, 500);
+      })
+    : new Promise((resolve) => {
+        setTimeout(() => {
+          resolve([
+            404,
+            {
+              code: 'U003',
+              description: '존재하지 않는 사용자',
+            },
+          ]);
+        }, 500);
+      });
+});
+
+mock.onPost('/api/parents/children/request').reply((config) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        202,
+        {
+          code: null,
+          description: '자식 신청 성공',
+        },
+      ]);
+    }, 500);
+  });
+});
+
 // ========== 사용자 도메인 ==========

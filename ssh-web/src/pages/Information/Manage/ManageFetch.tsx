@@ -64,7 +64,7 @@ export const ManageFetch = () => {
               color="dark"
               classNameStyles="absolute desktop:left-36 tabletB:left-20 mob:left-8"
             >
-              <HiChevronLeft />
+              <HiChevronLeft onClick={() => nav('/mypage')} />
             </Icon>
             <Typography weight="bold" size="xl" color="dark">
               자녀 정보

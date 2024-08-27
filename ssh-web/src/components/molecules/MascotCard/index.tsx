@@ -12,6 +12,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 export const MascotCard = ({
   childInfo,
   isWaiting = false,
+  withTrash = true,
   children,
   classNameStyles,
 }: MascotCardProps) => {
@@ -52,12 +53,14 @@ export const MascotCard = ({
           </Typography>
         </div>
       </div>
-      <Icon
-        color="danger"
-        classNameStyles="absolute right-4 top-4 mob:right-2 mob:top-2"
-      >
-        <HiTrash onClick={() => mutate(childInfo.nickname)} />
-      </Icon>
+      {withTrash && (
+        <Icon
+          color="danger"
+          classNameStyles="absolute right-4 top-4 mob:right-2 mob:top-2"
+        >
+          <HiTrash onClick={() => mutate(childInfo.nickname)} />
+        </Icon>
+      )}
     </div>
   );
 };

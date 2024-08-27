@@ -41,3 +41,11 @@ export const deleteMyChild = (nickname: string) => {
 export const deleteMyWaitingChild = (nickname: string) => {
   return api.patch('/api/parents/children/waiting', { nickname: nickname });
 };
+
+export const findChildByNickname = (nickname: string) => {
+  return api.post('/api/children', { nickname: nickname });
+};
+
+export const requestChild = (nickname: string) => {
+  return api.post('/api/parents/children/request', { nickname: nickname });
+};
