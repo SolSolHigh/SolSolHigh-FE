@@ -19,3 +19,7 @@ export const missionListBoxStyles = tv({
 export const mascotWrapperStyles = tv({
   base: 'flex items-center justify-center w-full',
 });
+
+export const bigButtonStyles = tv({
+  base: '!bg-primary-400 hover:!bg-primary-300 active:!bg-primary-300 !rounded-3xl !w-full !px-4 !z-10 !py-8 font-bold !text-2xl my-4',
+});
