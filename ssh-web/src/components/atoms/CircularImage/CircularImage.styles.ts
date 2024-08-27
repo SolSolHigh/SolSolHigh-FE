@@ -14,8 +14,6 @@ export const circularImageStyles = tv({
     },
     bgColor: {
       pink: 'bg-pink-200 hover:bg-pink-400 transition-colors duration-300',
-      coral:
-        'bg-dr-coral-50 hover:bg-dr-coral-100 transition-colors duration-300',
       blue: 'bg-blue-200 hover:bg-blue-400 transition-colors duration-300',
       green: 'bg-green-200 hover:bg-green-400 transition-colors duration-300',
       yellow:

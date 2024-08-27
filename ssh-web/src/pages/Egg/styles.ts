@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 export const contentStyles = tv({
-  base: 'bg-primary-100 flex flex-col items-center w-full h-full px-32 desktop:min-h-full mob:!px-4 desktop:rounded-2xl desktop:py-12',
+  base: 'flex flex-col justify-between items-center desktop:w-[48rem] desktop:h-[48rem] desktop:rounded-lg desktop:py-0 tablet:w-full tablet:h-full tablet:rounded-t-[2rem] tablet:py-8 mob:!pb-0 bg-primary-100 px-4',
 });
 
 export const containerStyles = tv({
