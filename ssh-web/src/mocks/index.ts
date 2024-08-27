@@ -91,6 +91,199 @@ mock.onPost(`/${REQUEST_DOMAINS.quizs}/solve`).reply((config) => {
   });
 });
 
+const nickname = 'chacha';
+//퀴즈 풀이 내역 조회
+mock.onGet(`api/child/${nickname}/quizzes/solved?page=0`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            description: '문제~~~~~~~~ 나갑니다!',
+            keyword: '이자',
+            quizId: 1,
+            isCorrect: true,
+            quizExplanation: '맞아요, ~~~~~',
+            correctedAt: '2024-08-26 06:05:22',
+          },
+          {
+            description: '문제~~~~~~~~ 나갑니다!',
+            keyword: '이자',
+            quizId: 2,
+            isCorrect: true,
+            quizExplanation: '맞아요, ~~~~~',
+            correctedAt: '2024-08-24 06:05:22',
+          },
+          {
+            description: '문제~~~~~~~~ 나갑니다!',
+            keyword: '이자',
+            quizId: 3,
+            isCorrect: true,
+            quizExplanation: '맞아요, ~~~~~',
+            correctedAt: '2024-08-23 06:05:22',
+          },
+          {
+            description: '문제~~~~~~~~ 나갑니다!',
+            keyword: '이자',
+            quizId: 4,
+            isCorrect: false,
+            quizExplanation: '맞아요, ~~~~~',
+            correctedAt: '2024-08-22 06:05:22',
+          },
+          {
+            description: '문제~~~~~~~~ 나갑니다!',
+            keyword: '이자',
+            quizId: 5,
+            isCorrect: false,
+            quizExplanation: '맞아요, ~~~~~',
+            correctedAt: '2024-08-21 06:05:22',
+          },
+          {
+            description: '문제~~~~~~~~ 나갑니다!',
+            keyword: '이자',
+            quizId: 6,
+            isCorrect: false,
+            quizExplanation: '맞아요, ~~~~~',
+            correctedAt: '2024-08-20 06:05:22',
+          },
+          {
+            description: '문제~~~~~~~~ 나갑니다!',
+            keyword: '이자',
+            quizId: 7,
+            isCorrect: false,
+            quizExplanation: '맞아요, ~~~~~',
+            correctedAt: '2024-08-19 06:05:22',
+          },
+          {
+            description: '문제~~~~~~~~ 나갑니다!',
+            keyword: '이자',
+            quizId: 8,
+            isCorrect: false,
+            quizExplanation: '맞아요, ~~~~~',
+            correctedAt: '2024-08-18 06:05:22',
+          },
+          {
+            description: '문제~~~~~~~~ 나갑니다!',
+            keyword: '이자',
+            quizId: 9,
+            isCorrect: false,
+            quizExplanation: '맞아요, ~~~~~',
+            correctedAt: '2024-08-17 06:05:22',
+          },
+        ],
+      ]);
+    }, 250);
+  });
+});
+
+//스트릭 조회
+mock.onGet(`api/child/${nickname}/quizzes/strick`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            day: 1,
+            isCorrect: true,
+          },
+          {
+            day: 2,
+            isCorrect: false,
+          },
+          {
+            day: 3,
+            isCorrect: true,
+          },
+        ],
+      ]);
+    }, 250);
+  });
+});
+
+//퀴즈 키워드 조회
+mock.onGet(`api/quizzes/keywords`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            keywordId: 1,
+            keyword: '이자',
+          },
+          {
+            keywordId: 2,
+            keyword: '은행',
+          },
+          {
+            keywordId: 3,
+            keyword: '통장',
+          },
+          {
+            keywordId: 4,
+            keyword: '저축',
+          },
+          {
+            keywordId: 5,
+            keyword: '적금',
+          },
+          {
+            keywordId: 6,
+            keyword: '금리',
+          },
+          {
+            keywordId: 7,
+            keyword: '화폐',
+          },
+          {
+            keywordId: 8,
+            keyword: '물가',
+          },
+          {
+            keywordId: 9,
+            keyword: '대출',
+          },
+          {
+            keywordId: 10,
+            keyword: '투자',
+          },
+        ],
+      ]);
+    }, 500);
+  });
+});
+
+//자식에게 할당된 키워드 조회
+mock.onGet(`api/children/${nickname}/keywords`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            keywordId: 1,
+            keyword: '이자',
+          },
+          {
+            keywordId: 2,
+            keyword: '은행',
+          },
+          {
+            keywordId: 3,
+            keyword: '통장',
+          },
+          {
+            keywordId: 4,
+            keyword: '저축',
+          },
+        ],
+      ]);
+    }, 250);
+  });
+});
+
 // ========== 퀴즈 도메인 ==========
 
 // ========== 미션 도메인 ==========
