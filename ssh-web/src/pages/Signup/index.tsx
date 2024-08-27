@@ -68,13 +68,21 @@ export const Signup = () => {
   const [handler, setHandler] = useState<IContentHandler>({
     label: '회원가입',
     handler: () => {
-      mutate({
-        code: location.state?.code,
-        nickname: contents[0].value as string,
-        birthday: contents[1].value as string,
-        gender: contents[2].value === '남' ? 'MALE' : 'FEMALE',
-        type: contents[3].value === '부모' ? 'parent' : 'child',
-      });
+      const nicknameCheck = /^(?![ㄱ-ㅎㅏ-ㅣ]+$)[가-힣A-Za-z]{2,8}$/;
+      if (
+        !(contents[0].value as string).length ||
+        !nicknameCheck.test(contents[0].value as string)
+      ) {
+        alert('닉네임은 한글/영문 2~8자 입니다.');
+      } else {
+        mutate({
+          code: location.state?.code,
+          nickname: contents[0].value as string,
+          birthday: contents[1].value as string,
+          gender: contents[2].value === '남' ? 'M' : 'F',
+          type: contents[3].value === '부모' ? 'PARENT' : 'CHILD',
+        });
+      }
     },
   });
   const birthdayHandler = (year: number, month: number, day: number) => {

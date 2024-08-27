@@ -19,8 +19,8 @@ export interface ISignupRequest {
   code: string;
   nickname: string;
   birthday: string;
-  gender: 'MALE' | 'FEMALE';
-  type: 'parent' | 'child';
+  gender: 'M' | 'F';
+  type: 'PARENT' | 'CHILD';
 }
 
 export interface IUserInfoInfo {
