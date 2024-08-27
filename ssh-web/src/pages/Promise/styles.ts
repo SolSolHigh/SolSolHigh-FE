@@ -12,7 +12,7 @@ export const layoutStyles = tv({
 });
 
 export const containerStyles = tv({
-  base: 'bg-white flex flex-col items-center w-full overflow-y-auto',
+  base: 'bg-white flex flex-col items-center w-full overflow-auto',
   variants: {
     size: {
       M: 'h-full p-4 ',

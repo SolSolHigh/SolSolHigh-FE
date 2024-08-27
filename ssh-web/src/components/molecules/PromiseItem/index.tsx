@@ -1,3 +1,4 @@
+import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { EResize } from '../../../themes/themeBase';
 import { Typography } from '../../atoms/Typography';
@@ -5,6 +6,7 @@ import { cardStyle } from './PromiseItem.styles';
 import { PromiseItemProps } from './PromiseItem.types';
 import stemp from './stemp.png';
 import { resizeState } from '../../../atoms/resize';
+import defaultImg from './../../organisms/PromiseDetailModal/promiseImg.png';
 
 export const PromiseItem = ({
   handleModal,
@@ -29,7 +31,7 @@ export const PromiseItem = ({
             </>
           )}
           <img
-            src={log.imageUrl}
+            src={isConfirm ? log.imageUrl : defaultImg}
             className="w-full h-full bg-red-600 bg-opacity-50 flex items-center justify-center rounded-lg"
           />
         </div>

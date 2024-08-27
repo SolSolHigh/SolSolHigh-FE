@@ -20,6 +20,7 @@ import {
   IPromiseLogsList,
 } from '../../interfaces/promiseTicketInterface';
 import { PromiseDetailModal } from '../../components/organisms/PromiseDetailModal';
+import { ConfirmPromiseModal } from '../../components/organisms/ConfirmPromiseModal';
 import { ChangeChild } from '../../components/molecules/ChangeChild';
 
 export const PromiseTicket = () => {
@@ -32,6 +33,8 @@ export const PromiseTicket = () => {
   );
 
   const size = useRecoilValue<EResize>(resizeState);
+  const isConfirm = selectedPromise?.usedAt;
+  const isParent = true; //부모라고 가정
 
   useEffect(() => {
     api.get(`/api/promise-tickets/count`).then((response) => {
@@ -54,16 +57,27 @@ export const PromiseTicket = () => {
 
   const handleAddModal = () => {
     setIsOpen(true);
+    setIsDetailModal(false);
+  };
+
+  const renderModalContent = () => {
+    if (isDetailModal) {
+      if (isConfirm || !isParent) {
+        return <PromiseDetailModal log={selectedPromise} isParent={isParent} />;
+      } else {
+        return (
+          <ConfirmPromiseModal log={selectedPromise} isParent={isParent} />
+        );
+      }
+    } else {
+      return <AddPromiseModal />;
+    }
   };
 
   return (
     <>
       <Modal color="primary" isOpen={isOpen} setIsOpen={setIsOpen}>
-        {isDetailModal ? (
-          <PromiseDetailModal log={selectedPromise} />
-        ) : (
-          <AddPromiseModal />
-        )}
+        {renderModalContent()}
       </Modal>
       <div className={layoutStyles({ size })}>
         {size === EResize.D && (
@@ -77,7 +91,7 @@ export const PromiseTicket = () => {
             <Typography size="2xl" weight="bold" color="dark">
               쏠쏠 퀴즈
             </Typography>
-            <ChangeChild />
+            {isParent && <ChangeChild />}
           </div>
           <div className={contentStyles({ size })}>
             <Typography weight="bold" color="dark" size="lg" classNameStyles="">
@@ -100,7 +114,7 @@ export const PromiseTicket = () => {
             </div>
           </div>
           <div className={gridStyles({ size })}>
-            <AddPromiseCard handleModal={handleAddModal} />
+            {!isParent && <AddPromiseCard handleModal={handleAddModal} />}
             {promiseLogs.map((log) => (
               <PromiseItem
                 key={log.id}

@@ -1,6 +1,6 @@
 import { IPromiseLogs } from '../../../interfaces/promiseTicketInterface';
 
-export interface PromiseDetailModalProps {
+export interface ConfirmPromiseModalProps {
   log: IPromiseLogs | null;
   isParent: boolean;
 }
