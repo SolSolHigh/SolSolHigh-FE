@@ -6,7 +6,7 @@ import { IPathNames } from '../interfaces/routerInterface';
 import { QuizSolving } from '../pages/QuizSolving';
 import { Login } from '../pages/Login';
 import { Signup } from '../pages/Signup';
-import Mission from '../pages/Mission';
+import { Mission } from '../pages/Mission';
 import { Information } from '../pages/Information';
 import { Manage } from '../pages/Information/Manage';
 
