@@ -2,7 +2,10 @@ import axios from 'axios';
 import { showToast } from '../utils/toastUtil';
 
 export const api = axios.create({
-  baseURL: 'https://www.solsol-high.kro.kr',
+  baseURL:
+    process.env.NODE_ENV === 'development'
+      ? ''
+      : 'https://www.solsol-high.kro.kr',
   headers: {
     'Content-Type': 'application/json',
   },

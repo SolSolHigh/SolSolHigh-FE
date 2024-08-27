@@ -477,7 +477,25 @@ mock.onPatch(/\/api\/missions\/\d+/).reply((config) => {
 // ========== 미션 도메인 ==========
 
 // ========== 사용자 도메인 ==========
-mock.onGet('/api/parents/childrens').reply((config) => {
+mock.onGet('/api/users/info').reply((config) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        {
+          nickname: 'yuseung0429',
+          email: 'yuseung0429@naver.com',
+          name: '이유승',
+          gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+          birthday: '1998-04-29',
+          type: Math.floor(Math.random() * 2) ? 'PARENT' : 'CHILD', // "CHILD"
+        },
+      ]);
+    }, 500);
+  });
+});
+
+mock.onGet('/api/parents/children').reply((config) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve([

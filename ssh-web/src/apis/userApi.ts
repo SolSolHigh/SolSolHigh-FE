@@ -23,7 +23,7 @@ export const getUserInfo = () => {
 };
 
 export const getMyChildren = () => {
-  return api.get<IChild[]>('/api/parents/childrens');
+  return api.get<IChild[]>('/api/parents/children');
 };
 
 export const getMyParents = () => {

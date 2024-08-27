@@ -16,6 +16,7 @@ import {
   mascotStyles,
   titleStyles,
 } from './InfoList.styles';
+import { useNavigate } from 'react-router-dom';
 
 export const InfoList = ({
   type,
@@ -27,6 +28,8 @@ export const InfoList = ({
   children,
   classNameStyles,
 }: InfoListProps) => {
+  const nav = useNavigate();
+
   return (
     <div className={`${containerStyles()} ${classNameStyles}`}>
       {/* 타이틀 */}
@@ -36,7 +39,7 @@ export const InfoList = ({
         </Typography>
         {hasMore && (
           <Icon color="dark" size="sm">
-            <HiChevronRight />
+            <HiChevronRight onClick={() => nav('/manage')} />
           </Icon>
         )}
       </div>
