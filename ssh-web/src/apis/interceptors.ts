@@ -3,7 +3,7 @@ import { showToast } from '../utils/toastUtil';
 import { checkSession } from './userApi';
 
 export const api = axios.create({
-  baseURL: 'https://www.solsol-high.kro.kr',
+  baseURL: 'http://localhost:8080',
   headers: {
     'Content-Type': 'application/json',
   },
