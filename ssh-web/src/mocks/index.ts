@@ -475,3 +475,30 @@ mock.onPatch(/\/api\/missions\/\d+/).reply((config) => {
   });
 });
 // ========== 미션 도메인 ==========
+
+// ========== 사용자 도메인 ==========
+mock.onGet('/api/parents/childrens').reply((config) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            name: '김다운',
+            nickname: '흑룡',
+            birthday: '1999-06-30',
+            gender: 'M',
+          },
+          {
+            name: '양규현',
+            nickname: '백룡',
+            birthday: '1999-05-30',
+            gender: 'F',
+          },
+        ],
+      ]);
+    }, 500);
+  });
+});
+
+// ========== 사용자 도메인 ==========

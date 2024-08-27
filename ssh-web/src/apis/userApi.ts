@@ -18,5 +18,5 @@ export const getUserInfo = () => {
 };
 
 export const getMyChildren = () => {
-  return api.get<IChild[]>('/api/parents/children');
+  return api.get<IChild[]>('/api/parents/childrens');
 };

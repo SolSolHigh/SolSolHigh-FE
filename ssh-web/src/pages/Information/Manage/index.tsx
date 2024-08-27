@@ -59,6 +59,7 @@ export const Manage = () => {
                 name: '자녀1',
                 nickname: '자녀1 닉네임',
                 birthday: '1999-03-13',
+                gender: 'M',
               }}
             />
           </div>
