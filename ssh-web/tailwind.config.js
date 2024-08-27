@@ -3,6 +3,7 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     screens: {
+      tabletB: { min: '768px', max: '1279px' },
       mob: { max: '767px' },
       tablet: { max: '1279px' },
       desktop: { min: '1280px' },

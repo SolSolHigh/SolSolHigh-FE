@@ -21,3 +21,19 @@ export interface ISignupRequest {
   gender: 'MALE' | 'FEMALE';
   type: 'parent' | 'child';
 }
+
+export interface IUserInfoInfo {
+  label: string;
+  content: string;
+}
+
+export interface IUserInfoMascot {
+  src: string;
+  label: string;
+}
+
+export interface IChild {
+  name: string;
+  nickname: string;
+  birthday: string;
+}
