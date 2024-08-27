@@ -3,6 +3,7 @@ import { LoginNavProps } from './LoginNav.types';
 import { loginNavStyles } from './LoginNav.styles';
 
 export const LoginNav = ({ children, classNameStyles }: LoginNavProps) => {
+  console.log('it"s for test');
   return (
     <div className={`${loginNavStyles()} ${classNameStyles}`}>
       <a href="https://www.solsol-high.kro.kr/api/oauth2/authorization/naver">
