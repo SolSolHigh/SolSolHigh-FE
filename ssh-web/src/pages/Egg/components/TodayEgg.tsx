@@ -58,7 +58,7 @@ export const TodayEgg = () => {
         <img
           src={'/assets/images/samples/eggs/egg_basic.png'}
           alt={'touchableEgg'}
-          style={{ width: '55%', objectFit: 'cover' }}
+          style={{ width: '50%', objectFit: 'cover' }}
           className={`rounded-full absolute top-10 transform transition-transform duration-300 ${eggScale}`}
         />
       </div>
