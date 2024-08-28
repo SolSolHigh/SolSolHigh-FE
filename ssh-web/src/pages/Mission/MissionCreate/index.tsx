@@ -3,6 +3,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   useMutation,
   useQuery,
+  useQueryClient,
   UseMutationOptions,
 } from '@tanstack/react-query';
 import { Typography } from '../../../components/atoms/Typography';
@@ -26,6 +27,7 @@ export const MissionCreate: React.FC = () => {
   const [missionEndAt, setMissionEndAt] = useState('');
   const setModalState = useSetRecoilState(isModalOpenState);
   const size = useRecoilValue(resizeState);
+  const queryClient = useQueryClient();
 
   const { data: children, isLoading: isChildrenLoading } = useQuery({
     queryKey: ['myChildren'],
@@ -62,12 +64,8 @@ export const MissionCreate: React.FC = () => {
     IMissionCreateRequest
   > = {
     onSuccess: () => {
-      setModalState({
-        isOpen: true,
-        content: (
-          <Typography size="lg">미션이 성공적으로 등록되었습니다!</Typography>
-        ),
-      });
+      queryClient.refetchQueries({ queryKey: ['missions'] }); // refetch 호출
+      setModalState({ isOpen: false, content: null }); // 모달 닫기
     },
     onError: (error) => {
       setModalState({

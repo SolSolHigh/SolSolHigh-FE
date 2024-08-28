@@ -37,10 +37,10 @@ export const MissionCard: React.FC<MissionCardProps> = ({
       <div className="flex items-center gap-4">
         <AvatarWithLabel
           imageUrl={`/assets/images/samples/children/boy3.png`}
-          altText={mission?.childInfo?.name ?? ''} // 기본값 할당
+          altText={mission?.childInfo?.name ?? ''}
           size="lg"
           bgColor="blue"
-          label={mission?.childInfo?.name ?? ''} // 기본값 할당
+          label={mission?.childInfo?.name ?? ''}
           labelSize="sm"
           labelWeight="bold"
           labelColor="dark"

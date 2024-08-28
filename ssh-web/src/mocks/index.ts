@@ -761,8 +761,8 @@ mock.onGet('/api/children/missions').reply((config) => {
     },
   ];
 
-  // 요청된 조건에 맞는 미션을 필터링
   const filteredMissions = missions.filter(
+    // 요청된 조건에 맞는 미션을 필터링
     (mission) => mission.isFinished === isFinished,
   );
 

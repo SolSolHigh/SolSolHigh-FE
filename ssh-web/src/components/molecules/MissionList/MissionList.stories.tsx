@@ -40,7 +40,7 @@ const sampleMissions: IMission[] = [
     childInfo: {
       childId: 1,
       name: '홍길동',
-      nickname: '길동이', // nickname 필드 추가
+      nickname: '길동이',
     },
   },
   {
@@ -54,7 +54,7 @@ const sampleMissions: IMission[] = [
     childInfo: {
       childId: 2,
       name: '김영희',
-      nickname: '영희', // nickname 필드 추가
+      nickname: '영희',
     },
   },
 ];

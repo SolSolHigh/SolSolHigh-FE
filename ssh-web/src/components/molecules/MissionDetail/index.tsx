@@ -9,36 +9,46 @@ import { updateMission, deleteMission } from '../../../apis/missionApi';
 import { showToast } from '../../../utils/toastUtil';
 import { useSetRecoilState } from 'recoil';
 import { isModalOpenState } from '../../../atoms/modal';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 
 export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
   const setIsModalOpen = useSetRecoilState(isModalOpenState);
+  const queryClient = useQueryClient();
 
-  const handleDelete = async () => {
-    try {
+  const deleteMutation = useMutation<void, Error, void>({
+    mutationFn: async () => {
       await deleteMission(mission?.missionId);
+    },
+    onSuccess: () => {
       showToast('success', '미션이 성공적으로 삭제되었습니다.');
+      queryClient.refetchQueries({ queryKey: ['missions'] });
       setIsModalOpen({ isOpen: false, content: null });
-    } catch (error) {
+    },
+    onError: (error: Error) => {
       showToast('error', '미션 삭제에 실패했습니다.');
-      setIsModalOpen({ isOpen: false, content: null });
       console.error('삭제 실패:', error);
-    }
-  };
+      setIsModalOpen({ isOpen: false, content: null });
+    },
+  });
 
-  const handleComplete = async () => {
-    try {
+  const completeMutation = useMutation<void, Error, void>({
+    mutationFn: async () => {
       await updateMission(mission?.missionId, { isFinished: true });
+    },
+    onSuccess: () => {
       showToast('success', '미션이 성공적으로 완료되었습니다.');
+      queryClient.refetchQueries({ queryKey: ['missions'] });
       setIsModalOpen({ isOpen: false, content: null });
-    } catch (error) {
+    },
+    onError: (error: Error) => {
       showToast('error', '미션 완료 처리에 실패했습니다.');
-      setIsModalOpen({ isOpen: false, content: null });
       console.error('완료 처리 실패:', error);
-    }
-  };
+      setIsModalOpen({ isOpen: false, content: null });
+    },
+  });
 
-  const handleUpdate = async () => {
-    try {
+  const updateMutation = useMutation<void, Error, void>({
+    mutationFn: async () => {
       await updateMission(mission?.missionId, {
         description: mission?.description || '미션 설명',
         isFinished: mission?.isFinished || false,
@@ -46,14 +56,18 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
         missionEndAt: mission?.missionEndAt || '',
         missionLevel: mission?.missionLevel || '1',
       });
+    },
+    onSuccess: () => {
       showToast('success', '미션이 성공적으로 수정되었습니다.');
+      queryClient.refetchQueries({ queryKey: ['missions'] });
       setIsModalOpen({ isOpen: false, content: null });
-    } catch (error) {
+    },
+    onError: (error: Error) => {
       showToast('error', '미션 수정에 실패했습니다.');
-      setIsModalOpen({ isOpen: false, content: null });
       console.error('수정 실패:', error);
-    }
-  };
+      setIsModalOpen({ isOpen: false, content: null });
+    },
+  });
 
   return (
     <div className={missionContent({ size })}>
@@ -81,7 +95,7 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
             classNameStyles="!bg-primary-400 hover:bg-primary-300"
             fullWidth
             size="sm"
-            onClick={handleUpdate}
+            onClick={() => updateMutation.mutate()}
           >
             수정
           </Button>
@@ -89,7 +103,7 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
             classNameStyles="bg-secondary-400 hover:bg-secondary-300"
             fullWidth
             size="sm"
-            onClick={handleDelete}
+            onClick={() => deleteMutation.mutate()}
           >
             삭제
           </Button>
@@ -167,7 +181,7 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
           <Button
             classNameStyles="bg-primary-500 hover:bg-primary-400 !text-lg rounded-2xl !py-3"
             fullWidth
-            onClick={handleComplete}
+            onClick={() => completeMutation.mutate()}
           >
             완료로 처리하기
           </Button>

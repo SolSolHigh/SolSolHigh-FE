@@ -48,7 +48,7 @@ const completedMission: IMission = {
   childInfo: {
     childId: 1,
     name: '차은우',
-    nickname: '은우', // 여기에 nickname 필드 추가
+    nickname: '은우',
   },
 };
 
@@ -63,7 +63,7 @@ const activeMission: IMission = {
   childInfo: {
     childId: 2,
     name: '고영희',
-    nickname: '영희', // 여기에 nickname 필드 추가
+    nickname: '영희',
   },
 };
 
