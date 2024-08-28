@@ -1,7 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
-import Home from '../pages/Home';
 import { IPathNames } from '../interfaces/routerInterface';
 import { Login } from '../pages/Login';
 import { Signup } from '../pages/Signup';
@@ -11,6 +10,7 @@ import { Mission } from '../pages/Mission';
 import { Information } from '../pages/Information';
 import { Manage } from '../pages/Information/Manage';
 import { Request } from '../pages/Information/Request';
+import { Home } from '../pages/Home';
 
 export const PathNames: IPathNames = {
   HOME: {
