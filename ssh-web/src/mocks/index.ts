@@ -124,7 +124,7 @@ mock.onGet(`/api/promise-tickets?page=0&size=5`).reply(() => {
               publishedAt: '2024-08-12T12:00:00',
               requestedAt: '2024-08-15T12:00:00',
               usedAt: '2024-08-18T12:00:00',
-              description: '와인이랑 놀이공원 놀러가고 시포',
+              description: '혼자 놀이공원 놀러가고 시포',
             },
           ],
           number: 0,

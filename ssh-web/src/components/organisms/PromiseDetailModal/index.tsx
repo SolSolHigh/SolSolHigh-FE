@@ -10,8 +10,6 @@ import { EResize } from '../../../themes/themeBase';
 import { resizeState } from '../../../atoms/resize';
 import { useRecoilValue } from 'recoil';
 import defaultImg from './promiseImg.png';
-import { close } from 'inspector';
-
 export const PromiseDetailModal = ({
   log,
   isParent,
@@ -27,12 +25,14 @@ export const PromiseDetailModal = ({
 
   return (
     <div className="w-full h-full flex justify-center">
-      <div className="flex flex-col items-center align-middle w-full max-w-[24rem] relative">
-        <img
-          src={isConfirm ? log.imageUrl : defaultImg}
-          className="rounded-2xl shadow-lg w-[90%] max-w-[24rem]"
-        />
-        {isConfirm && <img src={stemp} className={stempStyles({ size })} />}
+      <div className="flex flex-col items-center align-middle w-full max-w-[24rem] ">
+        <div className="relative flex justify-center w-full max-w-[24rem]">
+          <img
+            src={isConfirm ? log.imageUrl : defaultImg}
+            className="rounded-2xl shadow-lg w-[90%] max-w-[24rem]"
+          />
+          {isConfirm && <img src={stemp} className={stempStyles({ size })} />}
+        </div>
         <Typography
           color="dark"
           size="4xl"

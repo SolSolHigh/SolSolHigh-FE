@@ -37,8 +37,8 @@ export const gridStyles = tv({
   base: 'grid ',
   variants: {
     size: {
-      M: 'grid-cols-2 gap-8',
-      T: 'grid-cols-4 gap-12',
+      M: 'grid-cols-2 gap-[15vw]',
+      T: 'grid-cols-4 gap-[8vw]',
       D: 'grid-cols-4 gap-12',
     },
   },
