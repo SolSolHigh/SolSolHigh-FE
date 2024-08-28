@@ -1,31 +1,25 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ToggleTab } from '../../components/atoms/ToggleTab';
-import { Typography } from '../../components/atoms/Typography';
-import { resizeState } from '../../atoms/resize';
-import { EResize } from '../../themes/themeBase';
 import { useRecoilValue } from 'recoil';
 import { api } from '../../apis/interceptors';
-import { AvatarWithLabel } from '../../components/molecules/AvatarWithLabel';
-import { Button } from '../../components/atoms/Button';
-import { Main, containerStyles } from './styles';
-import { QuizTab } from '../../components/organisms/QuizTab';
+import { resizeState } from '../../atoms/resize';
+import { ToggleTab } from '../../components/atoms/ToggleTab';
+import { Typography } from '../../components/atoms/Typography';
+import { ChangeChild } from '../../components/molecules/ChangeChild';
+import { Mascot } from '../../components/molecules/Mascot';
+import { Modal } from '../../components/molecules/QuizModal';
 import {
   KeywordEditModal,
   KeywordsTab,
 } from '../../components/organisms/QuizKeywordTab';
+import { QuizLogsDetailModal } from '../../components/organisms/QuizLogsDetailModal';
+import { QuizTab } from '../../components/organisms/QuizTab';
 import {
   IKeywordResponseList,
+  IQuizLogResponseList,
   IStrickResponseList,
 } from '../../interfaces/quizInterface';
-import {
-  IQuizLogResponse,
-  IQuizLogResponseList,
-} from '../../interfaces/quizInterface';
-import { Modal } from '../../components/molecules/QuizModal';
-import { QuizLogsDetailModal } from '../../components/organisms/QuizLogsDetailModal';
-import { ChangeChild } from '../../components/molecules/ChangeChild';
-import { mascotWrapperStyles } from '../QuizSolving/styles';
-import { Mascot } from '../../components/molecules/Mascot';
+import { EResize } from '../../themes/themeBase';
+import { containerStyles } from './styles';
 
 const labels = ['쏠쏠 퀴즈', '키워드 및 내역'];
 
@@ -71,8 +65,10 @@ export const QuizMain: React.FC = () => {
   const [isKeywordModal, setIsKeywordModal] = useState(false);
   const size = useRecoilValue<EResize>(resizeState);
 
+  //todo
   const onRemoveKeyword = () => {};
 
+  //todo
   const onAddKeyword = () => {};
 
   const onClose = () => {
@@ -135,7 +131,7 @@ export const QuizMain: React.FC = () => {
   }, [quizLogs]); // quizLogs가 업데이트될 때마다 실행
 
   return (
-    <div className={containerStyles()}>
+    <div className={containerStyles({ size })}>
       <Modal color="primary" isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
         {isKeywordModal ? (
           <KeywordEditModal
@@ -153,17 +149,19 @@ export const QuizMain: React.FC = () => {
           />
         )}
       </Modal>
-      {size === EResize.D && (
-        <Mascot nickname="닉네임" ment="오늘의 퀴즈를 한번 풀어보세요!" />
-      )}
-      <div className={Main.container({ size })}>
-        <div className={Main.content({ size })}>
+      <Mascot
+        nickname="닉네임"
+        ment="오늘의 퀴즈를 한번 풀어보세요!"
+        classNameStyles={'tablet:hidden'}
+      />
+      <div className="bg-white flex flex-col items-center w-full tablet:h-full mob:p-4 tabletB:p-6 desktop:rounded-2xl desktop:px-4 desktop:max-w-[48rem] desktop:h-[48rem]">
+        <div className="flex flex-row w-full justify-between">
           <Typography size="2xl" weight="bold" color="dark">
             쏠쏠 퀴즈
           </Typography>
           <ChangeChild />
         </div>
-        <div className="flex mb-4">
+        <div className="flex w-full max-w-[48rem] mb-4">
           <ToggleTab
             activeTab={activeTab}
             onTabChange={(index: number) => {
@@ -175,7 +173,7 @@ export const QuizMain: React.FC = () => {
           />
         </div>
 
-        <div>
+        <div className="w-full max-w-[48rem]">
           {activeTab === 0 ? (
             <QuizTab
               size={size}

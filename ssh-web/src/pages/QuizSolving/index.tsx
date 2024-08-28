@@ -1,27 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Typography } from '../../components/atoms/Typography';
-import { Button } from '../../components/atoms/Button';
-import { Modal } from '../../components/molecules/Modal';
-import { EResize } from '../../themes/themeBase';
-import { resizeState } from '../../atoms/resize';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { isModalOpenState } from '../../atoms/modal';
-import { api } from '../../apis/interceptors';
 import REQUEST_DOMAINS from '../../apis/axiosConfig';
+import { api } from '../../apis/interceptors';
+import { isModalOpenState } from '../../atoms/modal';
+import { resizeState } from '../../atoms/resize';
+import { Button } from '../../components/atoms/Button';
+import { Typography } from '../../components/atoms/Typography';
+import { Mascot } from '../../components/molecules/Mascot';
+import { Modal } from '../../components/molecules/Modal';
 import { QuizDetail } from '../../components/molecules/QuizDetail';
-import {
-  ModalContentStyles,
-  container,
-  title,
-  button,
-  mascotWrapperStyles,
-  containerStyles,
-} from './styles';
 import {
   IDailyQuizResponse,
   IQuizResultResponse,
 } from '../../interfaces/quizInterface';
-import { Mascot } from '../../components/molecules/Mascot';
+import { EResize } from '../../themes/themeBase';
+import {
+  ModalContentStyles,
+  button,
+  container,
+  containerStyles,
+  title,
+} from './styles';
 
 export const QuizSolving: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<'O' | 'X' | null>(null);

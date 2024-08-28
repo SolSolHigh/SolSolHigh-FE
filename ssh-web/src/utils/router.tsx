@@ -9,6 +9,7 @@ import { QuizSolving } from '../pages/QuizSolving';
 import { Mission } from '../pages/Mission';
 import { Information } from '../pages/Information';
 import { Manage } from '../pages/Information/Manage';
+import { PromiseTicket } from '../pages/Promise';
 import { Request } from '../pages/Information/Request';
 import { Home } from '../pages/Home';
 
@@ -77,6 +78,10 @@ export const router = createBrowserRouter([
       {
         path: '/manage',
         element: <Manage />,
+      },
+      {
+        path: '/promise',
+        element: <PromiseTicket />,
       },
       {
         path: '/request',

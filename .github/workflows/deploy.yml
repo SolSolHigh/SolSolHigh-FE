@@ -2,7 +2,7 @@ name: SolSolHigh-FE Deploy
 
 on:
     push:
-        branches: develop
+        branches: feat/#57-main-menus
 
 jobs:
     deploy:
@@ -17,4 +17,4 @@ jobs:
                   password: ${{ secrets.SSH_PASSWORD }}
                   script: |
                       cd ~/solsol-high
-                      ./static.sh develop
+                      ./static.sh feat/#57-main-menus

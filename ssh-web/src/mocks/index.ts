@@ -30,6 +30,132 @@ mock.onGet(`/${REQUEST_DOMAINS.auth}/examples`).reply(() => {
   });
 });
 // ========== Test Domain ==========
+// ========== 약속권 도메인 ==========
+
+//자식이 자신의 약속권 개수 조회
+mock.onGet(`/api/promise-tickets/count`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        {
+          count: 3,
+        },
+      ]);
+    }, 500);
+  });
+});
+
+mock.onGet(`/api/promise-tickets?page=0&size=5`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        {
+          totalPages: 1,
+          totalElements: 1,
+          size: 5,
+          content: [
+            {
+              id: 1,
+              imageUrl:
+                'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
+              publishedAt: '2024-08-12T12:00:00',
+              requestedAt: '2024-08-15T12:00:00',
+              description: '엄마랑 놀이공원 놀러가고 시포',
+            },
+            {
+              id: 2,
+              imageUrl:
+                'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
+              publishedAt: '2024-08-12T12:00:00',
+              requestedAt: '2024-08-15T12:00:00',
+              description: '아빠랑 놀이공원 놀러가고 시포',
+            },
+            {
+              id: 3,
+              imageUrl:
+                'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
+              publishedAt: '2024-08-12T12:00:00',
+              requestedAt: '2024-08-15T12:00:00',
+              usedAt: '2024-08-18T12:00:00',
+              description: '할머니랑 놀이공원 놀러가고 시포',
+            },
+            {
+              id: 4,
+              imageUrl:
+                'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
+              publishedAt: '2024-08-12T12:00:00',
+              requestedAt: '2024-08-15T12:00:00',
+              usedAt: '2024-08-18T12:00:00',
+              description: '할이버지랑 놀이공원 놀러가고 시포',
+            },
+            {
+              id: 5,
+              imageUrl:
+                'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
+              publishedAt: '2024-08-12T12:00:00',
+              requestedAt: '2024-08-15T12:00:00',
+              usedAt: '2024-08-18T12:00:00',
+              description: '누나랑 놀이공원 놀러가고 시포',
+            },
+            {
+              id: 6,
+              imageUrl:
+                'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
+              publishedAt: '2024-08-12T12:00:00',
+              requestedAt: '2024-08-15T12:00:00',
+              usedAt: '2024-08-18T12:00:00',
+              description: '형이랑 놀이공원 놀러가고 시포',
+            },
+            {
+              id: 7,
+              imageUrl:
+                'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
+              publishedAt: '2024-08-12T12:00:00',
+              requestedAt: '2024-08-15T12:00:00',
+              usedAt: '2024-08-18T12:00:00',
+              description: '친구랑 놀이공원 놀러가고 시포',
+            },
+            {
+              id: 8,
+              imageUrl:
+                'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
+              publishedAt: '2024-08-12T12:00:00',
+              requestedAt: '2024-08-15T12:00:00',
+              usedAt: '2024-08-18T12:00:00',
+              description: '혼자 놀이공원 놀러가고 시포',
+            },
+          ],
+          number: 0,
+          sort: {
+            empty: true,
+            sorted: false,
+            unsorted: true,
+          },
+          first: true,
+          last: true,
+          numberOfElements: 1,
+          pageable: {
+            pageNumber: 0,
+            pageSize: 5,
+            sort: {
+              empty: true,
+              sorted: false,
+              unsorted: true,
+            },
+            offset: 0,
+            paged: true,
+            unpaged: false,
+          },
+          empty: false,
+        },
+      ]);
+    }, 500);
+  });
+});
+
+// ========== 약속권 도메인 ==========
 
 // ========== 퀴즈 도메인 ==========
 //오늘자 퀴즈 조회
