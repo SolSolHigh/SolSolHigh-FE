@@ -6,6 +6,7 @@ import {
   IEggCount,
   ISpecialEggLastTradePrice,
   IPaginatedTrades,
+  ISpecialEggReward,
 } from '../interfaces/eggInterface';
 import { api } from './interceptors';
 
@@ -83,8 +84,10 @@ export const getCurrentEggStatus = (): Promise<
   return api.get('/api/eggs/now');
 };
 
+// 현재 계란 상태 변경
 export const updateCurrentEggStatus = (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   hitCount: number,
-): Promise<AxiosResponse<void>> => {
-  return api.patch('/api/eggs/now', { hitCount });
+): Promise<AxiosResponse<ISpecialEggReward | null>> => {
+  return api.patch('/api/eggs/now', { hitCount: 1 }); // 항상 1을 보냄
 };

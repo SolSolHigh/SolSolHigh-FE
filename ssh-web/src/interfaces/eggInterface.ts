@@ -62,3 +62,9 @@ export interface IPaginatedTrades {
   numberOfElements: number;
   empty: boolean;
 }
+
+export interface ISpecialEggReward {
+  specialEggId: number;
+  specialEggName: string;
+  imageUrl: string;
+}

@@ -1051,3 +1051,218 @@ mock.onPost('/api/parents/children/request').reply((config) => {
 });
 
 // ========== 사용자 도메인 ==========
+
+// ========== 계란 도메인 ==========
+
+// 거래된 일별 평균 거래가 리스트 조회
+mock.onGet(/\/api\/market\/special-eggs\/\d+/).reply((config) => {
+  const specialEggId = config.url?.split('/').pop();
+
+  const tradeHistory = [
+    { price: 2, tradeDate: '2023-05-08' },
+    { price: 1, tradeDate: '2023-05-05' },
+  ];
+
+  return [200, tradeHistory];
+});
+
+// 계란 거래 삭제
+mock.onPatch(/\/api\/market\/trades\/\d+/).reply((config) => {
+  const sellBoardId = config.url?.split('/').pop();
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        204,
+        { message: `거래 ${sellBoardId}이 성공적으로 삭제되었습니다.` },
+      ]);
+    }, 500);
+  });
+});
+
+// 계란 구매 요청
+mock.onPost('/api/market/trades/buy-request').reply((config) => {
+  const requestData = JSON.parse(config.data);
+  const { sellBoardId, eggCount } = requestData;
+
+  if (eggCount <= 0) {
+    return [409, { code: 'EC001', message: '계란의 재화가 부족합니다.' }];
+  }
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        202,
+        { message: `계란 ${eggCount}개가 성공적으로 구매 요청되었습니다.` },
+      ]);
+    }, 500);
+  });
+});
+
+// 계란 재화 조회
+mock.onGet('/api/eggs/count').reply(() => {
+  return [200, { count: 10 }];
+});
+
+// 계란 판매 등록
+mock.onPost('/api/market/trades').reply((config) => {
+  const requestData = JSON.parse(config.data);
+  const { pricePerOnce, sellCount, specialEggId } = requestData;
+
+  if (sellCount <= 0 || pricePerOnce <= 0) {
+    return [409, { code: 'HSE001', message: '소유하지 않은 계란입니다.' }];
+  }
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        201,
+        { message: `계란 ${sellCount}개가 성공적으로 판매 등록되었습니다.` },
+      ]);
+    }, 500);
+  });
+});
+
+// 내가 등록한 팔게요 게시글 조회
+mock.onGet('/api/market/trades').reply((config) => {
+  const page = parseInt(config.params.page, 10) || 0;
+  const size = parseInt(config.params.size, 10) || 20;
+
+  const trades = [
+    {
+      sellBoardId: 1,
+      writtenAt: '2024-05-05 00:00:00',
+      pricePerOnce: 1,
+      sellCount: 1,
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '다이아몬드 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+    },
+  ];
+
+  const response = {
+    content: trades,
+    pageable: {
+      pageNumber: page,
+      pageSize: size,
+      offset: page * size,
+      paged: true,
+      unpaged: false,
+      sort: {
+        empty: true,
+        sorted: false,
+        unsorted: true,
+      },
+    },
+    first: page === 0,
+    last: trades.length < size,
+    size,
+    number: page,
+    numberOfElements: trades.length,
+    empty: trades.length === 0,
+    sort: {
+      empty: true,
+      sorted: false,
+      unsorted: true,
+    },
+  };
+
+  return [200, response];
+});
+
+// 마지막 거래가 조회
+mock.onGet(/\/api\/market\/special-eggs\/\d+\/price/).reply((config) => {
+  const specialEggId = config.url?.split('/').pop();
+
+  const lastPriceInfo = {
+    price: 1,
+    lastTradedAt: '2024-05-06 05:12:12',
+  };
+
+  return [200, lastPriceInfo];
+});
+
+// 소유한 특수 계란 조회
+mock.onGet('/api/children/special-eggs').reply(() => {
+  const specialEggs = [
+    {
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '시공간을 초월한 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/space-egg.png',
+      },
+      eggCount: 1,
+    },
+  ];
+
+  return [200, specialEggs];
+});
+
+// 팔게요 조회 (이름 검색, 금액별 조회)
+mock.onGet('/api/market/trades/search').reply((config) => {
+  const { name, sort } = config.params;
+
+  const trades = [
+    {
+      sellBoardId: 1,
+      writtenAt: '2024-05-05 00:00:00',
+      pricePerOnce: 1,
+      sellCount: 1,
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '다이아몬드 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+    },
+  ];
+
+  return [200, { content: trades }];
+});
+
+// 현재 계란 상태 조회
+mock.onGet('/api/eggs/now').reply(() => {
+  return [200, { needHitCount: 100, todayDestroyCount: 1 }];
+});
+
+// 현재 계란 상태 변경
+mock.onPatch('/api/eggs/now').reply((config) => {
+  const requestData = JSON.parse(config.data);
+  const { hitCount } = requestData;
+
+  // 서버 내부 hitCount의 감소를 시뮬레이션
+  let serverHitCount = 5; // 예시로 초기값을 설정 (실제 시나리오에 맞게 조정 가능)
+  serverHitCount -= hitCount;
+
+  if (serverHitCount <= 0) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([
+          202,
+          {
+            specialEggId: 1,
+            specialEggName: '시공간을 초월한 계란',
+            imageUrl:
+              'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+          },
+        ]);
+      }, 500);
+    });
+  }
+
+  if (serverHitCount > 0) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([202, null]); // 보상이 없는 경우 null 반환
+      }, 500);
+    });
+  }
+
+  // hitCount가 100 이상일 경우 (이미 계란이 깨진 경우)
+  return [403, { code: 'E002', message: '계란이 이미 깨졌습니다.' }];
+});
+// ========== 계란 도메인 ==========
