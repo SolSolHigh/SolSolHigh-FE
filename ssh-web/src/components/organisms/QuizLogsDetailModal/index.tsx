@@ -1,15 +1,9 @@
 import React from 'react';
-import { IQuizLogResponseList } from '../../../interfaces/quizInterface';
 import { Button } from '../../atoms/Button';
 import { Typography } from '../../../components/atoms/Typography';
 import dayjs from 'dayjs';
 import { QuizDetail } from '../../molecules/QuizDetail';
-
-interface QuizLogsDetailModalProps {
-  quizLogs: IQuizLogResponseList;
-  openQuizId: number;
-  toggleQuizDetail: (id: number) => void;
-}
+import { QuizLogsDetailModalProps } from './QuizLogsDetailModal.types';
 
 export const QuizLogsDetailModal: React.FC<QuizLogsDetailModalProps> = ({
   quizLogs,
@@ -24,15 +18,15 @@ export const QuizLogsDetailModal: React.FC<QuizLogsDetailModalProps> = ({
             <Typography
               size="xl"
               weight="semibold"
-              classNameStyles={'flex align-middle '}
+              classNameStyles="flex h-full"
             >
               {dayjs(item.correctedAt).format('YYYY년 M월 D일')}
             </Typography>
             <Typography
               size="md"
-              weight="regular"
+              weight="semibold"
               classNameStyles={
-                'rounded-full p-2 ' +
+                'rounded-full p-3 px-4 ' +
                 (item.isCorrect ? `bg-primary-400` : `bg-danger-400`)
               }
               color="light"

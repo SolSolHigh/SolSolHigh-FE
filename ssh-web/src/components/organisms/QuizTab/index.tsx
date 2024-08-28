@@ -21,8 +21,8 @@ export const QuizTab: React.FC<QuizTabProps> = ({
   const today = new Date();
 
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-3 bg-primary-100 p-6 rounded-lg mt-8 shadow-md">
+    <div className="space-y-8 w-full max-w-[48rem]">
+      <div className="grid grid-cols-3 bg-primary-100 p-6 rounded-lg mt-8 shadow-md w-full">
         <div className="col-span-2 text-center">
           <Typography color="secondary" weight="semibold">
             {dayjs(today).format('YYYY년 M월 D일')}
