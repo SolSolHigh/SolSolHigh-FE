@@ -19,7 +19,7 @@ import {
   IStrickResponseList,
 } from '../../interfaces/quizInterface';
 import { EResize } from '../../themes/themeBase';
-import { Main, containerStyles } from './styles';
+import { containerStyles } from './styles';
 
 const labels = ['쏠쏠 퀴즈', '키워드 및 내역'];
 
@@ -149,11 +149,13 @@ export const QuizMain: React.FC = () => {
           />
         )}
       </Modal>
-      {size === EResize.D && (
-        <Mascot nickname="닉네임" ment="오늘의 퀴즈를 한번 풀어보세요!" />
-      )}
-      <div className={Main.container({ size })}>
-        <div className={Main.content({ size })}>
+      <Mascot
+        nickname="닉네임"
+        ment="오늘의 퀴즈를 한번 풀어보세요!"
+        classNameStyles={'tablet:hidden'}
+      />
+      <div className="bg-white flex flex-col items-center w-full tablet:h-full mob:p-4 tabletB:p-6 desktop:rounded-2xl desktop:px-4 desktop:max-w-[48rem] desktop:h-[48rem]">
+        <div className="flex flex-row w-full justify-between">
           <Typography size="2xl" weight="bold" color="dark">
             쏠쏠 퀴즈
           </Typography>
