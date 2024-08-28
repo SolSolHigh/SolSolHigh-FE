@@ -12,6 +12,9 @@ import { Information } from '../pages/Information';
 import { Manage } from '../pages/Information/Manage';
 import { PromiseTicket } from '../pages/Promise';
 import { Request } from '../pages/Information/Request';
+import { Account } from '../pages/Account';
+import { IntroductionAccountPage } from '../pages/IntroductionAccount';
+import { AccountItemPage } from '../pages/AccountItem';
 
 export const PathNames: IPathNames = {
   HOME: {
@@ -86,6 +89,18 @@ export const router = createBrowserRouter([
       {
         path: '/request',
         element: <Request />,
+      },
+      {
+        path: '/account',
+        element: <Account />,
+      },
+      {
+        path: '/account/introduction',
+        element: <IntroductionAccountPage />,
+      },
+      {
+        path: '/account/items',
+        element: <AccountItemPage />,
       },
     ],
   },

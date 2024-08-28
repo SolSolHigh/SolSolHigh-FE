@@ -30,6 +30,116 @@ mock.onGet(`/${REQUEST_DOMAINS.auth}/examples`).reply(() => {
   });
 });
 // ========== Test Domain ==========
+
+// ========== 계좌 도메인 ===========
+
+// 예금 상품 조회
+mock.onGet(`/api/accounts/deposit/products`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            accountName: '90일 단기 예금',
+            accountTypeUniqueNo: '004-2-bafb564d',
+            subscriptionPeriod: '90',
+            minSubscriptionBalance: '0',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+          {
+            accountName: '180일 단기 예금',
+            accountTypeUniqueNo: '004-2-bafb564d',
+            subscriptionPeriod: '180',
+            minSubscriptionBalance: '0',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+          {
+            accountName: '270일 단기 예금',
+            accountTypeUniqueNo: '004-2-bafb564d',
+            subscriptionPeriod: '270',
+            minSubscriptionBalance: '0',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+          {
+            accountName: '360일 단기 예금',
+            accountTypeUniqueNo: '004-2-bafb564d',
+            subscriptionPeriod: '360',
+            minSubscriptionBalance: '0',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+        ],
+      ]);
+    }, 500);
+  });
+});
+
+//적금 상품 조회
+mock.onGet(`/api/accounts/saving/products`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            accountName: '90일 단기 적금',
+            accountTypeUniqueNo: '004-2-bafb564d',
+            subscriptionPeriod: '90',
+            minSubscriptionBalance: '30000', // 매일마다 나가는 돈 최소
+            maxSubscriptionBalance: '3000000', //매일마다 나가는 돈 최대
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+          {
+            accountName: '180일 단기 적금',
+            accountTypeUniqueNo: '004-2-bafb564d',
+            subscriptionPeriod: '180',
+            minSubscriptionBalance: '30000',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+          {
+            accountName: '270일 단기 적금',
+            accountTypeUniqueNo: '004-2-bafb564d',
+            subscriptionPeriod: '270',
+            minSubscriptionBalance: '30000',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+          {
+            accountName: '360일 단기 적금',
+            accountTypeUniqueNo: '004-2-bafb564d',
+            subscriptionPeriod: '360',
+            minSubscriptionBalance: '30000',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+        ],
+      ]);
+    }, 500);
+  });
+});
+// ========== 계좌 도메인 ===========
+
 // ========== 약속권 도메인 ==========
 
 //자식이 자신의 약속권 개수 조회
