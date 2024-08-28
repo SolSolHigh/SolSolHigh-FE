@@ -10,84 +10,161 @@ import {
 } from '../interfaces/eggInterface';
 import { api } from './interceptors';
 
-export const getSpecialEggTradeHistory = (
+// 특별한 계란 거래 히스토리 조회
+export const getSpecialEggTradeHistory = async (
   specialEggId: number,
 ): Promise<AxiosResponse<ISpecialEggTradeHistory[]>> => {
-  return api.get(`/api/market/special-eggs/${specialEggId}`);
+  try {
+    const response = await api.get(`/api/market/special-eggs/${specialEggId}`);
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error('특별한 계란 거래 히스토리 조회에 실패했습니다.');
+  }
 };
 
-export const deleteSpecialEggTrade = (
+// 특별한 계란 거래 삭제
+export const deleteSpecialEggTrade = async (
   sellBoardId: number,
 ): Promise<AxiosResponse<void>> => {
-  return api.patch(`/api/market/trades/${sellBoardId}`);
+  try {
+    const response = await api.patch(`/api/market/trades/${sellBoardId}`);
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error('특별한 계란 거래 삭제에 실패했습니다.');
+  }
 };
 
-export const requestEggPurchase = (
+// 계란 구매 요청
+export const requestEggPurchase = async (
   sellBoardId: number,
   eggCount: number,
 ): Promise<AxiosResponse<void>> => {
-  return api.post('/api/market/trades/buy-request', {
-    sellBoardId,
-    eggCount,
-  });
+  try {
+    const response = await api.post('/api/market/trades/buy-request', {
+      sellBoardId,
+      eggCount,
+    });
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error('계란 구매 요청에 실패했습니다.');
+  }
 };
 
-export const getEggCount = (): Promise<AxiosResponse<IEggCount>> => {
-  return api.get('/api/eggs/count');
+// 계란 재화 조회
+export const getEggCount = async (): Promise<AxiosResponse<IEggCount>> => {
+  try {
+    const response = await api.get('/api/eggs/count');
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error('계란 재화 조회에 실패했습니다.');
+  }
 };
 
-export const registerEggForSale = (
+// 계란 판매 등록
+export const registerEggForSale = async (
   pricePerOnce: number,
   sellCount: number,
   specialEggId: number,
 ): Promise<AxiosResponse<void>> => {
-  return api.post('/api/market/trades', {
-    pricePerOnce,
-    sellCount,
-    specialEggId,
-  });
+  try {
+    const response = await api.post('/api/market/trades', {
+      pricePerOnce,
+      sellCount,
+      specialEggId,
+    });
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error('계란 판매 등록에 실패했습니다.');
+  }
 };
 
-export const getMyRegisteredEggTrades = (
+// 내가 등록한 계란 거래 조회
+export const getMyRegisteredEggTrades = async (
   page: number,
   size: number,
 ): Promise<AxiosResponse<IPaginatedTrades>> => {
-  return api.get('/api/market/trades', {
-    params: { page, size },
-  });
+  try {
+    const response = await api.get('/api/market/trades', {
+      params: { page, size },
+    });
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error('내가 등록한 계란 거래 조회에 실패했습니다.');
+  }
 };
 
-export const getLastSpecialEggPrice = (
+// 마지막 계란 거래 가격 조회
+export const getLastSpecialEggPrice = async (
   specialEggId: number,
 ): Promise<AxiosResponse<ISpecialEggLastTradePrice>> => {
-  return api.get(`/api/market/special-eggs/${specialEggId}/price`);
+  try {
+    const response = await api.get(
+      `/api/market/special-eggs/${specialEggId}/price`,
+    );
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error('마지막 계란 거래 가격 조회에 실패했습니다.');
+  }
 };
 
-export const getOwnedSpecialEggs = (): Promise<
+// 소유한 특별 계란 조회
+export const getOwnedSpecialEggs = async (): Promise<
   AxiosResponse<ISpecialEggWithCount[]>
 > => {
-  return api.get('/api/children/special-eggs');
+  try {
+    const response = await api.get('/api/children/special-eggs');
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error('소유한 특별 계란 조회에 실패했습니다.');
+  }
 };
 
-export const searchEggsForSale = (
+// 판매 중인 계란 검색
+export const searchEggsForSale = async (
   name: string,
   sort: string,
 ): Promise<AxiosResponse<IPaginatedTrades>> => {
-  return api.get('/api/market/trades/search', {
-    params: { name, sort },
-  });
+  try {
+    const response = await api.get('/api/market/trades/search', {
+      params: { name, sort },
+    });
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error('판매 중인 계란 검색에 실패했습니다.');
+  }
 };
 
-export const getCurrentEggStatus = (): Promise<
+// 현재 계란 상태 조회
+export const getCurrentEggStatus = async (): Promise<
   AxiosResponse<ICurrentEggStatus>
 > => {
-  return api.get('/api/eggs/now');
+  try {
+    const response = await api.get('/api/eggs/now');
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error('현재 계란 상태 조회에 실패했습니다.');
+  }
 };
 
 // 현재 계란 상태 변경
-export const updateCurrentEggStatus = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const updateCurrentEggStatus = async (
   hitCount: number,
 ): Promise<AxiosResponse<ISpecialEggReward | null>> => {
-  return api.patch('/api/eggs/now', { hitCount: 1 }); // 항상 1을 보냄
+  try {
+    const response = await api.patch('/api/eggs/now', { hitCount: 1 }); // 항상 1을 보냄
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error('계란 상태 변경에 실패했습니다.');
+  }
 };

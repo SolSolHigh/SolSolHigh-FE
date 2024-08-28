@@ -1226,16 +1226,16 @@ mock.onGet('/api/market/trades/search').reply((config) => {
 
 // 현재 계란 상태 조회
 mock.onGet('/api/eggs/now').reply(() => {
-  return [200, { needHitCount: 100, todayDestroyCount: 1 }];
+  return [200, { needHitCount: 14, todayDestroyCount: 4 }];
 });
 
 // 현재 계란 상태 변경
+let serverHitCount = 14;
+
 mock.onPatch('/api/eggs/now').reply((config) => {
   const requestData = JSON.parse(config.data);
   const { hitCount } = requestData;
 
-  // 서버 내부 hitCount의 감소를 시뮬레이션
-  let serverHitCount = 5; // 예시로 초기값을 설정 (실제 시나리오에 맞게 조정 가능)
   serverHitCount -= hitCount;
 
   if (serverHitCount <= 0) {
@@ -1254,15 +1254,10 @@ mock.onPatch('/api/eggs/now').reply((config) => {
     });
   }
 
-  if (serverHitCount > 0) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([202, null]); // 보상이 없는 경우 null 반환
-      }, 500);
-    });
-  }
-
-  // hitCount가 100 이상일 경우 (이미 계란이 깨진 경우)
-  return [403, { code: 'E002', message: '계란이 이미 깨졌습니다.' }];
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([202, null]); // 보상이 없는 경우 null 반환
+    }, 500);
+  });
 });
 // ========== 계란 도메인 ==========

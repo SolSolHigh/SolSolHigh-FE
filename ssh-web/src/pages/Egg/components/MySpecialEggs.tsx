@@ -9,6 +9,7 @@ import { useSetRecoilState } from 'recoil';
 import { isModalOpenState } from '../../../atoms/modal';
 import SwiperCore, { EffectCoverflow, Pagination, Navigation } from 'swiper';
 import { Badge } from '../../../components/atoms/Badge';
+import { useNavigate } from 'react-router-dom';
 
 SwiperCore.use([EffectCoverflow, Pagination, Navigation]);
 
@@ -20,6 +21,7 @@ interface Egg {
 }
 
 export const MySpecialEggs: React.FC = () => {
+  const navigate = useNavigate();
   const EGG_POINT = 12;
   const setModalState = useSetRecoilState(isModalOpenState);
 
@@ -101,7 +103,7 @@ export const MySpecialEggs: React.FC = () => {
           style={{ maxWidth: '100%' }}
         >
           {eggs.map((egg, index) => {
-            const isOwned = index % 2 === 0; // Replace with actual ownership logic
+            const isOwned = index % 2 === 0;
             return (
               <SwiperSlide
                 key={egg.id}
@@ -147,7 +149,12 @@ export const MySpecialEggs: React.FC = () => {
           })}
         </Swiper>
       </div>
-      <button className="w-full h-max py-4 bg-primary-400 flex flex-row justify-center items-center gap-4 rounded-3xl mt-4 hover:bg-primary-500 transition-all duration-300">
+      <button
+        className="w-full h-max py-4 bg-primary-400 flex flex-row justify-center items-center gap-4 rounded-3xl mt-4 hover:bg-primary-500 transition-all duration-300"
+        onClick={() => {
+          navigate('/market');
+        }}
+      >
         <img src="/assets/images/egg_present.png" alt="" className="w-14" />
         <Typography size="4xl" color="light" weight="bold">
           계란시장 놀러가기
@@ -166,6 +173,7 @@ const SpecialEggDetail: React.FC<SpecialEggDetailProps> = ({
   egg,
   isOwned,
 }) => {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="w-full text-left">
@@ -209,7 +217,12 @@ const SpecialEggDetail: React.FC<SpecialEggDetailProps> = ({
         </Typography>
       </div>
 
-      <button className="w-full h-max py-4 bg-primary-400 flex flex-row justify-center items-center gap-4 rounded-3xl mt-8 hover:bg-primary-500 transition-all duration-300">
+      <button
+        className="w-full h-max py-4 bg-primary-400 flex flex-row justify-center items-center gap-4 rounded-3xl mt-8 hover:bg-primary-500 transition-all duration-300"
+        onClick={() => {
+          navigate('/market');
+        }}
+      >
         <img src="/assets/images/egg_present.png" alt="" className="w-14" />
         <Typography size="4xl" color="light" weight="bold">
           {isOwned ? '시장으로 팔러가기' : '시장으로 사러가기'}
