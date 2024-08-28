@@ -1193,7 +1193,70 @@ mock.onGet('/api/children/special-eggs').reply(() => {
         specialEggId: 1,
         specialEggName: '시공간을 초월한 계란',
         imageUrl:
-          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/space-egg.png',
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+      eggCount: 1,
+    },
+    {
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '시공간을 초월한 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+      eggCount: 1,
+    },
+    {
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '시공간을 초월한 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+      eggCount: 1,
+    },
+    {
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '시공간을 초월한 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+      eggCount: 1,
+    },
+    {
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '시공간을 초월한 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+      eggCount: 1,
+    },
+    {
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '시공간을 초월한 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+      eggCount: 1,
+    },
+    {
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '시공간을 초월한 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+      eggCount: 1,
+    },
+    {
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '시공간을 초월한 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
       },
       eggCount: 1,
     },

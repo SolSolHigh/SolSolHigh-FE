@@ -158,6 +158,7 @@ export const getCurrentEggStatus = async (): Promise<
 
 // 현재 계란 상태 변경
 export const updateCurrentEggStatus = async (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   hitCount: number,
 ): Promise<AxiosResponse<ISpecialEggReward | null>> => {
   try {

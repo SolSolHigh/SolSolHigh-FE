@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography } from '../../../components/atoms/Typography';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -10,6 +10,11 @@ import { isModalOpenState } from '../../../atoms/modal';
 import SwiperCore, { EffectCoverflow, Pagination, Navigation } from 'swiper';
 import { Badge } from '../../../components/atoms/Badge';
 import { useNavigate } from 'react-router-dom';
+import {
+  getEggCount,
+  getOwnedSpecialEggs,
+  getLastSpecialEggPrice,
+} from '../../../apis/eggApi';
 
 SwiperCore.use([EffectCoverflow, Pagination, Navigation]);
 
@@ -20,42 +25,85 @@ interface Egg {
   description: string;
 }
 
+const bgColors = [
+  'bg-pink-300 hover:bg-pink-400 transition-colors duration-300',
+  'bg-blue-300 hover:bg-blue-400 transition-colors duration-300',
+  'bg-green-300 hover:bg-green-400 transition-colors duration-300',
+  'bg-yellow-300 hover:bg-yellow-400 transition-colors duration-300',
+  'bg-purple-300 hover:bg-purple-400 transition-colors duration-300',
+  'bg-orange-300 hover:bg-orange-400 transition-colors duration-300',
+  'bg-gray-300 hover:bg-gray-400 transition-colors duration-300',
+  'bg-red-300 hover:bg-red-400 transition-colors duration-300',
+  'bg-teal-300 hover:bg-teal-400 transition-colors duration-300',
+  'bg-indigo-300 hover:bg-indigo-400 transition-colors duration-300',
+];
+
 export const MySpecialEggs: React.FC = () => {
   const navigate = useNavigate();
-  const EGG_POINT = 12;
   const setModalState = useSetRecoilState(isModalOpenState);
-
-  const bgColors = [
-    'bg-pink-300 hover:bg-pink-400 transition-colors duration-300',
-    'bg-blue-300 hover:bg-blue-400 transition-colors duration-300',
-    'bg-green-300 hover:bg-green-400 transition-colors duration-300',
-    'bg-yellow-300 hover:bg-yellow-400 transition-colors duration-300',
-    'bg-purple-300 hover:bg-purple-400 transition-colors duration-300',
-    'bg-orange-300 hover:bg-orange-400 transition-colors duration-300',
-    'bg-gray-300 hover:bg-gray-400 transition-colors duration-300',
-    'bg-red-300 hover:bg-red-400 transition-colors duration-300',
-    'bg-teal-300 hover:bg-teal-400 transition-colors duration-300',
-    'bg-indigo-300 hover:bg-indigo-400 transition-colors duration-300',
-  ];
-
-  const eggs: Egg[] = Array.from({ length: 20 }, (_, index) => ({
-    id: index + 1,
-    name: `계란 이름 ${index + 1}`,
-    src: `/assets/images/samples/eggs/egg_${index + 1}.png`,
-    description: `이 계란은 ${index + 1}번 특별한 계란입니다.`,
-  }));
-
+  const [eggPoints, setEggPoints] = useState<number>(0);
+  const [ownedEggs, setOwnedEggs] = useState<Egg[]>([]);
   const [currentSlide, setCurrentSlide] = useState(1);
+
+  useEffect(() => {
+    // 계란 재화(포인트) 조회
+    const fetchEggCount = async () => {
+      try {
+        const response = await getEggCount();
+        setEggPoints(response.data.count);
+      } catch (error) {
+        console.error('계란 재화 조회 실패:', error);
+      }
+    };
+
+    // 소유한 특별 계란 조회
+    const fetchOwnedSpecialEggs = async () => {
+      try {
+        const response = await getOwnedSpecialEggs();
+        const eggs = response.data.map((eggData) => ({
+          id: eggData.specialEggInfo.specialEggId,
+          name: eggData.specialEggInfo.specialEggName,
+          src: eggData.specialEggInfo.imageUrl,
+          description: `이 계란은 ${eggData.specialEggInfo.specialEggName}입니다.`,
+        }));
+        setOwnedEggs(eggs);
+      } catch (error) {
+        console.error('소유한 특별 계란 조회 실패:', error);
+      }
+    };
+
+    fetchEggCount();
+    fetchOwnedSpecialEggs();
+  }, []);
 
   const handleSlideChange = (swiper: { realIndex: number }) => {
     setCurrentSlide(swiper.realIndex + 1);
   };
 
-  const handleDetailClick = (egg: Egg, isOwned: boolean) => {
-    setModalState({
-      isOpen: true,
-      content: <SpecialEggDetail egg={egg} isOwned={isOwned} />,
-    });
+  const handleDetailClick = async (egg: Egg, isOwned: boolean) => {
+    try {
+      const response = await getLastSpecialEggPrice(egg.id);
+      const lastPrice = response.data.price ?? '알 수 없음';
+
+      setModalState({
+        isOpen: true,
+        content: (
+          <SpecialEggDetail egg={egg} isOwned={isOwned} lastPrice={lastPrice} />
+        ),
+      });
+    } catch (error) {
+      console.error('마지막 거래 가격 조회 실패:', error);
+      setModalState({
+        isOpen: true,
+        content: (
+          <SpecialEggDetail
+            egg={egg}
+            isOwned={isOwned}
+            lastPrice="알 수 없음"
+          />
+        ),
+      });
+    }
   };
 
   return (
@@ -67,7 +115,7 @@ export const MySpecialEggs: React.FC = () => {
           classNameStyles="!text-primary-400"
           weight="bold"
         >
-          {EGG_POINT}개
+          {eggPoints}개
         </Typography>
         <Typography color="light" classNameStyles="mt-4">
           내가 가진 계란포인트에요
@@ -81,7 +129,7 @@ export const MySpecialEggs: React.FC = () => {
             weight="bold"
             classNameStyles="!text-primary-400"
           >
-            {currentSlide} / {eggs.length}
+            {currentSlide} / {ownedEggs.length}
           </Typography>
         </div>
         <Swiper
@@ -102,51 +150,48 @@ export const MySpecialEggs: React.FC = () => {
           className="swiper w-full"
           style={{ maxWidth: '100%' }}
         >
-          {eggs.map((egg, index) => {
-            const isOwned = index % 2 === 0;
-            return (
-              <SwiperSlide
-                key={egg.id}
-                className="flex items-center justify-center"
-                style={{ maxWidth: '230px' }}
+          {ownedEggs.map((egg, index) => (
+            <SwiperSlide
+              key={egg.id}
+              className="flex items-center justify-center"
+              style={{ maxWidth: '230px' }}
+            >
+              <div
+                className={`w-full flex flex-col items-center justify-center rounded-xl py-6 ${
+                  bgColors[index % bgColors.length]
+                }`}
               >
-                <div
-                  className={`w-full flex flex-col items-center justify-center rounded-xl py-6 ${
-                    bgColors[index % bgColors.length]
-                  }`}
-                >
-                  <div className="relative flex items-center justify-center">
-                    <div
-                      className="absolute w-[120px] h-[120px] rounded-full bg-gray-800 opacity-50 blur-lg"
-                      style={{
-                        transform: 'translate(12px, 15px)',
-                      }}
-                    ></div>
+                <div className="relative flex items-center justify-center">
+                  <div
+                    className="absolute w-[120px] h-[120px] rounded-full bg-gray-800 opacity-50 blur-lg"
+                    style={{
+                      transform: 'translate(12px, 15px)',
+                    }}
+                  ></div>
 
-                    <img
-                      src={egg.src}
-                      alt={egg.name}
-                      className="h-auto w-[100px] rounded-md mb-4 relative z-10"
-                    />
-                  </div>
-                  <Typography
-                    weight="bold"
-                    color="light"
-                    size="2xl"
-                    classNameStyles="mb-2 w-3/4 text-left"
-                  >
-                    {egg.name}
-                  </Typography>
-                  <button
-                    className="bg-white w-3/4 rounded-md shadow-md py-2"
-                    onClick={() => handleDetailClick(egg, isOwned)}
-                  >
-                    자세히보기
-                  </button>
+                  <img
+                    src={egg.src}
+                    alt={egg.name}
+                    className="h-auto w-[100px] rounded-md mb-4 relative z-10"
+                  />
                 </div>
-              </SwiperSlide>
-            );
-          })}
+                <Typography
+                  weight="bold"
+                  color="light"
+                  size="2xl"
+                  classNameStyles="mb-2 w-3/4 text-left"
+                >
+                  {egg.name}
+                </Typography>
+                <button
+                  className="bg-white w-3/4 rounded-md shadow-md py-2"
+                  onClick={() => handleDetailClick(egg, true)}
+                >
+                  자세히보기
+                </button>
+              </div>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
       <button
@@ -167,11 +212,13 @@ export const MySpecialEggs: React.FC = () => {
 interface SpecialEggDetailProps {
   egg: Egg;
   isOwned: boolean;
+  lastPrice: string | number;
 }
 
 const SpecialEggDetail: React.FC<SpecialEggDetailProps> = ({
   egg,
   isOwned,
+  lastPrice,
 }) => {
   const navigate = useNavigate();
   return (
@@ -194,7 +241,7 @@ const SpecialEggDetail: React.FC<SpecialEggDetailProps> = ({
         />
         <div className="absolute bottom-3 right-6">
           <Badge
-            text={'3개 보유중'}
+            text={isOwned ? '3개 보유중' : '보유중 아님'}
             classNameStyles={isOwned ? '!bg-primary-500' : '!bg-secondary-700'}
             size="lg"
             weight="semibold"
@@ -210,7 +257,7 @@ const SpecialEggDetail: React.FC<SpecialEggDetailProps> = ({
           시장에서 마지막으로 팔린 가격은
         </Typography>
         <Typography size="md" color="primary" weight="semibold">
-          N 계란포인트
+          {lastPrice} 계란포인트
         </Typography>
         <Typography size="md" color="dark" weight="semibold">
           예요
