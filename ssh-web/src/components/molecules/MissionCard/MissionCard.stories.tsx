@@ -42,6 +42,7 @@ export const MissionStates: Story = {
             childInfo: {
               childId: 1,
               name: '차은우',
+              nickname: '차차',
             },
           }}
         />
@@ -61,51 +62,7 @@ export const MissionStates: Story = {
             childInfo: {
               childId: 2,
               name: '이슬기',
-            },
-          }}
-        />
-      </div>
-    </div>
-  ),
-};
-
-export const MissionInDifferentWidths: Story = {
-  render: (args) => (
-    <div>
-      <h3>좁은 화면에서의 미션 카드</h3>
-      <div style={{ width: '500px', marginBottom: '2rem' }}>
-        <MissionCard
-          {...args}
-          mission={{
-            missionId: 3,
-            description: '방 청소하기',
-            isFinished: false,
-            missionStartAt: '2026-02-04 07:00:00',
-            missionEndAt: '2026-02-04 09:00:00',
-            missionFinishedAt: null,
-            missionLevel: '2',
-            childInfo: {
-              childId: 3,
-              name: '박소연',
-            },
-          }}
-        />
-      </div>
-      <h3>넓은 화면에서의 미션 카드</h3>
-      <div style={{ width: '1000px' }}>
-        <MissionCard
-          {...args}
-          mission={{
-            missionId: 4,
-            description: '숙제하기',
-            isFinished: true,
-            missionStartAt: '2026-02-04 10:00:00',
-            missionEndAt: '2026-02-04 12:00:00',
-            missionFinishedAt: '2026-02-04 11:30:00',
-            missionLevel: '2',
-            childInfo: {
-              childId: 4,
-              name: '김유진',
+              nickname: '슬기',
             },
           }}
         />

@@ -2,27 +2,53 @@ import { AxiosResponse } from 'axios';
 import {
   IMissionCreateRequest,
   IMissionUpdateRequest,
-} from '../interfaces/missionInterfaces';
+  IPaginatedMissions,
+} from '../interfaces/missionInterface';
 import { api } from './interceptors';
 
-// 미션 생성
-export const createMission = async (
+export const createMission = (
   newMission: IMissionCreateRequest,
 ): Promise<AxiosResponse<IMissionCreateRequest>> => {
-  return await api.post('/api/children/missions', newMission);
+  return api.post('/api/children/missions', newMission);
 };
 
-// 미션 수정
-export const updateMissionStatus = async (
+export const updateMission = (
   missionId: number,
-  updatedData: Partial<IMissionUpdateRequest>,
-): Promise<AxiosResponse> => {
-  return await api.patch(`/api/missions/${missionId}`, updatedData);
+  updatedData: IMissionUpdateRequest,
+): Promise<AxiosResponse<void>> => {
+  return api.patch(`/api/children/missions/${missionId}`, updatedData);
 };
 
-// 미션 삭제
-export const deleteMission = async (
+export const deleteMission = (
   missionId: number,
-): Promise<AxiosResponse> => {
-  return await api.delete(`/api/missions/${missionId}`);
+): Promise<AxiosResponse<void>> => {
+  return api.delete(`/api/children/missions/${missionId}`);
+};
+
+export const getMissionsForParent = (
+  page: number,
+  size: number,
+  isFinished: boolean,
+): Promise<AxiosResponse<IPaginatedMissions>> => {
+  return api.get('/api/children/missions', {
+    params: {
+      page,
+      size,
+      'is-finished': isFinished,
+    },
+  });
+};
+
+export const getMissionsForChild = (
+  page: number,
+  size: number,
+  isFinished: boolean,
+): Promise<AxiosResponse<IPaginatedMissions>> => {
+  return api.get('/api/children/missions', {
+    params: {
+      page,
+      size,
+      'is-finished': isFinished,
+    },
+  });
 };

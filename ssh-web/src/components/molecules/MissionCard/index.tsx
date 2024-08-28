@@ -4,7 +4,7 @@ import { Badge } from '../../atoms/Badge';
 import { Typography } from '../../atoms/Typography';
 import { Icon } from '../../atoms/Icon';
 import { HiChevronRight } from 'react-icons/hi2';
-import { IMission } from '../../../interfaces/missionInterfaces';
+import { IMission } from '../../../interfaces/missionInterface';
 import { missionCardStyles } from './MissionCard.styles';
 
 interface MissionCardProps {
@@ -37,10 +37,10 @@ export const MissionCard: React.FC<MissionCardProps> = ({
       <div className="flex items-center gap-4">
         <AvatarWithLabel
           imageUrl={`/assets/images/samples/children/boy3.png`}
-          altText={mission.childInfo.name}
+          altText={mission?.childInfo?.name ?? ''} // 기본값 할당
           size="lg"
           bgColor="blue"
-          label={mission.childInfo.name}
+          label={mission?.childInfo?.name ?? ''} // 기본값 할당
           labelSize="sm"
           labelWeight="bold"
           labelColor="dark"

@@ -2,7 +2,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { MissionList } from './index';
 import { RecoilRoot } from 'recoil';
-import { IMission } from '../../../interfaces/missionInterfaces';
+import { IMission } from '../../../interfaces/missionInterface';
 
 const meta: Meta<typeof MissionList> = {
   title: 'UI/Molecules/MissionList',
@@ -40,6 +40,7 @@ const sampleMissions: IMission[] = [
     childInfo: {
       childId: 1,
       name: '홍길동',
+      nickname: '길동이', // nickname 필드 추가
     },
   },
   {
@@ -53,6 +54,7 @@ const sampleMissions: IMission[] = [
     childInfo: {
       childId: 2,
       name: '김영희',
+      nickname: '영희', // nickname 필드 추가
     },
   },
 ];

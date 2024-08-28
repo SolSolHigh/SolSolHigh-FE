@@ -5,17 +5,17 @@ import { missionContent, badgeStyles } from './MissionDetail.styles';
 import { Badge } from '../../atoms/Badge';
 import { Divider } from '../../atoms/Divider';
 import { Button } from '../../atoms/Button';
-import { updateMissionStatus, deleteMission } from '../../../apis/missionApi';
+import { updateMission, deleteMission } from '../../../apis/missionApi';
 import { showToast } from '../../../utils/toastUtil';
 import { useSetRecoilState } from 'recoil';
 import { isModalOpenState } from '../../../atoms/modal';
 
 export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
-  // 전체적 리팩토링 필요 : 핸들러 내려받아서 쓰기 등
   const setIsModalOpen = useSetRecoilState(isModalOpenState);
+
   const handleDelete = async () => {
     try {
-      await deleteMission(mission.missionId);
+      await deleteMission(mission?.missionId);
       showToast('success', '미션이 성공적으로 삭제되었습니다.');
       setIsModalOpen({ isOpen: false, content: null });
     } catch (error) {
@@ -27,23 +27,42 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
 
   const handleComplete = async () => {
     try {
-      await updateMissionStatus(mission.missionId, { isFinished: true });
-      showToast('success', '미션이 성공적으로 삭제되었습니다.');
+      await updateMission(mission?.missionId, { isFinished: true });
+      showToast('success', '미션이 성공적으로 완료되었습니다.');
       setIsModalOpen({ isOpen: false, content: null });
     } catch (error) {
-      showToast('error', '미션 삭제에 실패했습니다.');
+      showToast('error', '미션 완료 처리에 실패했습니다.');
       setIsModalOpen({ isOpen: false, content: null });
       console.error('완료 처리 실패:', error);
     }
   };
 
+  const handleUpdate = async () => {
+    try {
+      await updateMission(mission?.missionId, {
+        description: mission?.description || '미션 설명',
+        isFinished: mission?.isFinished || false,
+        missionStartAt: mission?.missionStartAt || '',
+        missionEndAt: mission?.missionEndAt || '',
+        missionLevel: mission?.missionLevel || '1',
+      });
+      showToast('success', '미션이 성공적으로 수정되었습니다.');
+      setIsModalOpen({ isOpen: false, content: null });
+    } catch (error) {
+      showToast('error', '미션 수정에 실패했습니다.');
+      setIsModalOpen({ isOpen: false, content: null });
+      console.error('수정 실패:', error);
+    }
+  };
+
   return (
     <div className={missionContent({ size })}>
+      {/* 미션 상세 내용 표시 */}
       <div className="text-left w-full flex flex-col gap-1">
         <Typography classNameStyles="text-primary-400" size="2xl" weight="bold">
           쏠쏠한 미션
         </Typography>
-        {role === 'child' && !mission.isFinished && (
+        {role === 'child' && !mission?.isFinished && (
           <Typography
             size="sm"
             color="primary"
@@ -55,13 +74,14 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
         )}
       </div>
 
-      {!mission.isFinished && role === 'parent' && (
+      {/* 부모 역할일 때 수정 및 삭제 버튼 표시 */}
+      {!mission?.isFinished && role === 'parent' && (
         <div className="w-full flex flex-row items-start justify-start gap-3">
           <Button
             classNameStyles="!bg-primary-400 hover:bg-primary-300"
             fullWidth
             size="sm"
-            onClick={() => console.log('수정 로직을 여기에 추가하세요')}
+            onClick={handleUpdate}
           >
             수정
           </Button>
@@ -76,13 +96,14 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
         </div>
       )}
 
+      {/* 미션 상세 정보 표시 */}
       <div className="w-full py-6 px-10 bg-primary-100 rounded-2xl flex flex-col gap-4">
         <div className="flex flex-col items-center gap-1">
           <Typography size="xs" color="primary" weight="regular">
             도전자
           </Typography>
           <Typography size="sm" color="dark" weight="semibold">
-            {mission.childInfo.name}
+            {mission?.childInfo?.name}
           </Typography>
         </div>
         <Divider color="primary" />
@@ -91,7 +112,7 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
             쏠쏠한 미션명
           </Typography>
           <Typography size="sm" color="dark" weight="semibold">
-            {mission.description}
+            {mission?.description}
           </Typography>
         </div>
         <Divider color="primary" />
@@ -100,9 +121,9 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
             난이도
           </Typography>
           <Typography size="sm" color="dark" weight="semibold">
-            {mission.missionLevel === '1'
+            {mission?.missionLevel === '1'
               ? '쉬움'
-              : mission.missionLevel === '2'
+              : mission?.missionLevel === '2'
                 ? '중간'
                 : '어려움'}
           </Typography>
@@ -113,18 +134,19 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
             미션 완료 시간
           </Typography>
           <Typography size="sm" color="dark" weight="semibold">
-            {mission.isFinished
-              ? mission.missionFinishedAt
+            {mission?.isFinished
+              ? mission?.missionFinishedAt
               : '아직 도전중인 미션이에요.'}
           </Typography>
         </div>
       </div>
 
+      {/* 미션 상태 배지 표시 */}
       <div className="flex flex-col items-center gap-1">
         <Badge
           size="sm"
-          text={mission.isFinished ? '완료됨' : '도전중'}
-          color={mission.isFinished ? 'secondary' : 'primary'}
+          text={mission?.isFinished ? '완료됨' : '도전중'}
+          color={mission?.isFinished ? 'secondary' : 'primary'}
           classNameStyles={badgeStyles({ color: 'primary' })}
         />
         <Typography
@@ -133,13 +155,14 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
           weight="regular"
           className="text-center"
         >
-          {mission.isFinished
+          {mission?.isFinished
             ? '이 미션은 완료되었습니다.'
             : '미션에 도전하고 있어요.'}
         </Typography>
       </div>
 
-      {!mission.isFinished && role === 'parent' && (
+      {/* 부모 역할일 때 완료 버튼 표시 */}
+      {!mission?.isFinished && role === 'parent' && (
         <div className="flex justify-between w-full mt-3">
           <Button
             classNameStyles="bg-primary-500 hover:bg-primary-400 !text-lg rounded-2xl !py-3"

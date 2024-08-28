@@ -4,7 +4,7 @@ import REQUEST_DOMAINS from '../apis/axiosConfig';
 import {
   IMissionCreateRequest,
   IMissionUpdateRequest,
-} from '../interfaces/missionInterfaces';
+} from '../interfaces/missionInterface';
 
 export const mock = new AxiosMockAdapter(api);
 
@@ -415,16 +415,18 @@ mock.onGet(`api/children/${nickname}/keywords`).reply(() => {
 // ========== 미션 도메인 ==========
 // 미션 조회
 mock.onGet('/api/children/missions').reply((config) => {
-  // /api/children/missions?page=0&size=20&is-finished=false
+  const page = parseInt(config.params.page, 10) || 0;
+  const size = parseInt(config.params.size, 10) || 20;
   const isFinished =
-    config.params['is-finished'] === true ||
-    config.params['is-finished'] === 'true';
+    config.params['is-finished'] === 'true' ||
+    config.params['is-finished'] === true;
 
   const missions = [
     {
       childInfo: {
         childId: 1,
         name: '차은우',
+        nickname: '은우',
       },
       missionId: 1,
       description: '양치하고 세수하기.',
@@ -438,8 +440,9 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 1,
         name: '차은우',
+        nickname: '은우',
       },
-      missionId: 5,
+      missionId: 1,
       description: '양치하고 세수하기.',
       isFinished: false,
       missionStartAt: '2026-02-04 06:20:20',
@@ -451,8 +454,9 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 1,
         name: '차은우',
+        nickname: '은우',
       },
-      missionId: 6,
+      missionId: 1,
       description: '양치하고 세수하기.',
       isFinished: false,
       missionStartAt: '2026-02-04 06:20:20',
@@ -464,8 +468,9 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 1,
         name: '차은우',
+        nickname: '은우',
       },
-      missionId: 7,
+      missionId: 1,
       description: '양치하고 세수하기.',
       isFinished: false,
       missionStartAt: '2026-02-04 06:20:20',
@@ -477,8 +482,9 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 1,
         name: '차은우',
+        nickname: '은우',
       },
-      missionId: 8,
+      missionId: 1,
       description: '양치하고 세수하기.',
       isFinished: false,
       missionStartAt: '2026-02-04 06:20:20',
@@ -490,8 +496,9 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 1,
         name: '차은우',
+        nickname: '은우',
       },
-      missionId: 9,
+      missionId: 1,
       description: '양치하고 세수하기.',
       isFinished: false,
       missionStartAt: '2026-02-04 06:20:20',
@@ -499,10 +506,222 @@ mock.onGet('/api/children/missions').reply((config) => {
       missionFinishedAt: null,
       missionLevel: '1', // 쉬움
     },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+
     {
       childInfo: {
         childId: 2,
         name: '이슬기',
+        nickname: '슬기',
       },
       missionId: 2,
       description: '책 읽기.',
@@ -516,6 +735,7 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 3,
         name: '박소연',
+        nickname: '소연',
       },
       missionId: 3,
       description: '방 청소하기.',
@@ -529,6 +749,7 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 4,
         name: '김유진',
+        nickname: '유진',
       },
       missionId: 4,
       description: '숙제하기.',
@@ -540,13 +761,45 @@ mock.onGet('/api/children/missions').reply((config) => {
     },
   ];
 
+  // 요청된 조건에 맞는 미션을 필터링
   const filteredMissions = missions.filter(
     (mission) => mission.isFinished === isFinished,
   );
 
+  const start = page * size;
+  const end = start + size;
+  const paginatedMissions = filteredMissions.slice(start, end);
+
+  const response = {
+    content: paginatedMissions,
+    pageable: {
+      pageNumber: page,
+      pageSize: size,
+      offset: start,
+      paged: true,
+      unpaged: false,
+      sort: {
+        empty: true,
+        sorted: false,
+        unsorted: true,
+      },
+    },
+    first: page === 0,
+    last: end >= filteredMissions.length,
+    size: size,
+    number: page,
+    numberOfElements: paginatedMissions.length,
+    empty: paginatedMissions.length === 0,
+    sort: {
+      empty: true,
+      sorted: false,
+      unsorted: true,
+    },
+  };
+
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve([200, filteredMissions]);
+      resolve([200, response]);
     }, 500);
   });
 });
@@ -555,22 +808,42 @@ mock.onGet('/api/children/missions').reply((config) => {
 mock.onPost('/api/children/missions').reply((config) => {
   const requestData: IMissionCreateRequest = JSON.parse(config.data);
 
+  if (
+    !requestData.nickname ||
+    !requestData.description ||
+    !requestData.missionStartAt ||
+    !requestData.missionEndAt ||
+    !requestData.missionLevel
+  ) {
+    return [
+      400,
+      { code: 'M999', message: 'Bad Request: Missing required fields' },
+    ];
+  }
+
+  if (
+    requestData.missionLevel !== '1' &&
+    requestData.missionLevel !== '2' &&
+    requestData.missionLevel !== '3'
+  ) {
+    return [
+      400,
+      { code: 'M999', message: 'Bad Request: Invalid mission level' },
+    ];
+  }
+
   const createdMission = {
     ...requestData,
-    missionId: Math.floor(Math.random() * 1000), // 랜덤 missionId 생성
+    missionId: Math.floor(Math.random() * 1000),
     isFinished: false,
     missionFinishedAt: null,
   };
 
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([201, createdMission]);
-    }, 500);
-  });
+  return [201, createdMission];
 });
 
 // 미션 삭제
-mock.onDelete(/\/api\/missions\/\d+/).reply((config) => {
+mock.onDelete(/\/api\/children\/missions\/\d+/).reply((config) => {
   const missionId = config.url?.split('/').pop();
 
   return new Promise((resolve) => {
@@ -584,7 +857,7 @@ mock.onDelete(/\/api\/missions\/\d+/).reply((config) => {
 });
 
 // 미션 수정 (상태 변경 포함)
-mock.onPatch(/\/api\/missions\/\d+/).reply((config) => {
+mock.onPatch(/\/api\/children\/missions\/\d+/).reply((config) => {
   const missionId = config.url?.split('/').pop();
   const requestData: IMissionUpdateRequest = JSON.parse(config.data);
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton } from '../../../components/atoms/Skeleton';
+import { Skeleton } from '../../components/atoms/Skeleton';
 
 export const LoadingSkeleton: React.FC = () => (
   <div className="space-y-4">

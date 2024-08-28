@@ -7,7 +7,7 @@ import { Login } from '../pages/Login';
 import { Signup } from '../pages/Signup';
 import { QuizMain } from '../pages/QuizMain';
 import { QuizSolving } from '../pages/QuizSolving';
-import { Mission } from '../pages/Mission';
+import { MissionFetch } from '../pages/Mission';
 import { Information } from '../pages/Information';
 import { Manage } from '../pages/Information/Manage';
 import { Egg } from '../pages/Egg';
@@ -52,7 +52,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PathNames.MISSION.path,
-        element: <Mission />,
+        element: <MissionFetch />,
       },
       {
         path: PathNames.QUIZ.path,

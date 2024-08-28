@@ -1,25 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { useMutation, UseMutationOptions } from '@tanstack/react-query';
-import TextField from '../../../../components/atoms/TextField';
-import { NumberDial } from '../../../../components/molecules/NumberDial';
-import { Typography } from '../../../../components/atoms/Typography';
-import { Button } from '../../../../components/atoms/Button';
-import { resizeState } from '../../../../atoms/resize';
-import { isModalOpenState } from '../../../../atoms/modal';
-import { IMissionCreateRequest } from '../../../../interfaces/missionInterfaces';
+import {
+  useMutation,
+  useQuery,
+  UseMutationOptions,
+} from '@tanstack/react-query';
+import { Typography } from '../../../components/atoms/Typography';
+import { Button } from '../../../components/atoms/Button';
+import { resizeState } from '../../../atoms/resize';
+import { isModalOpenState } from '../../../atoms/modal';
+import { IMissionCreateRequest } from '../../../interfaces/missionInterface';
 import { AxiosResponse, AxiosError } from 'axios';
 import { missionCreateStyles } from './MissionCreate.styles';
-import { createMission } from '../../../../apis/missionApi';
+import { createMission } from '../../../apis/missionApi';
+import { getMyChildren } from '../../../apis/userApi';
 import { tv } from 'tailwind-variants';
+import TextField from '../../../components/atoms/TextField';
+import { NumberDial } from '../../../components/molecules/NumberDial';
 
 export const MissionCreate: React.FC = () => {
-  const [childName, setChildName] = useState('');
+  const [selectedChild, setSelectedChild] = useState('');
   const [missionDescription, setMissionDescription] = useState('');
   const [difficulty, setDifficulty] = useState(2);
-
   const [missionStartAt, setMissionStartAt] = useState('');
   const [missionEndAt, setMissionEndAt] = useState('');
+  const setModalState = useSetRecoilState(isModalOpenState);
+  const size = useRecoilValue(resizeState);
+
+  const { data: children, isLoading: isChildrenLoading } = useQuery({
+    queryKey: ['myChildren'],
+    queryFn: async () => {
+      const response = await getMyChildren();
+      return response.data;
+    },
+  });
 
   useEffect(() => {
     const now = new Date();
@@ -41,9 +55,6 @@ export const MissionCreate: React.FC = () => {
     setMissionStartAt(`${formatDate(now)}T${formatTime(now)}`);
     setMissionEndAt(`${formatDate(nextHour)}T${formatTime(nextHour)}`);
   }, []);
-
-  const setModalState = useSetRecoilState(isModalOpenState);
-  const size = useRecoilValue(resizeState);
 
   const mutationOptions: UseMutationOptions<
     AxiosResponse<IMissionCreateRequest>,
@@ -71,15 +82,22 @@ export const MissionCreate: React.FC = () => {
     },
   };
 
-  // 뮤테이션 빼도됨
   const missionMutation = useMutation({
     mutationFn: createMission,
     ...mutationOptions,
   });
 
   const handleMissionSubmit = () => {
+    if (!selectedChild) {
+      setModalState({
+        isOpen: true,
+        content: <Typography size="lg">도전자를 선택해 주세요.</Typography>,
+      });
+      return;
+    }
+
     const missionData: IMissionCreateRequest = {
-      childId: 1,
+      nickname: selectedChild,
       description: missionDescription,
       missionStartAt: missionStartAt,
       missionEndAt: missionEndAt,
@@ -98,13 +116,25 @@ export const MissionCreate: React.FC = () => {
       </div>
 
       <div className="w-full">
-        <TextField
-          label="도전자"
-          fullWidth
-          size="sm"
-          defaultValue={childName}
-          onChange={(e) => setChildName(e.target.value)}
-        />
+        {isChildrenLoading ? (
+          <Typography size="lg">도전자 목록을 불러오는 중입니다...</Typography>
+        ) : (
+          <div className="mb-4">
+            <label className="text-primary-500">도전자</label>
+            <select
+              value={selectedChild}
+              onChange={(e) => setSelectedChild(e.target.value)}
+              className="input w-full p-2 border rounded"
+            >
+              <option value="">도전자를 선택해 주세요</option>
+              {children?.map((child) => (
+                <option key={child.nickname} value={child.nickname}>
+                  {child.name} ({child.nickname})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <TextField
           label="쏠쏠한 미션 설명"
