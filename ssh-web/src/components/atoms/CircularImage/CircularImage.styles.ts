@@ -11,6 +11,7 @@ export const circularImageStyles = tv({
       lg: 'w-14 h-14',
       xl: 'w-20 h-20',
       '2xl': 'w-24 h-24',
+      '3xl': 'w-36 h-36',
     },
     bgColor: {
       pink: 'bg-pink-200 hover:bg-pink-400 transition-colors duration-300',

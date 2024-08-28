@@ -1,10 +1,15 @@
 import React from 'react';
 import { Typography } from '../../../components/atoms/Typography';
+
+import { Button } from '../../../components/atoms/Button';
+import { useSetRecoilState } from 'recoil';
+import { isModalOpenState } from '../../../atoms/modal';
+import TextField from '../../../components/atoms/TextField';
+import { HiSearch } from 'react-icons/hi';
 import { HiOutlinePlus } from 'react-icons/hi2';
 import { EggCard } from '../../../components/molecules/EggCard';
-import TextField from '../../../components/atoms/TextField';
-import { Button } from '../../../components/atoms/Button';
-import { HiSearch } from 'react-icons/hi';
+
+import { SellEggModalContent } from './SellEggModal';
 
 export const MarketContent = ({ activeTab }: { activeTab: number }) => {
   const CONTENT_LABELS = [
@@ -33,6 +38,15 @@ export const MarketContent = ({ activeTab }: { activeTab: number }) => {
     },
   ];
 
+  const setIsModalOpen = useSetRecoilState(isModalOpenState);
+
+  const handleSellEggClick = () => {
+    setIsModalOpen({
+      isOpen: true,
+      content: <SellEggModalContent />,
+    });
+  };
+
   return (
     <div className="TAB-CONTENT bg-white rounded-t-3xl flex-1 pt-5 px-4 h-full">
       <Typography weight="bold" classNameStyles="mb-3">
@@ -59,7 +73,10 @@ export const MarketContent = ({ activeTab }: { activeTab: number }) => {
               </div>
             </div>
           ) : (
-            <div className="w-full bg-primary-200 h-max py-6 flex flex-row items-center justify-center rounded-2xl gap-3 animate-popIn">
+            <div
+              onClick={handleSellEggClick}
+              className="w-full bg-primary-200 h-max py-6 flex flex-row items-center justify-center rounded-2xl gap-3 animate-popIn cursor-pointer"
+            >
               <div className="bg-primary-100 px-3 py-3 rounded-full text-2xl text-primary-400">
                 <HiOutlinePlus />
               </div>

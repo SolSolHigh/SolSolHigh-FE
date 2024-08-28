@@ -10,6 +10,24 @@ interface SpecialEggDetailProps {
   timeAgo: string;
 }
 
+const getRelativeDate = (dateString: string): string => {
+  const tradeDate = new Date(dateString);
+  const today = new Date();
+  const diffTime = today.getTime() - tradeDate.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return '오늘';
+  if (diffDays === 1) return '1일 전';
+  if (diffDays === 2) return '2일 전';
+
+  return `${diffDays}일 전`;
+};
+
+interface TradeData {
+  price: number;
+  tradeDate: string;
+}
+
 export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
   eggName,
   eggImageUrl,
@@ -20,12 +38,12 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
   const [lastPrice, setLastPrice] = useState<number | null>(null);
 
   useEffect(() => {
-    const fetchDummyData = () => {
+    const fetchDummyData = (): TradeData[] => {
       return [
-        { price: 2, tradeDate: '2023-05-08' },
-        { price: 3, tradeDate: '2023-05-07' },
-        { price: 4, tradeDate: '2023-05-06' },
-        { price: 1, tradeDate: '2023-05-05' },
+        { price: 2, tradeDate: '2024-08-08' },
+        { price: 3, tradeDate: '2024-08-23' },
+        { price: 4, tradeDate: '2024-08-26' },
+        { price: 1, tradeDate: '2024-08-28' },
       ];
     };
 
@@ -36,7 +54,8 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
         a.tradeDate > b.tradeDate ? 1 : -1,
       );
 
-      const labels = sortedData.map((data) => data.tradeDate);
+      // 상대적 날짜로 변환
+      const labels = sortedData.map((data) => getRelativeDate(data.tradeDate));
       const prices = sortedData.map((data) => data.price);
 
       setLastPrice(prices[prices.length - 1]);

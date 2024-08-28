@@ -55,7 +55,7 @@ const CompletedMissionList = ({ role }: { role: 'parent' | 'child' }) => {
 };
 
 export const MissionFetch: React.FC = () => {
-  const [role, setRole] = useState<'parent' | 'child'>('parent');
+  const [role] = useState<'parent' | 'child'>('parent');
 
   const [activeTab, setActiveTab] = useState<number>(0);
 

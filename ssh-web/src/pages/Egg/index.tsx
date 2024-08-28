@@ -2,7 +2,7 @@ import React from 'react';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { EggFetch } from './EggFetch';
-import { LoadingSkeleton } from '../Mission/children/LoadingSkeleton';
+import { LoadingSkeleton } from './LoadingSkeleton';
 
 export const Egg = () => {
   return (

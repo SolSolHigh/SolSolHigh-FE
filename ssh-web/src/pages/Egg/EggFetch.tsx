@@ -26,7 +26,6 @@ export const EggFetch = () => {
   const setNavigationBgColor = useSetRecoilState(navigationBgColorState);
   setNavigationBgColor(ENavigationBgColors.primary);
 
-  const [role, setRole] = useState<'parent' | 'child'>('parent');
   const [activeTab, setActiveTab] = useState<IActiveTab>({
     index: 0,
     title: EActiveTitle.break,

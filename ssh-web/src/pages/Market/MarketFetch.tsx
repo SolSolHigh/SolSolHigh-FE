@@ -25,7 +25,6 @@ export const MarketFetch = () => {
   const setNavigationBgColor = useSetRecoilState(navigationBgColorState);
   setNavigationBgColor(ENavigationBgColors.primary);
 
-  const [role, setRole] = useState<'parent' | 'child'>('parent');
   const [activeTab, setActiveTab] = useState<number>(0);
 
   const TOGGLE_LABELS = ['계란 시장 구경', '내가 판매중인 계란 구경'];

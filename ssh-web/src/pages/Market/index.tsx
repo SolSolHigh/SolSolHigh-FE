@@ -2,7 +2,7 @@ import React from 'react';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { MarketFetch } from './MarketFetch';
-import { LoadingSkeleton } from '../Mission/children/LoadingSkeleton';
+import { LoadingSkeleton } from '../Egg/LoadingSkeleton';
 
 export const Market = () => {
   return (
