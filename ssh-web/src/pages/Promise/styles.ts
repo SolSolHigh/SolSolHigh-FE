@@ -23,7 +23,7 @@ export const containerStyles = tv({
 });
 
 export const contentStyles = tv({
-  base: 'flex justify-around items-center w-full my-8 px-4',
+  base: 'flex justify-around items-center w-full my-4 p-4 bg-primary-400 rounded-lg max-w-[90%]',
   variants: {
     size: {
       M: '',

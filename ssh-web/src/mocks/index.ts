@@ -39,7 +39,7 @@ mock.onGet(`/api/promise-tickets/count`).reply(() => {
       resolve([
         200,
         {
-          count: 500,
+          count: 3,
         },
       ]);
     }, 500);
@@ -78,7 +78,7 @@ mock.onGet(`/api/promise-tickets?page=0&size=5`).reply(() => {
                 'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
               publishedAt: '2024-08-12T12:00:00',
               requestedAt: '2024-08-15T12:00:00',
-              usedAt: '204-08-18T12:00:00',
+              usedAt: '2024-08-18T12:00:00',
               description: '할머니랑 놀이공원 놀러가고 시포',
             },
             {
@@ -87,7 +87,7 @@ mock.onGet(`/api/promise-tickets?page=0&size=5`).reply(() => {
                 'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
               publishedAt: '2024-08-12T12:00:00',
               requestedAt: '2024-08-15T12:00:00',
-              usedAt: '204-08-18T12:00:00',
+              usedAt: '2024-08-18T12:00:00',
               description: '할이버지랑 놀이공원 놀러가고 시포',
             },
             {
@@ -96,7 +96,7 @@ mock.onGet(`/api/promise-tickets?page=0&size=5`).reply(() => {
                 'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
               publishedAt: '2024-08-12T12:00:00',
               requestedAt: '2024-08-15T12:00:00',
-              usedAt: '204-08-18T12:00:00',
+              usedAt: '2024-08-18T12:00:00',
               description: '누나랑 놀이공원 놀러가고 시포',
             },
             {
@@ -105,7 +105,7 @@ mock.onGet(`/api/promise-tickets?page=0&size=5`).reply(() => {
                 'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
               publishedAt: '2024-08-12T12:00:00',
               requestedAt: '2024-08-15T12:00:00',
-              usedAt: '204-08-18T12:00:00',
+              usedAt: '2024-08-18T12:00:00',
               description: '형이랑 놀이공원 놀러가고 시포',
             },
             {
@@ -114,7 +114,7 @@ mock.onGet(`/api/promise-tickets?page=0&size=5`).reply(() => {
                 'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
               publishedAt: '2024-08-12T12:00:00',
               requestedAt: '2024-08-15T12:00:00',
-              usedAt: '204-08-18T12:00:00',
+              usedAt: '2024-08-18T12:00:00',
               description: '친구랑 놀이공원 놀러가고 시포',
             },
             {
@@ -123,8 +123,8 @@ mock.onGet(`/api/promise-tickets?page=0&size=5`).reply(() => {
                 'https://media.tenor.com/Kd1AutC90hsAAAAj/pepe-thumbs-up.gif',
               publishedAt: '2024-08-12T12:00:00',
               requestedAt: '2024-08-15T12:00:00',
-              usedAt: '204-08-18T12:00:00',
-              description: '진서랑 놀이공원 놀러가고 시포',
+              usedAt: '2024-08-18T12:00:00',
+              description: '와인이랑 놀이공원 놀러가고 시포',
             },
           ],
           number: 0,

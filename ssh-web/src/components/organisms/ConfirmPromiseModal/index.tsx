@@ -1,25 +1,69 @@
-import React from 'react';
-import { IPromiseLogs } from '../../../interfaces/promiseTicketInterface';
+import React, { ChangeEvent, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { resizeState } from '../../../atoms/resize';
+import { EResize } from '../../../themes/themeBase';
 import { Button } from '../../atoms/Button';
 import { Typography } from '../../atoms/Typography';
-import stemp from '../../molecules/PromiseItem/stemp.png';
-import { EResize } from '../../../themes/themeBase';
-import { resizeState } from '../../../atoms/resize';
-import { useRecoilValue } from 'recoil';
-import defaultImg from './promiseImg.png';
 import { ConfirmPromiseModalProps } from './ConfirmPromiseModal.types';
+import { MdCancel } from 'react-icons/md';
+import { MdAddCircle } from 'react-icons/md';
 
 export const ConfirmPromiseModal = ({
   log,
-  isParent,
+  onUpload,
 }: ConfirmPromiseModalProps) => {
-  const isConfirm = log?.usedAt;
+  const [uploadImgUrl, setUploadImgUrl] = useState<File | null>(null);
   const size = useRecoilValue<EResize>(resizeState);
 
+  const onChangeImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    if (file) {
+      setUploadImgUrl(file);
+    }
+  };
+
+  const handleDelete = () => {
+    setUploadImgUrl(null);
+  };
+
   return (
-    <div className="w-[100%] h-[100%] flex justify-center">
-      <div className="flex flex-col items-center align-middle w-[100%] max-w-[24rem] relative">
-        <input type="file"></input>
+    <div className="w-full h-full flex justify-center">
+      <div className="flex flex-col items-center align-middle w-full max-w-[24rem] relative">
+        {uploadImgUrl ? (
+          <div className="relative mb-4" onClick={() => handleDelete()}>
+            <img
+              src={uploadImgUrl ? URL.createObjectURL(uploadImgUrl) : ''}
+              className="w-96 h-96 border-2 border-gray-400 rounded-xl object-cover cursor-pointer shadow-lg md:w-32 md:h-32 hover:opacity-33"
+              alt="uploaded"
+            />
+            <MdCancel
+              size={36}
+              className="absolute left-[88%] bottom-[88%] bg-gray-600 text-white rounded-full cursor-pointer"
+            />
+          </div>
+        ) : (
+          <label htmlFor="file" className="cursor-pointer">
+            <img
+              src={
+                process.env.PUBLIC_URL + 'assets/images/common/defaultImg.webp'
+              }
+              className="w-96 h-96 border-2  border-secondary-500 rounded-xl bg-secondary-100 cursor-pointer shadow-lg md:w-32 md:h-32"
+              alt="Add"
+            />
+            <MdAddCircle
+              size={36}
+              className="absolute left-[88%] bottom-[92%]  bg-gray-600 text-white rounded-full cursor-pointer"
+            />
+            <input
+              type="file"
+              multiple
+              id="file"
+              accept="image/*"
+              className="hidden"
+              onChange={onChangeImageUpload}
+            />
+          </label>
+        )}
         <Typography
           color="dark"
           size="4xl"
@@ -32,11 +76,16 @@ export const ConfirmPromiseModal = ({
           size="2xl"
           color="primary"
           weight="semibold"
-          classNameStyles="mt-4 text-center"
+          classNameStyles="my-4 text-center"
         >
           {log?.description}
         </Typography>
-        <Button fullWidth={true}>확인</Button>
+        <Typography color="secondary" classNameStyles="my-2">
+          아이가 약속을 기다리고 있어요
+        </Typography>
+        <Button fullWidth={true} disabled={!uploadImgUrl}>
+          약속 인증하기
+        </Button>
       </div>
     </div>
   );

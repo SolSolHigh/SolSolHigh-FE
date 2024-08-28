@@ -22,6 +22,7 @@ import {
 import { PromiseDetailModal } from '../../components/organisms/PromiseDetailModal';
 import { ConfirmPromiseModal } from '../../components/organisms/ConfirmPromiseModal';
 import { ChangeChild } from '../../components/molecules/ChangeChild';
+import { HiOutlineTicket } from 'react-icons/hi';
 
 export const PromiseTicket = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -32,9 +33,11 @@ export const PromiseTicket = () => {
     null,
   );
 
+  // isParent를 50% 확률로 true 또는 false로 설정
+  const [isParent] = useState<boolean>(() => Math.random() >= 0.5);
+
   const size = useRecoilValue<EResize>(resizeState);
   const isConfirm = selectedPromise?.usedAt;
-  const isParent = true; //부모라고 가정
 
   useEffect(() => {
     api.get(`/api/promise-tickets/count`).then((response) => {
@@ -60,17 +63,40 @@ export const PromiseTicket = () => {
     setIsDetailModal(false);
   };
 
+  //todo
+  const handleConfirmUpload = (id: number) => {
+    setIsOpen(false);
+  };
+
+  //todo
+  const handlePromiseUpload = () => {
+    setIsOpen(false);
+  };
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
+
   const renderModalContent = () => {
     if (isDetailModal) {
       if (isConfirm || !isParent) {
-        return <PromiseDetailModal log={selectedPromise} isParent={isParent} />;
+        return (
+          <PromiseDetailModal
+            log={selectedPromise}
+            isParent={isParent}
+            closeModal={handleCloseModal}
+          />
+        );
       } else {
         return (
-          <ConfirmPromiseModal log={selectedPromise} isParent={isParent} />
+          <ConfirmPromiseModal
+            log={selectedPromise}
+            onUpload={handleConfirmUpload}
+          />
         );
       }
     } else {
-      return <AddPromiseModal />;
+      return <AddPromiseModal onUpload={handlePromiseUpload} />;
     }
   };
 
@@ -89,28 +115,28 @@ export const PromiseTicket = () => {
         <div className={containerStyles({ size })}>
           <div className="flex flex-row justify-between w-[95%] mt-4">
             <Typography size="2xl" weight="bold" color="dark">
-              쏠쏠 퀴즈
+              약속권
             </Typography>
             {isParent && <ChangeChild />}
           </div>
           <div className={contentStyles({ size })}>
-            <Typography weight="bold" color="dark" size="lg" classNameStyles="">
+            <Typography
+              weight="bold"
+              color="light"
+              size="lg"
+              classNameStyles=""
+            >
               보유한 약속권
             </Typography>
             <div className="flex items-center space-x-2">
-              <Typography
-                color="primary"
-                size="xl"
-                weight="semibold"
-                classNameStyles="mr-8"
-              >
-                {countTicket}개
+              <Typography color="dark" size="xl" weight="bold">
+                {countTicket}
               </Typography>
-              <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <Typography size="xs" weight="semibold">
-                  TICKET
-                </Typography>
-              </div>
+              <Typography color="light" size="xl" weight="semibold">
+                개
+              </Typography>
+
+              <HiOutlineTicket size={36} fill="#fff" />
             </div>
           </div>
           <div className={gridStyles({ size })}>
@@ -119,7 +145,7 @@ export const PromiseTicket = () => {
               <PromiseItem
                 key={log.id}
                 handleModal={handleDetailModal}
-                isConfirm={log.usedAt ? true : false}
+                isConfirm={!!log.usedAt}
                 log={log}
               />
             ))}
