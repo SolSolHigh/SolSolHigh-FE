@@ -33,7 +33,7 @@ export const ConfirmPromiseModal = ({
           <div className="relative mb-4 group" onClick={() => handleDelete()}>
             <img
               src={uploadImgUrl ? URL.createObjectURL(uploadImgUrl) : ''}
-              className="w-96 h-96 border-2 hover:opacity-60  border-gray-400 rounded-xl object-cover cursor-pointer shadow-lg md:w-32 md:h-32"
+              className="w-48 h-48 border-2 hover:opacity-60  border-gray-400 rounded-xl object-cover cursor-pointer shadow-lg md:w-32 md:h-32"
               alt="uploaded"
             />
             <MdCancel
@@ -42,17 +42,17 @@ export const ConfirmPromiseModal = ({
             />
           </div>
         ) : (
-          <label htmlFor="file" className="cursor-pointer group">
+          <label htmlFor="file" className="cursor-pointer group relative">
             <img
               src={
                 process.env.PUBLIC_URL + 'assets/images/common/defaultImg.webp'
               }
-              className="w-96 h-96 border-2 hover:opacity-75  border-secondary-500 rounded-xl bg-secondary-100 cursor-pointer shadow-lg md:w-32 md:h-32"
+              className="w-48 h-48 border-2 hover:opacity-75  border-secondary-500 rounded-xl bg-secondary-100 cursor-pointer shadow-lg md:w-32 md:h-32"
               alt="Add"
             />
             <MdAddCircle
               size={36}
-              className="absolute left-[88%] bottom-[92%] bg-gray-600 text-white rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity"
+              className="absolute left-[88%] bottom-[88%] bg-gray-600 text-white rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity"
             />
             <input
               type="file"
@@ -83,7 +83,13 @@ export const ConfirmPromiseModal = ({
         <Typography color="secondary" classNameStyles="my-2">
           아이가 약속을 기다리고 있어요
         </Typography>
-        <Button fullWidth={true} disabled={!uploadImgUrl}>
+        <Button
+          fullWidth={true}
+          disabled={!uploadImgUrl}
+          onClick={() => {
+            onUpload(0);
+          }}
+        >
           약속 인증하기
         </Button>
       </div>

@@ -39,8 +39,6 @@ export const PromiseTicket = () => {
   const size = useRecoilValue<EResize>(resizeState);
   const isConfirm = selectedPromise?.usedAt;
 
-  console.log(size);
-
   useEffect(() => {
     api.get(`/api/promise-tickets/count`).then((response) => {
       setCountTicket(response.data.count);

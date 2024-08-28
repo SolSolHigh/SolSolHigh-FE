@@ -40,7 +40,7 @@ export const AddPromiseModal = ({
         >
           약속
         </Typography>
-        <textarea className="rounded-lg mt-2 w-[100%] h-[6rem] shadow-lg border-secondary-800"></textarea>
+        <textarea className="rounded-lg mt-2 w-[100%] h-[6rem] shadow-lg border-secondary-800 p-2 resize-none"></textarea>
         <Typography
           size="2xl"
           color="dark"
