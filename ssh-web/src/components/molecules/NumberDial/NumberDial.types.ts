@@ -7,6 +7,7 @@ export interface NumberDialProps extends React.ComponentProps<'div'> {
   specialNumber?: number;
   specialMent?: string;
   onChangeNumber: (value: number) => void;
+  labels?: string[];
   children?: ReactNode;
   classNameStyles?: string;
 }

@@ -3,14 +3,17 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import Home from '../pages/Home';
 import { IPathNames } from '../interfaces/routerInterface';
-import { QuizSolving } from '../pages/QuizSolving';
 import { Login } from '../pages/Login';
 import { Signup } from '../pages/Signup';
-import { MissionChildren } from '../pages/Mission/children';
+import { QuizMain } from '../pages/QuizMain';
+import { QuizSolving } from '../pages/QuizSolving';
+import { Mission } from '../pages/Mission';
 import { Information } from '../pages/Information';
 import { Manage } from '../pages/Information/Manage';
 import { Egg } from '../pages/Egg';
 import { Market } from '../pages/Market';
+import { PromiseTicket } from '../pages/Promise';
+import { Request } from '../pages/Information/Request';
 
 export const PathNames: IPathNames = {
   HOME: {
@@ -49,10 +52,14 @@ export const router = createBrowserRouter([
       },
       {
         path: PathNames.MISSION.path,
-        element: <MissionChildren />,
+        element: <Mission />,
       },
       {
         path: PathNames.QUIZ.path,
+        element: <QuizMain />,
+      },
+      {
+        path: PathNames.QUIZ.path + '/solve',
         element: <QuizSolving />,
       },
       {
@@ -78,6 +85,14 @@ export const router = createBrowserRouter([
       {
         path: '/manage',
         element: <Manage />,
+      },
+      {
+        path: '/promise',
+        element: <PromiseTicket />,
+      },
+      {
+        path: '/request',
+        element: <Request />,
       },
     ],
   },

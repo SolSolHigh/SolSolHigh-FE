@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Typography } from '../../components/atoms/Typography';
-import { Button } from '../../components/atoms/Button';
-import { Modal } from '../../components/molecules/Modal';
-import { EResize } from '../../themes/themeBase';
-import { resizeState } from '../../atoms/resize';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { isModalOpenState } from '../../atoms/modal';
-import { api } from '../../apis/interceptors';
 import REQUEST_DOMAINS from '../../apis/axiosConfig';
+import { api } from '../../apis/interceptors';
+import { isModalOpenState } from '../../atoms/modal';
+import { resizeState } from '../../atoms/resize';
+import { Button } from '../../components/atoms/Button';
+import { Typography } from '../../components/atoms/Typography';
+import { Mascot } from '../../components/molecules/Mascot';
+import { Modal } from '../../components/molecules/Modal';
 import { QuizDetail } from '../../components/molecules/QuizDetail';
-import { styles, container, title, button } from './styles';
 import {
   IDailyQuizResponse,
   IQuizResultResponse,
 } from '../../interfaces/quizInterface';
+import { EResize } from '../../themes/themeBase';
+import {
+  ModalContentStyles,
+  button,
+  container,
+  containerStyles,
+  title,
+} from './styles';
 
 export const QuizSolving: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<'O' | 'X' | null>(null);
@@ -34,6 +41,7 @@ export const QuizSolving: React.FC = () => {
       .then((response) => {
         setQuizData(response.data);
         setLoading(false);
+        console.log(response);
       })
       .catch((error: Error) => {
         setError(error.message || '퀴즈를 불러오지 못했습니다.');
@@ -58,8 +66,8 @@ export const QuizSolving: React.FC = () => {
           setIsModalOpen({
             isOpen: true,
             content: (
-              <div className={styles.container({ size })}>
-                <h1 className={styles.title({ size })}>
+              <div className={ModalContentStyles.container({ size })}>
+                <h1 className={ModalContentStyles.title({ size })}>
                   <Typography color="dark" size="2xl" weight="bold">
                     {response.data.isCorrect ? '정답입니다!' : '틀렸어요...'}
                   </Typography>
@@ -73,9 +81,9 @@ export const QuizSolving: React.FC = () => {
                   alt={
                     response.data.isCorrect ? '기뻐하는 페페' : '슬퍼하는 페페'
                   }
-                  className={styles.image({ size })}
+                  className={ModalContentStyles.image({ size })}
                 />
-                <p className={styles.caption({ size })}>
+                <div className={ModalContentStyles.caption({ size })}>
                   <Typography color="secondary">
                     {response.data.isCorrect
                       ? response.data.quizExplanation || '맞아요!'
@@ -83,8 +91,9 @@ export const QuizSolving: React.FC = () => {
                         (response.data.realAnswer ? 'O' : 'X') +
                         '에요'}
                   </Typography>
-                </p>
+                </div>
                 <Button
+                  fullWidth={true}
                   onClick={() =>
                     setIsModalOpen({ isOpen: false, content: null })
                   }
@@ -103,7 +112,10 @@ export const QuizSolving: React.FC = () => {
   };
 
   return (
-    <>
+    <div className={containerStyles()}>
+      {size === EResize.D && (
+        <Mascot nickname="닉네임" ment="오늘의 퀴즈를 한번 풀어보세요!" />
+      )}
       <div className={container({ size })}>
         <div className={title({ size })}>
           <Typography weight="bold" size="3xl">
@@ -120,7 +132,7 @@ export const QuizSolving: React.FC = () => {
         >
           <></>
         </QuizDetail>
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-around align gap-4">
           <button
             className={button({
               variant: selectedOption === 'O' ? 'correct' : 'default',
@@ -142,12 +154,13 @@ export const QuizSolving: React.FC = () => {
             X
           </button>
         </div>
-
+        <div />
+        <div />
         <Button fullWidth={true} onClick={handleSubmitAnswer}>
           정답확인
         </Button>
       </div>
       <Modal />
-    </>
+    </div>
   );
 };

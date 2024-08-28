@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { showToast } from '../utils/toastUtil';
 
-const baseURL = process.env.REACT_APP_API_BASE_URL;
-
 export const api = axios.create({
-  baseURL: baseURL,
+  baseURL:
+    process.env.NODE_ENV === 'development'
+      ? ''
+      : 'https://www.solsol-high.kro.kr',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -12,7 +13,7 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use(
-  (config) => {
+  async (config) => {
     return config;
   },
   (error) => {
@@ -27,7 +28,7 @@ api.interceptors.response.use(
   (error) => {
     showToast('error', '오류가 발생하였습니다.');
     if (error.response?.status === 401) {
-      // 비로그인 상태 확인 시 처리로직 추가작업 필요함
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   },

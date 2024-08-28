@@ -9,8 +9,18 @@ import {
 } from '../../interfaces/userInterface';
 import dayjs from 'dayjs';
 import { BirthdayForm } from '../../components/organisms/BirthdayForm';
+import { nicknameDuplicate, signup } from '../../apis/userApi';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 
 export const Signup = () => {
+  const location = useLocation();
+  const nav = useNavigate();
+  const { mutate } = useMutation({
+    mutationFn: async (request: ISignupRequest) => await signup(request),
+    onSuccess: () => nav('/'),
+    onError: (err) => console.log(err),
+  });
   const [pageType, setPageType] = useState<string>('info');
   const [contents, setContents] = useState<IContent[]>([
     {
@@ -45,7 +55,6 @@ export const Signup = () => {
       valueList: ['부모', '자녀'],
     },
   ]);
-
   const onContentHandler = useCallback(
     (idx: number, value: ReactNode) => {
       setContents((prev) => {
@@ -58,14 +67,28 @@ export const Signup = () => {
   );
   const [handler, setHandler] = useState<IContentHandler>({
     label: '회원가입',
-    handler: () => {
-      const info: ISignupRequest = {
-        nickname: contents[0].value as string,
-        birthday: contents[1].value as string,
-        gender: contents[2].value === '남' ? 'MALE' : 'FEMALE',
-        type: contents[3].value === '부모' ? 'parent' : 'child',
-      };
-      console.log(info);
+    handler: async () => {
+      const nicknameCheck = /^(?![ㄱ-ㅎㅏ-ㅣ]+$)[가-힣A-Za-z]{2,8}$/;
+      if (
+        !(contents[0].value as string).length ||
+        !nicknameCheck.test(contents[0].value as string)
+      ) {
+        alert('닉네임은 한글/영문 2~8자 입니다');
+      } else {
+        await nicknameDuplicate(contents[0].value as string).then((res) => {
+          if (res.data.isDuplicated) {
+            mutate({
+              code: location.state?.code,
+              nickname: contents[0].value as string,
+              birthday: contents[1].value as string,
+              gender: contents[2].value === '남' ? 'M' : 'F',
+              type: contents[3].value === '부모' ? 'PARENT' : 'CHILD',
+            });
+          } else {
+            alert('중복된 닉네임입니다');
+          }
+        });
+      }
     },
   });
   const birthdayHandler = (year: number, month: number, day: number) => {

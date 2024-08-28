@@ -23,6 +23,13 @@ const meta: Meta<typeof MissionDetail> = {
         options: [EResize.M, EResize.T, EResize.D],
       },
     },
+    role: {
+      description: '사용자 역할 (부모 또는 자식)',
+      control: {
+        type: 'radio',
+        options: ['parent', 'child'],
+      },
+    },
   },
 };
 
@@ -58,16 +65,35 @@ const activeMission: IMission = {
   },
 };
 
-export const CompletedMission: Story = {
+// 부모 역할을 위한 스토리
+export const ParentRoleCompletedMission: Story = {
   args: {
     mission: completedMission,
     size: EResize.D,
+    role: 'parent',
   },
 };
 
-export const ActiveMission: Story = {
+export const ParentRoleActiveMission: Story = {
   args: {
     mission: activeMission,
     size: EResize.D,
+    role: 'parent',
+  },
+};
+
+export const ChildRoleCompletedMission: Story = {
+  args: {
+    mission: completedMission,
+    size: EResize.D,
+    role: 'child',
+  },
+};
+
+export const ChildRoleActiveMission: Story = {
+  args: {
+    mission: activeMission,
+    size: EResize.D,
+    role: 'child',
   },
 };
