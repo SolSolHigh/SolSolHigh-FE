@@ -614,7 +614,7 @@ mock.onGet('/api/users/info').reply((config) => {
           name: '이유승',
           gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
           birthday: '1998-04-29',
-          type: Math.floor(Math.random() * 2) ? 'PARENT' : 'CHILD',
+          type: Math.floor(Math.random() * 2) ? 'CHILD' : 'CHILD',
         },
       ]);
     }, 500);
@@ -778,3 +778,20 @@ mock.onPost('/api/parents/children/request').reply((config) => {
 });
 
 // ========== 사용자 도메인 ==========
+
+// ========== 경험치 도메인 ==========
+mock.onGet('/api/children/experience').reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        {
+          level: 7,
+          experience: 60,
+          assets: '/assets/E.png',
+        },
+      ]);
+    }, 500);
+  });
+});
+// ========== 경험치 도메인 ==========

@@ -9,7 +9,11 @@ import {
   HiPaperAirplane,
 } from 'react-icons/hi2';
 
-export const LevelCard = ({ children, classNameStyles }: LevelCardProps) => {
+export const LevelCard = ({
+  info,
+  children,
+  classNameStyles,
+}: LevelCardProps) => {
   return (
     <div className="w-full max-w-[30rem] p-4 flex flex-col justify-between bg-primary-500 gap-y-4 rounded-lg">
       {/* 레벨 & 버튼 영역 */}
@@ -29,7 +33,7 @@ export const LevelCard = ({ children, classNameStyles }: LevelCardProps) => {
             color="light"
             classNameStyles="mt-1"
           >
-            Lv. 17
+            Lv. {info.level}
           </Typography>
         </div>
 
@@ -65,10 +69,15 @@ export const LevelCard = ({ children, classNameStyles }: LevelCardProps) => {
       {/* 경험치 */}
       <div className="relative flex flex-col w-full gap-y-1">
         {/* 진행률 아이콘 */}
-        <div className="w-full h-fit pl-[67%]">
+        <div
+          className={`w-full h-fit`}
+          style={{
+            paddingLeft: `${info.experience - 3}%`,
+          }}
+        >
           <div className="flex flex-col items-center w-fit">
             <Typography color="light" weight="semibold" size="2xs">
-              70%
+              {info.experience}%
             </Typography>
             <Icon color="light" classNameStyles="animate-floating">
               <HiPaperAirplane />
@@ -78,7 +87,12 @@ export const LevelCard = ({ children, classNameStyles }: LevelCardProps) => {
 
         {/* 진행바 */}
         <div className="relative w-full h-2 bg-white rounded-full">
-          <div className="absolute h-2 left-0 top-0 rounded-full bg-warning-500 w-[70%]"></div>
+          <div
+            className={`absolute h-2 left-0 top-0 rounded-full bg-warning-500`}
+            style={{
+              width: `${info.experience}%`,
+            }}
+          ></div>
         </div>
 
         {/* 0~100% */}
