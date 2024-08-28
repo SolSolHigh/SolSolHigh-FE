@@ -10,6 +10,7 @@ import { MissionChildren } from '../pages/Mission/children';
 import { Information } from '../pages/Information';
 import { Manage } from '../pages/Information/Manage';
 import { Egg } from '../pages/Egg';
+import { Market } from '../pages/Market';
 
 export const PathNames: IPathNames = {
   HOME: {
@@ -22,6 +23,7 @@ export const PathNames: IPathNames = {
   },
   QUIZ: { path: '/quiz', name: '퀴즈' },
   EGG: { path: '/egg', name: '계란' },
+  Market: { path: '/market', name: '계란시장' },
   MYPAGE: {
     path: '/mypage',
     name: '전체',
@@ -56,6 +58,10 @@ export const router = createBrowserRouter([
       {
         path: PathNames.EGG.path,
         element: <Egg />,
+      },
+      {
+        path: PathNames.Market.path,
+        element: <Market />,
       },
       {
         path: PathNames.MYPAGE.path,

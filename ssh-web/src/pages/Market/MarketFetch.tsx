@@ -12,41 +12,26 @@ import {
   titleBoxStyles,
   contentStyles,
   missionListBoxStyles,
-} from './EggFetch.styles';
-import { ArrayActiveTitle, EActiveTitle, IActiveTab } from './EggFetch.types';
+} from './MarketFetch.styles';
+
 import {
   ENavigationBgColors,
   navigationBgColorState,
 } from '../../atoms/navigation';
-import { TodayEgg } from './components/TodayEgg';
-import { MySpecialEggs } from './components/MySpecialEggs';
+import { MarketContent } from './components/MarketContent';
 
-export const EggFetch = () => {
+export const MarketFetch = () => {
   const size = useRecoilValue(resizeState);
   const setNavigationBgColor = useSetRecoilState(navigationBgColorState);
   setNavigationBgColor(ENavigationBgColors.primary);
 
   const [role, setRole] = useState<'parent' | 'child'>('parent');
-  const [activeTab, setActiveTab] = useState<IActiveTab>({
-    index: 0,
-    title: EActiveTitle.break,
-  });
+  const [activeTab, setActiveTab] = useState<number>(0);
 
-  const TOGGLE_LABELS = ['오늘의 계란이에요', '내가 가진 계란을 봐요'];
+  const TOGGLE_LABELS = ['계란 시장 구경', '내가 판매중인 계란 구경'];
 
-  const handleTabChange = (index: number) => {
-    setActiveTab({ index: index, title: ArrayActiveTitle[index] });
-  };
-
-  const renderTabContent = () => {
-    switch (activeTab.index) {
-      case 0:
-        return <TodayEgg />;
-      case 1:
-        return <MySpecialEggs />;
-      default:
-        return null;
-    }
+  const handleTabChange = () => {
+    setActiveTab(activeTab ? 0 : 1);
   };
 
   return (
@@ -62,16 +47,30 @@ export const EggFetch = () => {
 
       <div className={contentStyles()}>
         <div className={titleBoxStyles()}>
-          <Typography size="4xl" color="dark" weight="semibold">
-            {activeTab.title}
-          </Typography>
+          <div className="w-full flex flex-row justify-between">
+            <Typography size="4xl" color="dark" weight="semibold">
+              계란 시장
+            </Typography>
+            <div className="h-auto w-max flex flex-row items-center gap-2 bg-white py-1 px-3 rounded-xl">
+              <img src="/assets/images/egg_bucket.png" alt="" className="h-8" />
+              <Typography
+                size="md"
+                weight="semibold"
+                classNameStyles="!text-primary-400"
+              >
+                N개
+              </Typography>
+            </div>
+          </div>
           <ToggleTab
-            activeTab={activeTab.index}
+            activeTab={activeTab}
             onTabChange={handleTabChange}
             labels={TOGGLE_LABELS}
           />
         </div>
-        <div className={missionListBoxStyles()}>{renderTabContent()}</div>
+        <div className={missionListBoxStyles()}>
+          <MarketContent activeTab={activeTab} />
+        </div>
         <Modal color="light" />
       </div>
     </div>
