@@ -1,12 +1,12 @@
 import React, { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { InformationFetch } from './InformationFetch';
+import { RequestFetch } from './RequestFetch';
 
-export const Information = () => {
+export const Request = () => {
   return (
     <ErrorBoundary fallback={<>에러</>}>
       <Suspense fallback={<>로딩중</>}>
-        <InformationFetch />
+        <RequestFetch />
       </Suspense>
     </ErrorBoundary>
   );

@@ -17,4 +17,4 @@ jobs:
                   password: ${{ secrets.SSH_PASSWORD }}
                   script: |
                       cd ~/solsol-high
-                      ./static.sh
+                      ./static.sh develop
