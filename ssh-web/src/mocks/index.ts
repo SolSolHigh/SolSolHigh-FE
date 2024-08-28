@@ -39,7 +39,7 @@ mock.onGet(`/api/promise-tickets/count`).reply(() => {
       resolve([
         200,
         {
-          count: 3,
+          count: 0,
         },
       ]);
     }, 500);

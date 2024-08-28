@@ -98,7 +98,12 @@ export const PromiseTicket = () => {
         );
       }
     } else {
-      return <AddPromiseModal onUpload={handlePromiseUpload} />;
+      return (
+        <AddPromiseModal
+          onUpload={handlePromiseUpload}
+          countTicket={countTicket}
+        />
+      );
     }
   };
 

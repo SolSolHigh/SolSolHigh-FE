@@ -3,7 +3,28 @@ import { Button } from '../../atoms/Button';
 import { Typography } from '../../atoms/Typography';
 import { AddPromiseModalProps } from './AddPromiseModal.types';
 
-export const AddPromiseModal = ({ onUpload }: AddPromiseModalProps) => {
+export const AddPromiseModal = ({
+  countTicket,
+  onUpload,
+}: AddPromiseModalProps) => {
+  if (countTicket === 0) {
+    return (
+      <div className="flex flex-col align-middle text-center py-4">
+        <Typography
+          color="dark"
+          size="2xl"
+          weight="bold"
+          classNameStyles="my-4"
+        >
+          보유한 약속권이 없어요!
+        </Typography>
+        <Button fullWidth={true} onClick={onUpload} classNameStyles="my-4">
+          확인
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className="w-[100%] h-[100%] flex justify-center">
       <div className="flex flex-col items-center align-middle w-[100%] max-w-[24rem]">
