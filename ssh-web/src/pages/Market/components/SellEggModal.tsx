@@ -1,15 +1,63 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography } from '../../../components/atoms/Typography';
 import { CircularImage } from '../../../components/atoms/CircularImage';
-import { NumberDial } from '../../../components/molecules/NumberDial';
 import { Button } from '../../../components/atoms/Button';
+import {
+  registerEggForSale,
+  getLastSpecialEggPrice,
+} from '../../../apis/eggApi';
+import { useSetRecoilState } from 'recoil';
+import { isModalOpenState } from '../../../atoms/modal';
+import { NumberDial } from '../../../components/molecules/NumberDial';
 
-export const SellEggModalContent: React.FC = () => {
+interface SellEggModalContentProps {
+  specialEggId: number;
+  specialEggName: string;
+  eggImageUrl: string;
+}
+
+export const SellEggModalContent: React.FC<SellEggModalContentProps> = ({
+  specialEggId,
+  specialEggName,
+  eggImageUrl,
+}) => {
   const [selectedPrice, setSelectedPrice] = useState<number>(3);
+  const [sellCount, setSellCount] = useState<number>(1);
+  const [lastPrice, setLastPrice] = useState<number | null>(null);
+  const setIsModalOpen = useSetRecoilState(isModalOpenState);
 
   const handlePriceChange = (newPrice: number) => {
     setSelectedPrice(newPrice);
+  };
+
+  const handleSellCountChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setSellCount(Number(event.target.value));
+  };
+
+  const fetchLastPrice = async () => {
+    try {
+      const response = await getLastSpecialEggPrice(specialEggId);
+      setLastPrice(response.data.price);
+    } catch (error) {
+      console.error('마지막 거래 가격 조회에 실패했습니다.', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLastPrice();
+  }, [specialEggId]);
+
+  const handleSellEgg = async () => {
+    try {
+      await registerEggForSale(selectedPrice, sellCount, specialEggId);
+      alert('계란 판매글이 등록되었습니다.');
+      setIsModalOpen({ isOpen: false, content: null });
+    } catch (error) {
+      console.error('계란 판매글 등록에 실패했습니다.', error);
+      alert('계란 판매글 등록에 실패했습니다.');
+    }
   };
 
   return (
@@ -32,10 +80,10 @@ export const SellEggModalContent: React.FC = () => {
         </Typography>
       </div>
       <CircularImage
-        imageUrl="/assets/images/samples/eggs/egg_3.png"
-        size="3xl"
+        imageUrl={eggImageUrl}
+        size="2xl"
         imgWidth="70%"
-        altText="specialEgg"
+        altText={specialEggName}
         classNameStyles="mb-6"
       />
       <Typography size="xl" weight="bold" color="dark" classNameStyles="mb-1">
@@ -54,25 +102,44 @@ export const SellEggModalContent: React.FC = () => {
           시장에서 마지막으로 팔린 가격은
         </Typography>
         <Typography size="md" color="primary" weight="bold">
-          N 계란포인트
+          {lastPrice !== null ? `${lastPrice} 계란포인트` : '정보 없음'}
         </Typography>
         <Typography size="md" color="dark" weight="bold">
           예요
         </Typography>
       </div>
 
-      <div className="flex flex-col items-center justify-center my-28 w-full">
+      <div className="flex flex-col items-center justify-center my-6 w-full">
+        <label htmlFor="sellCount" className="mb-2 text-secondary-500">
+          몇 개를 팔까요?
+        </label>
+        <input
+          type="number"
+          id="sellCount"
+          min="1"
+          max="100"
+          value={sellCount}
+          onChange={handleSellCountChange}
+          className="w-1/2 text-center p-2 border border-gray-300 rounded-lg"
+        />
+      </div>
+
+      <div className="flex flex-col items-center justify-center mt-20 my-6 w-full">
         <NumberDial
           min={1}
           max={10}
           defaultNumber={selectedPrice}
           onChangeNumber={handlePriceChange}
-          specialNumber={3}
+          specialNumber={lastPrice || 3}
           specialMent="최근 거래된 가격"
           labels={Array.from({ length: 10 }, (_, i) => `${i + 1} 계란포인트`)}
         />
       </div>
-      <Button classNameStyles="!w-full !py-7 !bg-primary-400 !text-white !rounded-2xl hover:!bg-primary-500 font-bold !text-xl">
+
+      <Button
+        classNameStyles="!w-full !py-7 !bg-primary-400 !text-white !rounded-2xl hover:!bg-primary-500 font-bold !text-xl mt-16"
+        onClick={handleSellEgg}
+      >
         판매글 등록하기
       </Button>
     </div>

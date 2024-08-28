@@ -2,12 +2,21 @@ import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import { Typography } from '../../../components/atoms/Typography';
 import { CircularImage } from '../../../components/atoms/CircularImage';
+import {
+  requestEggPurchase,
+  deleteSpecialEggTrade,
+} from '../../../apis/eggApi';
+import { useSetRecoilState } from 'recoil';
+import { isModalOpenState } from '../../../atoms/modal';
+import { showToast } from '../../../utils/toastUtil';
 
 interface SpecialEggDetailProps {
   eggName: string;
   eggImageUrl: string;
   eggPrice: number;
   timeAgo: string;
+  isOwned: boolean; // 추가: 계란이 사용자가 소유한 것인지 확인
+  sellBoardId: number; // 추가: 판매글 ID
 }
 
 const getRelativeDate = (dateString: string): string => {
@@ -33,10 +42,12 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
   eggImageUrl,
   eggPrice,
   timeAgo,
+  isOwned,
+  sellBoardId,
 }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const [lastPrice, setLastPrice] = useState<number | null>(null);
-
+  const setIsModalOpen = useSetRecoilState(isModalOpenState);
   useEffect(() => {
     const fetchDummyData = (): TradeData[] => {
       return [
@@ -141,6 +152,28 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
     }
   }, []);
 
+  const handlePurchase = async () => {
+    try {
+      await requestEggPurchase(sellBoardId, 1);
+      showToast('success', '계란 구매에 성공했습니다!');
+      setIsModalOpen({ isOpen: false, content: null });
+    } catch (error) {
+      console.error('계란 구매에 실패했습니다.', error);
+      showToast('error', '계란 구매에 실패했습니다!');
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteSpecialEggTrade(sellBoardId);
+      showToast('success', '계란 삭제에 성공했습니다!');
+      setIsModalOpen({ isOpen: false, content: null });
+    } catch (error) {
+      console.error('계란 판매글 삭제에 실패했습니다.', error);
+      showToast('error', '계란 판매글 삭제에 실패했습니다!');
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="w-full text-left">
@@ -186,11 +219,26 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
           예요
         </Typography>
       </div>
-      <button className="w-full h-max py-4 bg-primary-400 flex flex-row justify-center items-center gap-4 rounded-2xl mt-8 hover:bg-primary-500 transition-all duration-300">
-        <Typography size="4xl" color="light" weight="bold">
-          구매하기
-        </Typography>
-      </button>
+
+      {isOwned ? (
+        <button
+          className="w-full h-max py-4 bg-red-400 flex flex-row justify-center items-center gap-4 rounded-2xl mt-8 hover:bg-red-500 transition-all duration-300"
+          onClick={handleDelete}
+        >
+          <Typography size="4xl" color="light" weight="bold">
+            삭제하기
+          </Typography>
+        </button>
+      ) : (
+        <button
+          className="w-full h-max py-4 bg-primary-400 flex flex-row justify-center items-center gap-4 rounded-2xl mt-8 hover:bg-primary-500 transition-all duration-300"
+          onClick={handlePurchase}
+        >
+          <Typography size="4xl" color="light" weight="bold">
+            구매하기
+          </Typography>
+        </button>
+      )}
     </div>
   );
 };

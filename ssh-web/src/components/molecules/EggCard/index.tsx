@@ -11,6 +11,9 @@ interface EggCardProps {
   eggPrice: number;
   eggImageUrl: string;
   timeAgo: string;
+  isOwned: boolean;
+  sellBoardId: number;
+  onSellClick?: () => void; // 추가된 부분
 }
 
 export const EggCard: React.FC<EggCardProps> = ({
@@ -18,6 +21,9 @@ export const EggCard: React.FC<EggCardProps> = ({
   eggPrice,
   eggImageUrl,
   timeAgo,
+  isOwned,
+  sellBoardId,
+  onSellClick, // 추가된 부분
 }) => {
   const setModalState = useSetRecoilState(isModalOpenState);
 
@@ -30,6 +36,8 @@ export const EggCard: React.FC<EggCardProps> = ({
           eggImageUrl={eggImageUrl}
           eggPrice={eggPrice}
           timeAgo={timeAgo}
+          isOwned={isOwned}
+          sellBoardId={sellBoardId}
         />
       ),
     });
