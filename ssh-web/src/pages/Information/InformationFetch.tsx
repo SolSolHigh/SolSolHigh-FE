@@ -5,9 +5,9 @@ import { Mascot } from '../../components/molecules/Mascot';
 import { InfoList } from '../../components/molecules/InfoList';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getMyChildren, getMyParents, getUserInfo } from '../../apis/userApi';
-import { getImgSrc } from '../../utils/userUtil';
 import dayjs from 'dayjs';
 import { IChild, IUserInfoMascot } from '../../interfaces/userInterface';
+import { getImgSrc } from '../../utils/userUtil';
 
 export const InformationFetch = () => {
   const userinfoQuery = useSuspenseQuery({

@@ -614,7 +614,7 @@ mock.onGet('/api/users/info').reply((config) => {
           name: '이유승',
           gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
           birthday: '1998-04-29',
-          type: Math.floor(Math.random() * 2) ? 'CHILD' : 'CHILD',
+          type: Math.floor(Math.random() * 2) ? 'PARENT' : 'PARENT',
         },
       ]);
     }, 500);
@@ -792,6 +792,59 @@ mock.onGet('/api/children/experience').reply(() => {
         },
       ]);
     }, 500);
+  });
+});
+
+mock.onGet(`/api/children/흑룡/experience/log`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            time: '3시간 전',
+            description: '금융 퀴즈 문제를 풀었습니다!',
+            type: 'QUIZ',
+          },
+          {
+            time: '4시간 전',
+            description: '미션(하)을 수행했습니다!',
+            type: 'MISSION_1',
+          },
+          {
+            time: '4시간 전',
+            description: '미션(중)을 수행했습니다!',
+            type: 'MISSION_2',
+          },
+        ],
+      ]);
+    });
+  });
+});
+mock.onGet(`/api/children/백룡/experience/log`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            time: '4시간 전',
+            description: '미션(상)을 수행했습니다!',
+            type: 'MISSION_3',
+          },
+          {
+            time: '4시간 전',
+            description: '예금을 깼어요,..ㅜㅜ',
+            type: 'DEPOSIT',
+          },
+          {
+            time: '4시간 전',
+            description: '목표 예금액에 도달했어요!',
+            type: 'GOAL_MONEY',
+          },
+        ],
+      ]);
+    });
   });
 });
 // ========== 경험치 도메인 ==========

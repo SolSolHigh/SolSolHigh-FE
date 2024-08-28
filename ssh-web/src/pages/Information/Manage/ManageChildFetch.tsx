@@ -14,9 +14,9 @@ import {
   getMyWaitingChildren,
   getUserInfo,
 } from '../../../apis/userApi';
-import { getImgSrc } from '../../../utils/userUtil';
 import { IChild } from '../../../interfaces/userInterface';
 import { useNavigate } from 'react-router-dom';
+import { getImgSrc } from '../../../utils/userUtil';
 
 export const ManageChildFetch = () => {
   const [userinfoQuery, childrenQuery, waitingQuery] = useSuspenseQueries({

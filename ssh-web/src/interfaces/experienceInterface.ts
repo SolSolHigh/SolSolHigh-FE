@@ -3,3 +3,9 @@ export interface IChildExperience {
   experience: number;
   assets: string;
 }
+
+export interface IChildExpRecord {
+  time: string;
+  description: string;
+  type: string;
+}
