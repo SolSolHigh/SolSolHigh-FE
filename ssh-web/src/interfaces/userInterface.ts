@@ -16,10 +16,20 @@ export interface IContentHandler {
 }
 
 export interface ISignupRequest {
+  code: string;
   nickname: string;
   birthday: string;
-  gender: 'MALE' | 'FEMALE';
-  type: 'parent' | 'child';
+  gender: 'M' | 'F';
+  type: 'PARENT' | 'CHILD';
+}
+
+export interface IUserInfo {
+  nickname: string;
+  email: string;
+  name: string;
+  gender: string;
+  birthday: string;
+  type: string;
 }
 
 export interface IUserInfoInfo {
@@ -36,4 +46,12 @@ export interface IChild {
   name: string;
   nickname: string;
   birthday: string;
+  gender: string;
+}
+
+export interface IParent {
+  name: string;
+  nickname: string;
+  birthday: string;
+  gender: string;
 }

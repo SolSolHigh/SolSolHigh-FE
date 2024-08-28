@@ -475,3 +475,180 @@ mock.onPatch(/\/api\/missions\/\d+/).reply((config) => {
   });
 });
 // ========== 미션 도메인 ==========
+
+// ========== 사용자 도메인 ==========
+mock.onGet('/api/users/info').reply((config) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        {
+          nickname: 'yuseung0429',
+          email: 'yuseung0429@naver.com',
+          name: '이유승',
+          gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+          birthday: '1998-04-29',
+          type: Math.floor(Math.random() * 2) ? 'PARENT' : 'CHILD',
+        },
+      ]);
+    }, 500);
+  });
+});
+
+mock.onGet('/api/parents/children').reply((config) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            name: '김다운',
+            nickname: '흑룡',
+            birthday: '1999-06-30',
+            gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+          },
+          {
+            name: '양규현',
+            nickname: '백룡',
+            birthday: '1999-05-30',
+            gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+          },
+        ],
+      ]);
+    }, 500);
+  });
+});
+
+mock.onGet('/api/children/parents').reply((config) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        {
+          name: '부모님',
+          nickname: '부모님닉네임',
+          birthday: '1970-03-13',
+          gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+        },
+      ]);
+    }, 500);
+  });
+});
+
+mock.onGet('/api/parents/children/waiting').reply((config) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            name: '권용진',
+            nickname: '흑룡도포기한남자',
+            birthday: '1997-05-17',
+            gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+          },
+          {
+            name: '이유승',
+            nickname: '뼛속까지섹시녀',
+            birthday: '1998-04-29',
+            gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+          },
+        ],
+      ]);
+    }, 500);
+  });
+});
+
+mock.onGet('/api/children/parents/waiting').reply((config) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        {
+          name: '권용진',
+          nickname: '흑룡도포기한남자',
+          birthday: '1997-05-17',
+          gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+        },
+      ]);
+    }, 500);
+  });
+});
+
+mock.onPatch('/api/parents/children').reply((config) => {
+  const target = JSON.parse(config.data).nickname;
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        201,
+        {
+          code: null,
+          description: '등록된 자식 삭제 성공',
+        },
+      ]);
+    }, 500);
+  });
+});
+
+mock.onPatch('/api/parents/children/waiting').reply((config) => {
+  const target = JSON.parse(config.data).nickname;
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        201,
+        {
+          code: null,
+          description: '등록된 자식 신청 삭제 성공',
+        },
+      ]);
+    }, 500);
+  });
+});
+
+mock.onPost('/api/children').reply((config) => {
+  const target = JSON.parse(config.data).nickname;
+
+  return target === '귀요미요하'
+    ? new Promise((resolve) => {
+        setTimeout(() => {
+          resolve([
+            200,
+            {
+              name: '김다운',
+              nickname: '귀욤다운',
+              birthday: '1999-06-30',
+              gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+            },
+          ]);
+        }, 500);
+      })
+    : new Promise((resolve) => {
+        setTimeout(() => {
+          resolve([
+            404,
+            {
+              code: 'U003',
+              description: '존재하지 않는 사용자',
+            },
+          ]);
+        }, 500);
+      });
+});
+
+mock.onPost('/api/parents/children/request').reply((config) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        202,
+        {
+          code: null,
+          description: '자식 신청 성공',
+        },
+      ]);
+    }, 500);
+  });
+});
+
+// ========== 사용자 도메인 ==========
