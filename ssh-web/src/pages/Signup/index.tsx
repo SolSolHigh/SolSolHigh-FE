@@ -77,6 +77,8 @@ export const Signup = () => {
       } else {
         await nicknameDuplicate(contents[0].value as string).then((res) => {
           if (res.data.isDuplicated) {
+            alert('중복된 닉네임입니다');
+          } else {
             mutate({
               code: location.state?.code,
               nickname: contents[0].value as string,
@@ -84,8 +86,6 @@ export const Signup = () => {
               gender: contents[2].value === '남' ? 'M' : 'F',
               type: contents[3].value === '부모' ? 'PARENT' : 'CHILD',
             });
-          } else {
-            alert('중복된 닉네임입니다');
           }
         });
       }
