@@ -100,7 +100,7 @@ export const MissionFetch: React.FC = () => {
         const userType = response.data.type === 'PARENT' ? 'parent' : 'child';
         setRole(userType);
       } catch (error) {
-        console.error('Failed to fetch user info:', error);
+        console.error('내정보 가져오기 실패:', error);
       }
     };
 

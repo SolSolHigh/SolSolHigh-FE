@@ -52,7 +52,7 @@ export const TodayEgg = () => {
         setCollectedAmount((prev) => prev + 1);
         setTouchesLeft((prev) => prev - 1); // 남은 터치 횟수 감소
 
-        if (!reward?.isFailed) {
+        if (reward && reward?.isFailed === false) {
           console.log('보상 도착:', reward);
           setModalState({
             isOpen: true,
@@ -94,6 +94,44 @@ export const TodayEgg = () => {
           });
         }
 
+        if (reward && reward?.isFailed === true) {
+          console.log('보상 도착:', reward);
+          setModalState({
+            isOpen: true,
+            content: (
+              <div className="">
+                <div className="flex flex-col gap-1 text-center">
+                  <Typography weight="bold" size="6xl" color="primary">
+                    아쉬워요!
+                  </Typography>
+                  <Typography
+                    weight="semibold"
+                    size="2xl"
+                    classNameStyles="!text-primary-300 mb-3"
+                  >
+                    아무것도 나오지 않았어요.
+                  </Typography>
+                </div>
+                <div className="relative w-full h-max bg-secondary-400 flex flex-row justify-center items-center py-8 rounded-3xl">
+                  <img
+                    src={'/assets/images/egg_crack.png'}
+                    alt=""
+                    className="w-[12rem]"
+                  />
+                </div>
+                <Button
+                  fullWidth
+                  classNameStyles="!h-24 !text-2xl !font-bold py-6 mt-8 rounded-2xl"
+                  onClick={() => {
+                    setModalState({ isOpen: false, content: null });
+                  }}
+                >
+                  계란 마저 깨러가기
+                </Button>
+              </div>
+            ),
+          });
+        }
         if (touchesLeft === 1) {
           fetchEggStatus(); // 터치 후 남은 횟수가 0이 되면 상태를 새로 가져오기
         }

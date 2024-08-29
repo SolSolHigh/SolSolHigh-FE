@@ -1273,7 +1273,7 @@ mock.onPatch('/api/eggs/now').reply((config) => {
         resolve([
           202,
           {
-            isFailed: false,
+            isFailed: true,
             specialEggId: 1,
             specialEggName: '시공간을 초월한 계란',
             imageUrl:
