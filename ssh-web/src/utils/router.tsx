@@ -16,7 +16,7 @@ import { Menu } from '../pages/Menu';
 
 export const PathNames: IPathNames = {
   HOME: {
-    path: '/home',
+    path: '/',
     name: '홈',
   },
   MISSION: {
@@ -42,10 +42,6 @@ export const router = createBrowserRouter([
       {
         index: true,
         path: '/',
-        element: <Home />,
-      },
-      {
-        path: PathNames.HOME.path,
         element: <Home />,
       },
       {
