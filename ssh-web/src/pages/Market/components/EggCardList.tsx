@@ -17,6 +17,7 @@ export const EggCardList: React.FC<IEggCardListProps> = ({
       {eggData.map((egg) => (
         <EggCard
           key={egg.sellBoardId}
+          eggId={egg.specialEggInfo.specialEggId}
           eggName={egg.specialEggInfo.specialEggName}
           eggPrice={egg.pricePerOnce}
           eggImageUrl={egg.specialEggInfo.imageUrl}

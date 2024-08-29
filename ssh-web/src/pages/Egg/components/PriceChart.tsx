@@ -1,21 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import { formatTimeAgo } from '../../../utils/dateUtils';
-
-interface ITradeData {
-  price: number;
-  tradeDate: string;
-}
+import { ISpecialEggTradeHistory } from '../../../interfaces/eggInterface';
 
 interface IPriceChartProps {
-  tradeData: ITradeData[];
+  tradeData: ISpecialEggTradeHistory[] | undefined;
 }
 
 export const PriceChart: React.FC<IPriceChartProps> = ({ tradeData }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    if (tradeData.length > 0 && chartRef.current) {
+    if (tradeData && tradeData.length > 0 && chartRef.current) {
       const sortedData = tradeData.sort((a, b) =>
         a.tradeDate > b.tradeDate ? 1 : -1,
       );

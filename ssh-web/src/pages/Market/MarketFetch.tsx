@@ -23,7 +23,10 @@ import {
   searchEggsForSale,
   getMyRegisteredEggTrades,
 } from '../../apis/eggApi';
-import { IPaginatedTrades } from '../../interfaces/eggInterface';
+import {
+  IPaginatedTrades,
+  ISpecialEggInfo,
+} from '../../interfaces/eggInterface';
 
 export const MarketFetch = () => {
   const size = useRecoilValue(resizeState);
@@ -118,7 +121,7 @@ export const MarketFetch = () => {
             sortOrder={sortOrder}
             setSearchTerm={setSearchTerm}
             setSortOrder={setSortOrder}
-            fetchEggData={fetchEggData} // pass the callback to fetch egg data
+            fetchEggData={fetchEggData}
           />
         </div>
         <Modal color="light" />

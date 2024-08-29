@@ -7,6 +7,7 @@ import { isModalOpenState } from '../../../atoms/modal';
 import { SellDetailModalContent } from '../../../pages/Market/components/SellDetailModalContent';
 
 interface IEggCardProps {
+  eggId: number;
   eggName: string;
   eggPrice: number;
   eggImageUrl: string;
@@ -16,6 +17,7 @@ interface IEggCardProps {
 }
 
 export const EggCard: React.FC<IEggCardProps> = ({
+  eggId,
   eggName,
   eggPrice,
   eggImageUrl,
@@ -30,6 +32,7 @@ export const EggCard: React.FC<IEggCardProps> = ({
       isOpen: true,
       content: (
         <SellDetailModalContent
+          eggId={eggId}
           eggName={eggName}
           eggImageUrl={eggImageUrl}
           eggPrice={eggPrice}

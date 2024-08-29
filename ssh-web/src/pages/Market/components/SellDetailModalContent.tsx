@@ -5,13 +5,16 @@ import { PriceChart } from '../../Egg/components/PriceChart';
 import {
   requestEggPurchase,
   deleteSpecialEggTrade,
+  getSpecialEggTradeHistory,
 } from '../../../apis/eggApi';
 import { useSetRecoilState } from 'recoil';
 import { isModalOpenState } from '../../../atoms/modal';
 import { showToast } from '../../../utils/toastUtil';
 import { LastPriceInfoBar } from './LastPriceInfoBar';
+import { ISpecialEggTradeHistory } from '../../../interfaces/eggInterface';
 
 interface SpecialEggDetailProps {
+  eggId: number;
   eggName: string;
   eggImageUrl: string;
   eggPrice: number;
@@ -20,16 +23,17 @@ interface SpecialEggDetailProps {
   sellBoardId: number;
 }
 
-const fetchDummyData = (): { price: number; tradeDate: string }[] => {
-  return [
-    { price: 2, tradeDate: '2024-08-08' },
-    { price: 3, tradeDate: '2024-08-23' },
-    { price: 4, tradeDate: '2024-08-26' },
-    { price: 1, tradeDate: '2024-08-28' },
-  ];
-};
+// const fetchDummyData = (): [] => {
+//   return [
+//     { price: 2, tradeDate: '2024-08-08' },
+//     { price: 3, tradeDate: '2024-08-23' },
+//     { price: 4, tradeDate: '2024-08-26' },
+//     { price: 1, tradeDate: '2024-08-28' },
+//   ];
+// };
 
 export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
+  eggId,
   eggName,
   eggImageUrl,
   eggPrice,
@@ -39,14 +43,31 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
 }) => {
   const [lastPrice, setLastPrice] = useState<number | null>(null);
   const setIsModalOpen = useSetRecoilState(isModalOpenState);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [tradeData, setTradeData] = useState<ISpecialEggTradeHistory[]>();
 
   useEffect(() => {
-    const tradeData = fetchDummyData();
-    if (tradeData.length > 0) {
-      const prices = tradeData.map((data) => data.price);
+    const fetchSpecialEggHistory = async (specialEggId: number) => {
+      try {
+        const response = await getSpecialEggTradeHistory(specialEggId);
+        console.log(response);
+        setTradeData(response.data);
+      } catch (error) {
+        console.error('가격 로드 실패', error);
+        showToast('error', '가격 로드 실패');
+      }
+    };
+    fetchSpecialEggHistory(eggId);
+  }, []);
+
+  useEffect(() => {
+    if (tradeData && tradeData?.length > 0) {
+      const prices = tradeData?.map(
+        (data: ISpecialEggTradeHistory) => data?.price,
+      );
       setLastPrice(prices[prices.length - 1]);
     }
-  }, []);
+  }, [tradeData]);
 
   const handlePurchase = async () => {
     try {
@@ -69,8 +90,6 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       showToast('error', '계란 판매글 삭제에 실패했습니다!');
     }
   };
-
-  const tradeData = fetchDummyData();
 
   return (
     <div className="flex flex-col items-center justify-center">
