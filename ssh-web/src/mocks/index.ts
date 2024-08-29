@@ -614,7 +614,7 @@ mock.onGet('/api/users/info').reply((config) => {
           name: '이유승',
           gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
           birthday: '1998-04-29',
-          type: Math.floor(Math.random() * 2) ? 'PARENT' : 'PARENT',
+          type: Math.floor(Math.random() * 2) ? 'CHILD' : 'PARENT',
         },
       ]);
     }, 500);
