@@ -77,6 +77,8 @@ export const Signup = () => {
       } else {
         await nicknameDuplicate(contents[0].value as string).then((res) => {
           if (res.data.isDuplicated) {
+            alert('중복된 닉네임입니다');
+          } else {
             mutate({
               code: location.state?.code,
               nickname: contents[0].value as string,
@@ -84,8 +86,6 @@ export const Signup = () => {
               gender: contents[2].value === '남' ? 'M' : 'F',
               type: contents[3].value === '부모' ? 'PARENT' : 'CHILD',
             });
-          } else {
-            alert('중복된 닉네임입니다');
           }
         });
       }
@@ -104,7 +104,7 @@ export const Signup = () => {
 
   return (
     <div className="flex items-center justify-center w-full h-auto tablet:flex-col">
-      <Mascot nickname="닉네임" ment="반가워요! 몇 가지만 더 물어볼게요" />
+      <Mascot nickname="사용자" ment="반가워요! 몇 가지만 더 물어볼게요" />
       <div className={contentStyles()}>
         {pageType === 'info' ? (
           <UserInfoForm

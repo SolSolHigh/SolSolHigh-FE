@@ -5,9 +5,9 @@ import { Typography } from '../../atoms/Typography';
 import { Icon } from '../../atoms/Icon';
 import { HiTrash } from 'react-icons/hi2';
 import dayjs from 'dayjs';
-import { getImgSrc } from '../../../utils/userUtil';
 import { deleteMyChild, deleteMyWaitingChild } from '../../../apis/userApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { getImgSrc } from '../../../utils/userUtil';
 
 export const MascotCard = ({
   info,
