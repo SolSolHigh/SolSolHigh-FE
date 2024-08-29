@@ -11,7 +11,7 @@ import {
   useLockBodyScroll,
 } from './hook';
 import { useSessionCheck } from './hook/useSessionCheck';
-import { isTarget } from './utils/appUtil';
+import { getNavBgColor, isTarget } from './utils/appUtil';
 
 function App() {
   useCloseModalOnRouteChange();
@@ -25,7 +25,12 @@ function App() {
   return (
     <div className="w-full h-full">
       {isModalOpen.isOpen && <BackdropFilter />}
-      {!isTarget(location.pathname) && <NavigationBar />}
+      {!isTarget(location.pathname) && (
+        <NavigationBar
+          bgColor={getNavBgColor(location.pathname)}
+          path={location.pathname}
+        />
+      )}
       <div
         className={`${isTarget(location.pathname) ? 'tablet:!min-h-full' : 'tablet:mb-[4rem]'} desktop:pb-0 h-[calc(100%-3.5rem)] desktop:flex-1 relative w-full flex justify-center`}
       >

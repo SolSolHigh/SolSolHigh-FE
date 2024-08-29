@@ -11,23 +11,27 @@ import {
   HiOutlinePaperAirplane,
   HiOutlineUserGroup,
 } from 'react-icons/hi2';
+import { useNavigate } from 'react-router-dom';
 
 export interface MenuParentProps {
   parent: IUserInfo;
 }
 
 export const MenuParent = ({ parent }: MenuParentProps) => {
+  const nav = useNavigate();
+
   return (
     <div className="flex items-center justify-center w-full h-auto tablet:flex-col">
       <Mascot nickname={parent.nickname} ment="무엇이 궁금하신가요?" />
-      <div className="flex flex-col items-center desktop:w-[48rem] desktop:h-[48rem] desktop:rounded-lg desktop:py-16 tablet:w-full tablet:h-full tablet:rounded-t-3xl tablet:py-8 bg-[#f7f7f7]">
+      <div className="flex flex-col items-center desktop:w-[48rem] desktop:h-[48rem] desktop:rounded-lg desktop:py-16 tablet:w-full tablet:h-full tablet:rounded-t-3xl bg-[#f7f7f7]">
         <CircularImage
           imageUrl={getImgSrc(parent.gender, 'PARENT')}
           altText={parent.nickname}
           size="xl"
+          classNameStyles="tablet:hidden"
         />
         {/* 메이저 버튼 영역 */}
-        <div className="flex items-center w-full py-4 mt-4 bg-white justify-evenly">
+        <div className="flex items-center w-full py-4 bg-white desktop:mt-4 justify-evenly tablet:rounded-t-3xl">
           <div className="flex flex-col items-center gap-y-2">
             <img
               src="/assets/images/experience/send-money.png"
@@ -44,6 +48,18 @@ export const MenuParent = ({ parent }: MenuParentProps) => {
             />
             <Typography color="dark" size="xs">
               내 자녀의 퀴즈
+            </Typography>
+          </div>
+          <div
+            className="flex flex-col items-center gap-y-2"
+            onClick={() => nav('/mypage')}
+          >
+            <img
+              src="/assets/images/experience/task-done.png"
+              className="w-10 h-10"
+            />
+            <Typography color="dark" size="xs">
+              내 정보 보러가기
             </Typography>
           </div>
         </div>
@@ -112,7 +128,10 @@ export const MenuParent = ({ parent }: MenuParentProps) => {
             <Typography color="dark" weight="bold" size="xs">
               가족
             </Typography>
-            <div className="flex items-center gap-x-4">
+            <div
+              className="flex items-center gap-x-4"
+              onClick={() => nav('/manage', { state: { type: 'PARENT' } })}
+            >
               <Icon size="xs">
                 <HiOutlineUserGroup />
               </Icon>
