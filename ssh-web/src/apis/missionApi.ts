@@ -44,7 +44,7 @@ export const getMissionsForChild = (
   size: number,
   isFinished: boolean,
 ): Promise<AxiosResponse<IPaginatedMissions>> => {
-  return api.get('/api/children/missions', {
+  return api.get('/api/children/missions/query?', {
     params: {
       page,
       size,
