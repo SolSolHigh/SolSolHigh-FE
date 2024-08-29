@@ -17,4 +17,4 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd ~/solsol-high
-            ./feat/#47-egg-page.sh
+            ./static.sh feat/#47-egg-page
