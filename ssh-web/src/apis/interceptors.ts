@@ -26,7 +26,6 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    showToast('error', '오류가 발생하였습니다.');
     if (error.response?.status === 401) {
       window.location.href = '/login';
     }

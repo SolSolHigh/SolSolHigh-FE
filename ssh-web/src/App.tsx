@@ -13,11 +13,13 @@ import {
   useResizeDetection,
   useLockBodyScroll,
 } from './hook';
+import { useSessionCheck } from './hook/useSessionCheck';
 
 function App() {
   useCloseModalOnRouteChange();
   useResizeDetection();
   useLockBodyScroll();
+  useSessionCheck();
 
   const isModalOpen = useRecoilValue(isModalOpenState);
   const size = useRecoilValue(resizeState);

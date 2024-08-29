@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
       {
         index: true,
         path: '/',
-        element: <></>,
+        element: <Home />,
       },
       {
         path: PathNames.HOME.path,
@@ -68,14 +68,7 @@ export const router = createBrowserRouter([
         path: PathNames.MYPAGE.path,
         element: <Information />,
       },
-      {
-        path: PathNames.LOGIN.path,
-        element: <Login />,
-      },
-      {
-        path: PathNames.SIGNUP.path,
-        element: <Signup />,
-      },
+
       {
         path: '/manage',
         element: <Manage />,
@@ -93,5 +86,13 @@ export const router = createBrowserRouter([
         element: <Menu />,
       },
     ],
+  },
+  {
+    path: PathNames.LOGIN.path,
+    element: <Login />,
+  },
+  {
+    path: PathNames.SIGNUP.path,
+    element: <Signup />,
   },
 ]);
