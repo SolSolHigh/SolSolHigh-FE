@@ -9,13 +9,12 @@ import TextNavButton from '../../molecules/TextNavButton';
 import { MdOutlineNotifications } from 'react-icons/md';
 import { PathNames } from '../../../utils/router';
 import { EResize } from '../../../themes/themeBase';
-import { navigationBgColorState } from '../../../atoms/navigation';
 
 const baseLayoutStyles = 'z-30 fixed w-full';
 
 const NavigationBar = () => {
   const size = useRecoilValue<EResize>(resizeState);
-  const navigationBgColor = useRecoilValue(navigationBgColorState);
+
   return (
     <>
       {(size === EResize.M || size === EResize.T) && (
