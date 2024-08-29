@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { MissionDetail } from './index';
-import { IMission } from '../../../interfaces/missionInterfaces';
+import { IMission } from '../../../interfaces/missionInterface';
 import { EResize } from '../../../themes/themeBase';
 
 const meta: Meta<typeof MissionDetail> = {
@@ -48,6 +48,7 @@ const completedMission: IMission = {
   childInfo: {
     childId: 1,
     name: '차은우',
+    nickname: '은우',
   },
 };
 
@@ -62,6 +63,7 @@ const activeMission: IMission = {
   childInfo: {
     childId: 2,
     name: '고영희',
+    nickname: '영희',
   },
 };
 

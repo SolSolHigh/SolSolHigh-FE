@@ -6,9 +6,11 @@ import { Login } from '../pages/Login';
 import { Signup } from '../pages/Signup';
 import { QuizMain } from '../pages/QuizMain';
 import { QuizSolving } from '../pages/QuizSolving';
-import { Mission } from '../pages/Mission';
+import { MissionFetch } from '../pages/Mission';
 import { Information } from '../pages/Information';
 import { Manage } from '../pages/Information/Manage';
+import { Egg } from '../pages/Egg';
+import { Market } from '../pages/Market';
 import { PromiseTicket } from '../pages/Promise';
 import { Request } from '../pages/Information/Request';
 import { Home } from '../pages/Home';
@@ -25,6 +27,7 @@ export const PathNames: IPathNames = {
   },
   QUIZ: { path: '/quiz', name: '퀴즈' },
   EGG: { path: '/egg', name: '계란' },
+  Market: { path: '/market', name: '계란시장' },
   MYPAGE: {
     path: '/mypage',
     name: '전체',
@@ -50,7 +53,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PathNames.MISSION.path,
-        element: <Mission />,
+        element: <MissionFetch />,
       },
       {
         path: PathNames.QUIZ.path,
@@ -62,7 +65,11 @@ export const router = createBrowserRouter([
       },
       {
         path: PathNames.EGG.path,
-        element: <></>,
+        element: <Egg />,
+      },
+      {
+        path: PathNames.Market.path,
+        element: <Market />,
       },
       {
         path: PathNames.MYPAGE.path,

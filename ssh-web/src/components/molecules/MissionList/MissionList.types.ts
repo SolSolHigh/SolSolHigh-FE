@@ -1,4 +1,4 @@
-import { IMission } from '../../../interfaces/missionInterfaces';
+import { IMission } from '../../../interfaces/missionInterface';
 
 export interface IMissionListProps {
   missions: IMission[];

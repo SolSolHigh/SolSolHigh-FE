@@ -9,7 +9,7 @@ export const toggleTabStyles = tv({
   variants: {
     outlined: {
       true: 'bg-transparent rounded-none border-b-[0.05rem] border-b-secondary-300',
-      false: 'bg-primary-100 rounded-xl',
+      false: 'bg-primary-200 rounded-xl',
     },
     color: {
       primary: '',
