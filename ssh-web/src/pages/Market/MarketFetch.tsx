@@ -13,10 +13,7 @@ import {
   contentStyles,
   missionListBoxStyles,
 } from './MarketFetch.styles';
-import {
-  ENavigationBgColors,
-  navigationBgColorState,
-} from '../../atoms/navigation';
+
 import { MarketContent } from './components/MarketContent';
 import {
   getEggCount,
@@ -30,8 +27,6 @@ import {
 
 export const MarketFetch = () => {
   const size = useRecoilValue(resizeState);
-  const setNavigationBgColor = useSetRecoilState(navigationBgColorState);
-  setNavigationBgColor(ENavigationBgColors.primary);
 
   const [activeTab, setActiveTab] = useState<number>(0);
   const [eggPoints, setEggPoints] = useState<number>(0);

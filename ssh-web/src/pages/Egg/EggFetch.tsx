@@ -4,7 +4,7 @@ import { Mascot } from '../../components/molecules/Mascot';
 import { Typography } from '../../components/atoms/Typography';
 import { ToggleTab } from '../../components/atoms/ToggleTab';
 import { resizeState } from '../../atoms/resize';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { Modal } from '../../components/molecules/Modal';
 import {
   containerStyles,
@@ -14,17 +14,12 @@ import {
   missionListBoxStyles,
 } from './EggFetch.styles';
 import { ArrayActiveTitle, EActiveTitle, IActiveTab } from './EggFetch.types';
-import {
-  ENavigationBgColors,
-  navigationBgColorState,
-} from '../../atoms/navigation';
+
 import { TodayEgg } from './components/TodayEgg';
 import { MySpecialEggs } from './components/MySpecialEggs';
 
 export const EggFetch = () => {
   const size = useRecoilValue(resizeState);
-  const setNavigationBgColor = useSetRecoilState(navigationBgColorState);
-  setNavigationBgColor(ENavigationBgColors.primary);
 
   const [activeTab, setActiveTab] = useState<IActiveTab>({
     index: 0,
