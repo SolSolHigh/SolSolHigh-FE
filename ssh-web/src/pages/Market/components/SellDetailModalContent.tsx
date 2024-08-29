@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Chart from 'chart.js/auto';
+import React, { useEffect, useState } from 'react';
 import { Typography } from '../../../components/atoms/Typography';
 import { CircularImage } from '../../../components/atoms/CircularImage';
+import { PriceChart } from '../../Egg/components/PriceChart';
 import {
   requestEggPurchase,
   deleteSpecialEggTrade,
@@ -15,27 +15,18 @@ interface SpecialEggDetailProps {
   eggImageUrl: string;
   eggPrice: number;
   timeAgo: string;
-  isOwned: boolean; // 추가: 계란이 사용자가 소유한 것인지 확인
-  sellBoardId: number; // 추가: 판매글 ID
+  isOwned: boolean;
+  sellBoardId: number;
 }
 
-const getRelativeDate = (dateString: string): string => {
-  const tradeDate = new Date(dateString);
-  const today = new Date();
-  const diffTime = today.getTime() - tradeDate.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-  if (diffDays === 0) return '오늘';
-  if (diffDays === 1) return '1일 전';
-  if (diffDays === 2) return '2일 전';
-
-  return `${diffDays}일 전`;
+const fetchDummyData = (): { price: number; tradeDate: string }[] => {
+  return [
+    { price: 2, tradeDate: '2024-08-08' },
+    { price: 3, tradeDate: '2024-08-23' },
+    { price: 4, tradeDate: '2024-08-26' },
+    { price: 1, tradeDate: '2024-08-28' },
+  ];
 };
-
-interface TradeData {
-  price: number;
-  tradeDate: string;
-}
 
 export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
   eggName,
@@ -45,110 +36,14 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
   isOwned,
   sellBoardId,
 }) => {
-  const chartRef = useRef<HTMLCanvasElement>(null);
   const [lastPrice, setLastPrice] = useState<number | null>(null);
   const setIsModalOpen = useSetRecoilState(isModalOpenState);
+
   useEffect(() => {
-    const fetchDummyData = (): TradeData[] => {
-      return [
-        { price: 2, tradeDate: '2024-08-08' },
-        { price: 3, tradeDate: '2024-08-23' },
-        { price: 4, tradeDate: '2024-08-26' },
-        { price: 1, tradeDate: '2024-08-28' },
-      ];
-    };
-
     const tradeData = fetchDummyData();
-
     if (tradeData.length > 0) {
-      const sortedData = tradeData.sort((a, b) =>
-        a.tradeDate > b.tradeDate ? 1 : -1,
-      );
-
-      // 상대적 날짜로 변환
-      const labels = sortedData.map((data) => getRelativeDate(data.tradeDate));
-      const prices = sortedData.map((data) => data.price);
-
+      const prices = tradeData.map((data) => data.price);
       setLastPrice(prices[prices.length - 1]);
-
-      if (chartRef.current) {
-        const chartInstance = new Chart(chartRef.current, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                label: '가격 변화',
-                data: prices,
-                borderColor: '#4C7DFF',
-                backgroundColor: 'rgba(76, 125, 255, 0.1)',
-                pointBackgroundColor: '#4C7DFF',
-                pointBorderColor: '#FFFFFF',
-                pointHoverBackgroundColor: '#FF6384',
-                pointHoverBorderColor: '#FFFFFF',
-                pointRadius: 6,
-                pointHoverRadius: 8,
-                borderWidth: 3,
-                tension: 0.3,
-                fill: true,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false,
-              },
-              tooltip: {
-                backgroundColor: '#4C7DFF',
-                titleColor: '#FFFFFF',
-                bodyColor: '#FFFFFF',
-                displayColors: false,
-                callbacks: {
-                  label: function (context) {
-                    return `${context.parsed.y} 계란포인트에 팔렸어요`;
-                  },
-                },
-              },
-            },
-            scales: {
-              x: {
-                grid: {
-                  display: false,
-                },
-                ticks: {
-                  color: '#4C7DFF',
-                  font: {
-                    size: 14,
-                    weight: 'bold',
-                  },
-                },
-              },
-              y: {
-                grid: {
-                  color: 'rgba(76, 125, 255, 0.2)',
-                },
-                ticks: {
-                  color: '#4C7DFF',
-                  font: {
-                    size: 14,
-                    weight: 'bold',
-                  },
-                  callback: function (value) {
-                    return `${value}원`;
-                  },
-                },
-              },
-            },
-          },
-        });
-
-        return () => {
-          chartInstance.destroy();
-        };
-      }
     }
   }, []);
 
@@ -173,6 +68,8 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       showToast('error', '계란 판매글 삭제에 실패했습니다!');
     }
   };
+
+  const tradeData = fetchDummyData();
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -205,7 +102,7 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       </div>
 
       <div className="w-full h-48 bg-white rounded-lg shadow-lg flex items-center justify-center p-4">
-        <canvas ref={chartRef} className="w-full h-full"></canvas>
+        <PriceChart tradeData={tradeData} />
       </div>
 
       <div className="w-full bg-primary-200 rounded py-3 mt-4 flex flex-row gap-1 text-center justify-center px-1">

@@ -6,24 +6,22 @@ import { useSetRecoilState } from 'recoil';
 import { isModalOpenState } from '../../../atoms/modal';
 import { SellDetailModalContent } from '../../../pages/Market/components/SellDetailModalContent';
 
-interface EggCardProps {
+interface IEggCardProps {
   eggName: string;
   eggPrice: number;
   eggImageUrl: string;
   timeAgo: string;
   isOwned: boolean;
   sellBoardId: number;
-  onSellClick?: () => void; // 추가된 부분
 }
 
-export const EggCard: React.FC<EggCardProps> = ({
+export const EggCard: React.FC<IEggCardProps> = ({
   eggName,
   eggPrice,
   eggImageUrl,
   timeAgo,
   isOwned,
   sellBoardId,
-  onSellClick, // 추가된 부분
 }) => {
   const setModalState = useSetRecoilState(isModalOpenState);
 

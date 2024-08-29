@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { EResize } from '../../themes/themeBase';
 import { Mascot } from '../../components/molecules/Mascot';
 import { Typography } from '../../components/atoms/Typography';
@@ -13,12 +13,12 @@ import {
   contentStyles,
   missionListBoxStyles,
 } from './MarketFetch.styles';
-
 import {
   ENavigationBgColors,
   navigationBgColorState,
 } from '../../atoms/navigation';
 import { MarketContent } from './components/MarketContent';
+import { getEggCount } from '../../apis/eggApi';
 
 export const MarketFetch = () => {
   const size = useRecoilValue(resizeState);
@@ -26,12 +26,26 @@ export const MarketFetch = () => {
   setNavigationBgColor(ENavigationBgColors.primary);
 
   const [activeTab, setActiveTab] = useState<number>(0);
+  const [eggCount, setEggCount] = useState<number>(0);
 
   const TOGGLE_LABELS = ['계란 시장 구경', '내가 판매중인 계란 구경'];
 
   const handleTabChange = () => {
     setActiveTab(activeTab ? 0 : 1);
   };
+
+  useEffect(() => {
+    const fetchEggCount = async () => {
+      try {
+        const response = await getEggCount();
+        setEggCount(response.data.count);
+      } catch (error) {
+        console.error('계란 재화 조회 실패', error);
+      }
+    };
+
+    fetchEggCount();
+  }, []);
 
   return (
     <div className={containerStyles()}>
@@ -57,7 +71,7 @@ export const MarketFetch = () => {
                 weight="semibold"
                 classNameStyles="!text-primary-400"
               >
-                N개
+                {eggCount}개
               </Typography>
             </div>
           </div>

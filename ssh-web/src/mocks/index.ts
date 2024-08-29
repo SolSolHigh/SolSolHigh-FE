@@ -1055,7 +1055,7 @@ mock.onPost('/api/parents/children/request').reply((config) => {
 // ========== 계란 도메인 ==========
 
 // 거래된 일별 평균 거래가 리스트 조회
-mock.onGet(/\/api\/market\/special-eggs\/\d+/).reply((config) => {
+mock.onGet('/api/market/special-eggs/1').reply((config) => {
   const specialEggId = config.url?.split('/').pop();
 
   const tradeHistory = [
@@ -1173,8 +1173,10 @@ mock.onGet('/api/market/trades').reply((config) => {
   return [200, response];
 });
 
+//
+
 // 마지막 거래가 조회
-mock.onGet(/\/api\/market\/special-eggs\/\d+\/price/).reply((config) => {
+mock.onGet('/api/market/special-eggs/1/price').reply((config) => {
   const specialEggId = config.url?.split('/').pop();
 
   const lastPriceInfo = {
@@ -1191,72 +1193,36 @@ mock.onGet('/api/children/special-eggs').reply(() => {
     {
       specialEggInfo: {
         specialEggId: 1,
-        specialEggName: '시공간을 초월한 계란',
+        specialEggName: '다이아몬드 계란',
         imageUrl:
           'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+      eggCount: 2,
+    },
+    {
+      specialEggInfo: {
+        specialEggId: 2,
+        specialEggName: '특별한 다이아몬드 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg2.png',
       },
       eggCount: 1,
     },
     {
       specialEggInfo: {
-        specialEggId: 1,
-        specialEggName: '시공간을 초월한 계란',
+        specialEggId: 4,
+        specialEggName: '불타는 계란',
         imageUrl:
-          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/fire-egg.png',
       },
-      eggCount: 1,
+      eggCount: 3,
     },
     {
       specialEggInfo: {
-        specialEggId: 1,
-        specialEggName: '시공간을 초월한 계란',
+        specialEggId: 6,
+        specialEggName: '황금 계란',
         imageUrl:
-          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
-      },
-      eggCount: 1,
-    },
-    {
-      specialEggInfo: {
-        specialEggId: 1,
-        specialEggName: '시공간을 초월한 계란',
-        imageUrl:
-          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
-      },
-      eggCount: 1,
-    },
-    {
-      specialEggInfo: {
-        specialEggId: 1,
-        specialEggName: '시공간을 초월한 계란',
-        imageUrl:
-          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
-      },
-      eggCount: 1,
-    },
-    {
-      specialEggInfo: {
-        specialEggId: 1,
-        specialEggName: '시공간을 초월한 계란',
-        imageUrl:
-          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
-      },
-      eggCount: 1,
-    },
-    {
-      specialEggInfo: {
-        specialEggId: 1,
-        specialEggName: '시공간을 초월한 계란',
-        imageUrl:
-          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
-      },
-      eggCount: 1,
-    },
-    {
-      specialEggInfo: {
-        specialEggId: 1,
-        specialEggName: '시공간을 초월한 계란',
-        imageUrl:
-          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/gold-egg.png',
       },
       eggCount: 1,
     },

@@ -15,17 +15,19 @@ import {
   getOwnedSpecialEggs,
   getLastSpecialEggPrice,
 } from '../../../apis/eggApi';
+import { ALL_SPECIAL_EGG_LIST } from './ALL_SPECIAL_EGG_LIST';
 
 SwiperCore.use([EffectCoverflow, Pagination, Navigation]);
 
-interface Egg {
+export interface IEgg {
   id: number;
   name: string;
   src: string;
   description: string;
+  isOwned: boolean;
 }
 
-const bgColors = [
+export const eggCardBgColors = [
   'bg-pink-300 hover:bg-pink-400 transition-colors duration-300',
   'bg-blue-300 hover:bg-blue-400 transition-colors duration-300',
   'bg-green-300 hover:bg-green-400 transition-colors duration-300',
@@ -42,11 +44,10 @@ export const MySpecialEggs: React.FC = () => {
   const navigate = useNavigate();
   const setModalState = useSetRecoilState(isModalOpenState);
   const [eggPoints, setEggPoints] = useState<number>(0);
-  const [ownedEggs, setOwnedEggs] = useState<Egg[]>([]);
+  const [displayEggs, setDisplayEggs] = useState<IEgg[]>([]);
   const [currentSlide, setCurrentSlide] = useState(1);
 
   useEffect(() => {
-    // 계란 재화(포인트) 조회
     const fetchEggCount = async () => {
       try {
         const response = await getEggCount();
@@ -56,17 +57,20 @@ export const MySpecialEggs: React.FC = () => {
       }
     };
 
-    // 소유한 특별 계란 조회
     const fetchOwnedSpecialEggs = async () => {
       try {
         const response = await getOwnedSpecialEggs();
-        const eggs = response.data.map((eggData) => ({
-          id: eggData.specialEggInfo.specialEggId,
-          name: eggData.specialEggInfo.specialEggName,
-          src: eggData.specialEggInfo.imageUrl,
-          description: `이 계란은 ${eggData.specialEggInfo.specialEggName}입니다.`,
+        const ownedEggIds = response.data.map(
+          (egg) => egg.specialEggInfo.specialEggId,
+        );
+
+        const allEggs = ALL_SPECIAL_EGG_LIST.map((egg) => ({
+          ...egg,
+          isOwned: ownedEggIds.includes(egg.id),
+          description: `이 계란은 ${egg.name}입니다.`,
         }));
-        setOwnedEggs(eggs);
+
+        setDisplayEggs(allEggs);
       } catch (error) {
         console.error('소유한 특별 계란 조회 실패:', error);
       }
@@ -80,7 +84,7 @@ export const MySpecialEggs: React.FC = () => {
     setCurrentSlide(swiper.realIndex + 1);
   };
 
-  const handleDetailClick = async (egg: Egg, isOwned: boolean) => {
+  const handleDetailClick = async (egg: IEgg) => {
     try {
       const response = await getLastSpecialEggPrice(egg.id);
       const lastPrice = response.data.price ?? '알 수 없음';
@@ -88,7 +92,11 @@ export const MySpecialEggs: React.FC = () => {
       setModalState({
         isOpen: true,
         content: (
-          <SpecialEggDetail egg={egg} isOwned={isOwned} lastPrice={lastPrice} />
+          <SpecialEggDetail
+            egg={egg}
+            isOwned={egg.isOwned}
+            lastPrice={lastPrice}
+          />
         ),
       });
     } catch (error) {
@@ -98,7 +106,7 @@ export const MySpecialEggs: React.FC = () => {
         content: (
           <SpecialEggDetail
             egg={egg}
-            isOwned={isOwned}
+            isOwned={egg.isOwned}
             lastPrice="알 수 없음"
           />
         ),
@@ -129,7 +137,7 @@ export const MySpecialEggs: React.FC = () => {
             weight="bold"
             classNameStyles="!text-primary-400"
           >
-            {currentSlide} / {ownedEggs.length}
+            {currentSlide} / {displayEggs.length}
           </Typography>
         </div>
         <Swiper
@@ -150,7 +158,7 @@ export const MySpecialEggs: React.FC = () => {
           className="swiper w-full"
           style={{ maxWidth: '100%' }}
         >
-          {ownedEggs.map((egg, index) => (
+          {displayEggs.map((egg, index) => (
             <SwiperSlide
               key={egg.id}
               className="flex items-center justify-center"
@@ -158,7 +166,9 @@ export const MySpecialEggs: React.FC = () => {
             >
               <div
                 className={`w-full flex flex-col items-center justify-center rounded-xl py-6 ${
-                  bgColors[index % bgColors.length]
+                  egg.isOwned
+                    ? eggCardBgColors[index % eggCardBgColors.length]
+                    : 'bg-black'
                 }`}
               >
                 <div className="relative flex items-center justify-center">
@@ -185,7 +195,7 @@ export const MySpecialEggs: React.FC = () => {
                 </Typography>
                 <button
                   className="bg-white w-3/4 rounded-md shadow-md py-2"
-                  onClick={() => handleDetailClick(egg, true)}
+                  onClick={() => handleDetailClick(egg)}
                 >
                   자세히보기
                 </button>
@@ -210,7 +220,7 @@ export const MySpecialEggs: React.FC = () => {
 };
 
 interface SpecialEggDetailProps {
-  egg: Egg;
+  egg: IEgg;
   isOwned: boolean;
   lastPrice: string | number;
 }
