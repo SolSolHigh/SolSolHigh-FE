@@ -33,6 +33,37 @@ mock.onGet(`/${REQUEST_DOMAINS.auth}/examples`).reply(() => {
 
 // ========== 계좌 도메인 ===========
 
+// 세션이 소유한 계좌 조회
+mock.onPost(`/api/accounts`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            accountName: '쏠쏠하이 수시입출금 통장',
+            accountNo: '0205782816344769',
+            accountTypeCode: '1',
+            accountBalance: 1354000,
+          },
+          {
+            accountName: '쏠쏠하이 정기예금 통장',
+            accountNo: '0205782816344768',
+            accountTypeCode: '2',
+            accountBalance: 1500000,
+          },
+          {
+            accountName: '쏠쏠하이 정기적금 통장',
+            accountNo: '0205782816344767',
+            accountTypeCode: '3',
+            accountBalance: 2400000,
+          },
+        ],
+      ]);
+    }, 500);
+  });
+});
+
 // 예금 상품 조회
 mock.onGet(`/api/accounts/deposit/products`).reply(() => {
   return new Promise((resolve) => {
@@ -42,7 +73,7 @@ mock.onGet(`/api/accounts/deposit/products`).reply(() => {
         [
           {
             accountName: '90일 단기 예금',
-            accountTypeUniqueNo: '004-2-bafb564d',
+            accountTypeUniqueNo: '003-1-bafb564d',
             subscriptionPeriod: '90',
             minSubscriptionBalance: '0',
             maxSubscriptionBalance: '3000000',
@@ -52,7 +83,7 @@ mock.onGet(`/api/accounts/deposit/products`).reply(() => {
           },
           {
             accountName: '180일 단기 예금',
-            accountTypeUniqueNo: '004-2-bafb564d',
+            accountTypeUniqueNo: '003-2-bafb564d',
             subscriptionPeriod: '180',
             minSubscriptionBalance: '0',
             maxSubscriptionBalance: '3000000',
@@ -62,7 +93,7 @@ mock.onGet(`/api/accounts/deposit/products`).reply(() => {
           },
           {
             accountName: '270일 단기 예금',
-            accountTypeUniqueNo: '004-2-bafb564d',
+            accountTypeUniqueNo: '003-3-bafb564d',
             subscriptionPeriod: '270',
             minSubscriptionBalance: '0',
             maxSubscriptionBalance: '3000000',
@@ -72,7 +103,7 @@ mock.onGet(`/api/accounts/deposit/products`).reply(() => {
           },
           {
             accountName: '360일 단기 예금',
-            accountTypeUniqueNo: '004-2-bafb564d',
+            accountTypeUniqueNo: '003-4-bafb564d',
             subscriptionPeriod: '360',
             minSubscriptionBalance: '0',
             maxSubscriptionBalance: '3000000',
@@ -105,7 +136,7 @@ mock.onGet(`/api/accounts/saving/products`).reply(() => {
           },
           {
             accountName: '180일 단기 적금',
-            accountTypeUniqueNo: '004-2-bafb564d',
+            accountTypeUniqueNo: '004-3-bafb564d',
             subscriptionPeriod: '180',
             minSubscriptionBalance: '30000',
             maxSubscriptionBalance: '3000000',
@@ -115,7 +146,7 @@ mock.onGet(`/api/accounts/saving/products`).reply(() => {
           },
           {
             accountName: '270일 단기 적금',
-            accountTypeUniqueNo: '004-2-bafb564d',
+            accountTypeUniqueNo: '004-4-bafb564d',
             subscriptionPeriod: '270',
             minSubscriptionBalance: '30000',
             maxSubscriptionBalance: '3000000',
@@ -125,7 +156,7 @@ mock.onGet(`/api/accounts/saving/products`).reply(() => {
           },
           {
             accountName: '360일 단기 적금',
-            accountTypeUniqueNo: '004-2-bafb564d',
+            accountTypeUniqueNo: '004-5-bafb564d',
             subscriptionPeriod: '360',
             minSubscriptionBalance: '30000',
             maxSubscriptionBalance: '3000000',

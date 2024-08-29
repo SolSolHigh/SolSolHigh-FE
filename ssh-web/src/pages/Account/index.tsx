@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../../components/atoms/Button';
 import { Typography } from '../../components/atoms/Typography';
 import { ProgressBar } from '../../components/atoms/ProgressBar';
@@ -6,25 +6,57 @@ import { ToggleTab } from '../../components/atoms/ToggleTab';
 import { Mascot } from '../../components/molecules/Mascot';
 import { ChangeChild } from '../../components/molecules/ChangeChild';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../../apis/interceptors';
 
 interface DepositAccountCardProps {
   accountName: string;
-  accountNumber: string;
-  balance: number;
+  accountNo: string;
+  accountTypeCode: string;
+  accountBalance: number;
+  percent?: number;
   isOwn: boolean;
 }
 
 interface InstallmentAccountCardProps {
   accountName: string;
-  accountNumber: string;
-  balance: number;
+  accountNo: string;
+  accountTypeCode: string;
+  accountBalance: number;
   percent: number;
   isOwn: boolean;
 }
 
+interface IAccount {
+  accountName: string;
+  accountNo: string;
+  accountTypeCode: string;
+  accountBalance: number;
+}
+
+function formatString(input: string): string {
+  // 첫 번째 부분은 앞의 3자리
+  const part1 = input.slice(0, 3);
+  // 두 번째 부분은 다음 5자리
+  const part2 = input.slice(3, 8);
+  // 세 번째 부분은 나머지 모든 자리
+  const part3 = input.slice(8);
+
+  // 각 부분을 '-'로 결합
+  return `${part1}-${part2}-${part3}`;
+}
+
 export const Account = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [accountNum, setAccountNum] = useState<number>(0);
+  const [ownAccounts, setOwnAccounts] = useState<IAccount[] | null>(null);
+  const [childAccounts, setChildAccounts] = useState<IAccount[] | null>(null);
+  const [selectedAccount, setSelectedAccount] = useState<IAccount | null>(null);
+
+  useEffect(() => {
+    api.post(`/api/accounts`).then((response) => {
+      setOwnAccounts(response.data);
+      setChildAccounts(response.data);
+    });
+  }, []);
 
   const navigate = useNavigate();
   return (
@@ -53,49 +85,87 @@ export const Account = () => {
           ></ToggleTab>
         </div>
 
-        <div className="space-y-5 mt-4 w-full max-w-[48rem]">
+        <div className="space-y-5 mt-4 w-full max-w-[48rem] overflow-auto">
           {activeTab === 0 ? (
             <>
-              <DepositAccountCard
-                accountName={'쏠쏠 자유예금 통장'}
-                accountNumber={'010-10101-101010'}
-                balance={600500}
-                isOwn={true}
-              />
-              <InstallmentAccountCard
-                accountName={'쏠쏠 정기적금 통장'}
-                accountNumber={'010-10101-101010'}
-                balance={1200000}
-                percent={62.5}
-                isOwn={true}
-              ></InstallmentAccountCard>
+              {ownAccounts?.map((item) => {
+                if (
+                  item.accountTypeCode === '1' ||
+                  item.accountTypeCode === '2'
+                ) {
+                  return (
+                    <DepositAccountCard
+                      key={item.accountNo}
+                      accountName={item.accountName}
+                      accountNo={item.accountNo}
+                      accountTypeCode={item.accountTypeCode}
+                      accountBalance={item.accountBalance}
+                      percent={88.8}
+                      isOwn={true}
+                    />
+                  );
+                } else if (item.accountTypeCode === '3') {
+                  return (
+                    <InstallmentAccountCard
+                      key={item.accountNo}
+                      accountName={item.accountName}
+                      accountNo={item.accountNo}
+                      accountTypeCode={item.accountTypeCode}
+                      accountBalance={item.accountBalance}
+                      percent={62.5}
+                      isOwn={true}
+                    />
+                  );
+                }
+              })}
             </>
           ) : (
             <>
-              <DepositAccountCard
-                accountName={'쏠쏠 자유예금 통장'}
-                accountNumber={'010-10101-101010'}
-                balance={600500}
-                isOwn={false}
-              />
-              <InstallmentAccountCard
-                accountName={'쏠쏠 정기적금 통장'}
-                accountNumber={'010-10101-101010'}
-                balance={1200000}
-                percent={62.5}
-                isOwn={false}
-              ></InstallmentAccountCard>
+              {childAccounts?.map((item) => {
+                if (
+                  item.accountTypeCode === '1' ||
+                  item.accountTypeCode === '2'
+                ) {
+                  return (
+                    <DepositAccountCard
+                      key={item.accountNo}
+                      accountName={item.accountName}
+                      accountNo={item.accountNo}
+                      accountTypeCode={item.accountTypeCode}
+                      accountBalance={item.accountBalance}
+                      percent={88.8}
+                      isOwn={false}
+                    />
+                  );
+                } else if (item.accountTypeCode === '3') {
+                  return (
+                    <InstallmentAccountCard
+                      key={item.accountNo}
+                      accountName={item.accountName}
+                      accountNo={item.accountNo}
+                      accountTypeCode={item.accountTypeCode}
+                      accountBalance={item.accountBalance}
+                      percent={62.5}
+                      isOwn={false}
+                    />
+                  );
+                }
+              })}
             </>
           )}
+          {ownAccounts && ownAccounts.length <= 3 && (
+            <div className="flex justify-center">
+              <Button
+                classNameStyles="mt-4"
+                onClick={() => {
+                  navigate('./items');
+                }}
+              >
+                계좌 개설하러가기
+              </Button>
+            </div>
+          )}
         </div>
-        <Button
-          classNameStyles="mt-4"
-          onClick={() => {
-            navigate('./items');
-          }}
-        >
-          계좌 개설하러가기
-        </Button>
       </div>
     </div>
   );
@@ -103,8 +173,9 @@ export const Account = () => {
 
 export const InstallmentAccountCard = ({
   accountName,
-  accountNumber,
-  balance,
+  accountNo,
+  accountTypeCode,
+  accountBalance,
   percent,
   isOwn,
 }: InstallmentAccountCardProps) => {
@@ -113,7 +184,9 @@ export const InstallmentAccountCard = ({
       <Typography color="primary" size="2xl" weight="bold">
         {accountName}
       </Typography>
-      <Typography color="secondary">{accountNumber}</Typography>
+      <Typography color="secondary" size="md" classNameStyles="mt-1 mb-2">
+        {formatString(accountNo)}
+      </Typography>
       <ProgressBar percent={percent} size="sm" classNameStyles="mt-2" />
       <Typography
         color="dark"
@@ -121,7 +194,7 @@ export const InstallmentAccountCard = ({
         weight="bold"
         classNameStyles="flex flex-row justify-end mt-2 text-end"
       >
-        {balance.toLocaleString()}
+        {Number(accountBalance).toLocaleString()}
         <Typography
           color="primary"
           size="3xl"
@@ -135,24 +208,19 @@ export const InstallmentAccountCard = ({
       <div className="flex space-x-2 mt-2 justify-end w-full">
         {!isOwn ? (
           <>
-            <Button color="primary" size="sm">
-              <Typography color="light" size="sm">
-                송금
-              </Typography>
-            </Button>
             <Button color="primary" size="sm" classNameStyles="!bg-primary-400">
               <Typography color="light" size="sm">
                 예약송금 관리
               </Typography>
             </Button>
-            <Button color="dark" size="sm" classNameStyles="">
-              <Typography color="light" size="sm">
-                관리
-              </Typography>
-            </Button>
           </>
         ) : (
           <>
+            <Button color="dark" size="sm" classNameStyles="">
+              <Typography color="light" size="sm">
+                내역 조회
+              </Typography>
+            </Button>
             <Button color="danger" size="sm" classNameStyles="!bg-danger-500">
               <Typography color="light" size="sm">
                 해지
@@ -167,8 +235,10 @@ export const InstallmentAccountCard = ({
 
 export const DepositAccountCard = ({
   accountName,
-  accountNumber,
-  balance,
+  accountNo,
+  accountTypeCode,
+  accountBalance,
+  percent = 0,
   isOwn,
 }: DepositAccountCardProps) => {
   return (
@@ -176,14 +246,17 @@ export const DepositAccountCard = ({
       <Typography color="primary" size="2xl" weight="bold">
         {accountName}
       </Typography>
-      <Typography color="secondary">{accountNumber}</Typography>
+      <Typography color="secondary">{formatString(accountNo)}</Typography>
+      {accountTypeCode === '2' && (
+        <ProgressBar percent={percent} size="sm" classNameStyles="mt-2" />
+      )}
       <Typography
         color="dark"
         size="3xl"
         weight="bold"
         classNameStyles="flex flex-row justify-end mt-4 text-end"
       >
-        {balance.toLocaleString()}
+        {accountBalance.toLocaleString()}
         <Typography
           color="primary"
           size="3xl"
@@ -195,38 +268,41 @@ export const DepositAccountCard = ({
       </Typography>
 
       <div className="flex space-x-2 mt-4 justify-end">
-        {!isOwn ? (
-          <>
+        <>
+          {accountTypeCode === '1' && (
             <Button color="primary" size="sm">
               <Typography color="light" size="sm">
                 송금
               </Typography>
             </Button>
-            <Button color="primary" size="sm" classNameStyles="!bg-primary-400">
-              <Typography color="light" size="sm">
-                자동이체 관리
-              </Typography>
-            </Button>
-            <Button color="dark" size="sm" classNameStyles="">
-              <Typography color="light" size="sm">
-                관리
-              </Typography>
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button color="primary" size="sm">
-              <Typography color="light" size="sm">
-                송금
-              </Typography>
-            </Button>
-            <Button color="danger" size="sm" classNameStyles="!bg-danger-500">
-              <Typography color="light" size="sm">
-                해지
-              </Typography>
-            </Button>
-          </>
-        )}
+          )}
+          {!isOwn ? (
+            <>
+              <Button
+                color="primary"
+                size="sm"
+                classNameStyles="!bg-primary-400"
+              >
+                <Typography color="light" size="sm">
+                  자동이체 관리
+                </Typography>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button color="dark" size="sm" classNameStyles="">
+                <Typography color="light" size="sm">
+                  내역 조회
+                </Typography>
+              </Button>
+              <Button color="danger" size="sm" classNameStyles="!bg-danger-500">
+                <Typography color="light" size="sm">
+                  해지
+                </Typography>
+              </Button>
+            </>
+          )}
+        </>
       </div>
     </div>
   );
