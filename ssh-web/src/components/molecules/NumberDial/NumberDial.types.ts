@@ -1,3 +1,5 @@
+// src/components/molecules/NumberDial/NumberDial.types.ts
+
 import { ReactNode } from 'react';
 
 export interface NumberDialProps extends React.ComponentProps<'div'> {
@@ -10,4 +12,5 @@ export interface NumberDialProps extends React.ComponentProps<'div'> {
   labels?: string[];
   children?: ReactNode;
   classNameStyles?: string;
+  visibleCount?: number;
 }
