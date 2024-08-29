@@ -29,13 +29,16 @@ const fetchMissions = async (
   page: number,
   size: number,
 ): Promise<IPaginatedMissions> => {
-  const response = await api.get<IPaginatedMissions>('/api/children/missions', {
-    params: {
-      page,
-      size,
-      'is-finished': isFinished,
+  const response = await api.get<IPaginatedMissions>(
+    '/api/children/missions/query',
+    {
+      params: {
+        page,
+        size,
+        'is-finished': isFinished,
+      },
     },
-  });
+  );
   return response.data;
 };
 
