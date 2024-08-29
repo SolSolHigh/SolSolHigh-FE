@@ -47,7 +47,7 @@ export const MarketFetch = () => {
       if (activeTab === 0) {
         const response = await searchEggsForSale(
           searchTerm,
-          `price,${sortOrder}`,
+          `eggPricePerOnce,${sortOrder}`,
         );
         setEggData(response.data.content);
       } else {
