@@ -4,7 +4,7 @@ import REQUEST_DOMAINS from '../apis/axiosConfig';
 import {
   IMissionCreateRequest,
   IMissionUpdateRequest,
-} from '../interfaces/missionInterfaces';
+} from '../interfaces/missionInterface';
 
 export const mock = new AxiosMockAdapter(api);
 
@@ -415,16 +415,18 @@ mock.onGet(`api/children/${nickname}/keywords`).reply(() => {
 // ========== 미션 도메인 ==========
 // 미션 조회
 mock.onGet('/api/children/missions').reply((config) => {
-  // /api/children/missions?page=0&size=20&is-finished=false
+  const page = parseInt(config.params.page, 10) || 0;
+  const size = parseInt(config.params.size, 10) || 20;
   const isFinished =
-    config.params['is-finished'] === true ||
-    config.params['is-finished'] === 'true';
+    config.params['is-finished'] === 'true' ||
+    config.params['is-finished'] === true;
 
   const missions = [
     {
       childInfo: {
         childId: 1,
         name: '차은우',
+        nickname: '은우',
       },
       missionId: 1,
       description: '양치하고 세수하기.',
@@ -438,8 +440,9 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 1,
         name: '차은우',
+        nickname: '은우',
       },
-      missionId: 5,
+      missionId: 1,
       description: '양치하고 세수하기.',
       isFinished: false,
       missionStartAt: '2026-02-04 06:20:20',
@@ -451,8 +454,9 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 1,
         name: '차은우',
+        nickname: '은우',
       },
-      missionId: 6,
+      missionId: 1,
       description: '양치하고 세수하기.',
       isFinished: false,
       missionStartAt: '2026-02-04 06:20:20',
@@ -464,8 +468,9 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 1,
         name: '차은우',
+        nickname: '은우',
       },
-      missionId: 7,
+      missionId: 1,
       description: '양치하고 세수하기.',
       isFinished: false,
       missionStartAt: '2026-02-04 06:20:20',
@@ -477,8 +482,9 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 1,
         name: '차은우',
+        nickname: '은우',
       },
-      missionId: 8,
+      missionId: 1,
       description: '양치하고 세수하기.',
       isFinished: false,
       missionStartAt: '2026-02-04 06:20:20',
@@ -490,8 +496,9 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 1,
         name: '차은우',
+        nickname: '은우',
       },
-      missionId: 9,
+      missionId: 1,
       description: '양치하고 세수하기.',
       isFinished: false,
       missionStartAt: '2026-02-04 06:20:20',
@@ -499,10 +506,222 @@ mock.onGet('/api/children/missions').reply((config) => {
       missionFinishedAt: null,
       missionLevel: '1', // 쉬움
     },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+    {
+      childInfo: {
+        childId: 1,
+        name: '차은우',
+        nickname: '은우',
+      },
+      missionId: 1,
+      description: '양치하고 세수하기.',
+      isFinished: false,
+      missionStartAt: '2026-02-04 06:20:20',
+      missionEndAt: '2026-02-04 06:20:20',
+      missionFinishedAt: null,
+      missionLevel: '1', // 쉬움
+    },
+
     {
       childInfo: {
         childId: 2,
         name: '이슬기',
+        nickname: '슬기',
       },
       missionId: 2,
       description: '책 읽기.',
@@ -516,6 +735,7 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 3,
         name: '박소연',
+        nickname: '소연',
       },
       missionId: 3,
       description: '방 청소하기.',
@@ -529,6 +749,7 @@ mock.onGet('/api/children/missions').reply((config) => {
       childInfo: {
         childId: 4,
         name: '김유진',
+        nickname: '유진',
       },
       missionId: 4,
       description: '숙제하기.',
@@ -541,12 +762,44 @@ mock.onGet('/api/children/missions').reply((config) => {
   ];
 
   const filteredMissions = missions.filter(
+    // 요청된 조건에 맞는 미션을 필터링
     (mission) => mission.isFinished === isFinished,
   );
 
+  const start = page * size;
+  const end = start + size;
+  const paginatedMissions = filteredMissions.slice(start, end);
+
+  const response = {
+    content: paginatedMissions,
+    pageable: {
+      pageNumber: page,
+      pageSize: size,
+      offset: start,
+      paged: true,
+      unpaged: false,
+      sort: {
+        empty: true,
+        sorted: false,
+        unsorted: true,
+      },
+    },
+    first: page === 0,
+    last: end >= filteredMissions.length,
+    size: size,
+    number: page,
+    numberOfElements: paginatedMissions.length,
+    empty: paginatedMissions.length === 0,
+    sort: {
+      empty: true,
+      sorted: false,
+      unsorted: true,
+    },
+  };
+
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve([200, filteredMissions]);
+      resolve([200, response]);
     }, 500);
   });
 });
@@ -555,22 +808,42 @@ mock.onGet('/api/children/missions').reply((config) => {
 mock.onPost('/api/children/missions').reply((config) => {
   const requestData: IMissionCreateRequest = JSON.parse(config.data);
 
+  if (
+    !requestData.nickname ||
+    !requestData.description ||
+    !requestData.missionStartAt ||
+    !requestData.missionEndAt ||
+    !requestData.missionLevel
+  ) {
+    return [
+      400,
+      { code: 'M999', message: 'Bad Request: Missing required fields' },
+    ];
+  }
+
+  if (
+    requestData.missionLevel !== '1' &&
+    requestData.missionLevel !== '2' &&
+    requestData.missionLevel !== '3'
+  ) {
+    return [
+      400,
+      { code: 'M999', message: 'Bad Request: Invalid mission level' },
+    ];
+  }
+
   const createdMission = {
     ...requestData,
-    missionId: Math.floor(Math.random() * 1000), // 랜덤 missionId 생성
+    missionId: Math.floor(Math.random() * 1000),
     isFinished: false,
     missionFinishedAt: null,
   };
 
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([201, createdMission]);
-    }, 500);
-  });
+  return [201, createdMission];
 });
 
 // 미션 삭제
-mock.onDelete(/\/api\/missions\/\d+/).reply((config) => {
+mock.onDelete(/\/api\/children\/missions\/\d+/).reply((config) => {
   const missionId = config.url?.split('/').pop();
 
   return new Promise((resolve) => {
@@ -584,7 +857,7 @@ mock.onDelete(/\/api\/missions\/\d+/).reply((config) => {
 });
 
 // 미션 수정 (상태 변경 포함)
-mock.onPatch(/\/api\/missions\/\d+/).reply((config) => {
+mock.onPatch(/\/api\/children\/missions\/\d+/).reply((config) => {
   const missionId = config.url?.split('/').pop();
   const requestData: IMissionUpdateRequest = JSON.parse(config.data);
 
@@ -779,6 +1052,34 @@ mock.onPost('/api/parents/children/request').reply((config) => {
 
 // ========== 사용자 도메인 ==========
 
+// ========== 계란 도메인 ==========
+
+// 거래된 일별 평균 거래가 리스트 조회
+mock.onGet('/api/market/special-eggs/1').reply((config) => {
+  const specialEggId = config.url?.split('/').pop();
+
+  const tradeHistory = [
+    { price: 2, tradeDate: '2023-05-08' },
+    { price: 1, tradeDate: '2023-05-05' },
+  ];
+
+  return [200, tradeHistory];
+});
+
+// 계란 거래 삭제
+mock.onPatch(/\/api\/market\/trades\/\d+/).reply((config) => {
+  const sellBoardId = config.url?.split('/').pop();
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        204,
+        { message: `거래 ${sellBoardId}이 성공적으로 삭제되었습니다.` },
+      ]);
+    }, 500);
+  });
+});
+
 // ========== 경험치 도메인 ==========
 mock.onGet('/api/children/experience').reply(() => {
   return new Promise((resolve) => {
@@ -794,6 +1095,218 @@ mock.onGet('/api/children/experience').reply(() => {
     }, 500);
   });
 });
+
+// 계란 구매 요청
+mock.onPost('/api/market/trades/buy-request').reply((config) => {
+  const requestData = JSON.parse(config.data);
+  const { sellBoardId, eggCount } = requestData;
+
+  if (eggCount <= 0) {
+    return [409, { code: 'EC001', message: '계란의 재화가 부족합니다.' }];
+  }
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        202,
+        { message: `계란 ${eggCount}개가 성공적으로 구매 요청되었습니다.` },
+      ]);
+    }, 500);
+  });
+});
+
+// 계란 재화 조회
+mock.onGet('/api/eggs/count').reply(() => {
+  return [200, { count: 10 }];
+});
+
+// 계란 판매 등록
+mock.onPost('/api/market/trades').reply((config) => {
+  const requestData = JSON.parse(config.data);
+  const { pricePerOnce, sellCount, specialEggId } = requestData;
+
+  if (sellCount <= 0 || pricePerOnce <= 0) {
+    return [409, { code: 'HSE001', message: '소유하지 않은 계란입니다.' }];
+  }
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        201,
+        { message: `계란 ${sellCount}개가 성공적으로 판매 등록되었습니다.` },
+      ]);
+    }, 500);
+  });
+});
+
+// 내가 등록한 팔게요 게시글 조회
+mock.onGet('/api/market/trades').reply((config) => {
+  const page = parseInt(config.params.page, 10) || 0;
+  const size = parseInt(config.params.size, 10) || 20;
+
+  const trades = [
+    {
+      sellBoardId: 1,
+      writtenAt: '2024-05-05 00:00:00',
+      pricePerOnce: 1,
+      sellCount: 1,
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '다이아몬드 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+    },
+  ];
+
+  const response = {
+    content: trades,
+    pageable: {
+      pageNumber: page,
+      pageSize: size,
+      offset: page * size,
+      paged: true,
+      unpaged: false,
+      sort: {
+        empty: true,
+        sorted: false,
+        unsorted: true,
+      },
+    },
+    first: page === 0,
+    last: trades.length < size,
+    size,
+    number: page,
+    numberOfElements: trades.length,
+    empty: trades.length === 0,
+    sort: {
+      empty: true,
+      sorted: false,
+      unsorted: true,
+    },
+  };
+
+  return [200, response];
+});
+
+//
+
+// 마지막 거래가 조회
+mock.onGet('/api/market/special-eggs/1/price').reply((config) => {
+  const specialEggId = config.url?.split('/').pop();
+
+  const lastPriceInfo = {
+    price: 1,
+    lastTradedAt: '2024-05-06 05:12:12',
+  };
+
+  return [200, lastPriceInfo];
+});
+
+// 소유한 특수 계란 조회
+mock.onGet('/api/children/special-eggs').reply(() => {
+  const specialEggs = [
+    {
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '다이아몬드 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+      eggCount: 2,
+    },
+    {
+      specialEggInfo: {
+        specialEggId: 2,
+        specialEggName: '특별한 다이아몬드 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg2.png',
+      },
+      eggCount: 1,
+    },
+    {
+      specialEggInfo: {
+        specialEggId: 4,
+        specialEggName: '불타는 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/fire-egg.png',
+      },
+      eggCount: 3,
+    },
+    {
+      specialEggInfo: {
+        specialEggId: 6,
+        specialEggName: '황금 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/gold-egg.png',
+      },
+      eggCount: 1,
+    },
+  ];
+
+  return [200, specialEggs];
+});
+
+// 팔게요 조회 (이름 검색, 금액별 조회)
+mock.onGet('/api/market/trades/search').reply((config) => {
+  const { name, sort } = config.params;
+
+  const trades = [
+    {
+      sellBoardId: 1,
+      writtenAt: '2024-05-05 00:00:00',
+      eggPricePerOnce: 1,
+      sellCount: 1,
+      specialEggInfo: {
+        specialEggId: 1,
+        specialEggName: '다이아몬드 계란',
+        imageUrl:
+          'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+      },
+    },
+  ];
+
+  return [200, { content: trades }];
+});
+
+// 현재 계란 상태 조회
+mock.onGet('/api/eggs/now').reply(() => {
+  return [200, { needHitCount: 14, todayDestroyCount: 4 }];
+});
+
+// 현재 계란 상태 변경
+let serverHitCount = 14;
+
+mock.onPatch('/api/eggs/now').reply((config) => {
+  const requestData = JSON.parse(config.data);
+  const { hitCount } = requestData;
+
+  serverHitCount -= hitCount;
+
+  if (serverHitCount <= 0) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([
+          202,
+          {
+            isFailed: true,
+            specialEggId: 1,
+            specialEggName: '시공간을 초월한 계란',
+            imageUrl:
+              'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/eggs/diamond-egg.png',
+          },
+        ]);
+      }, 500);
+    });
+  }
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([202, null]); // 보상이 없는 경우 null 반환
+    }, 500);
+  });
+});
+// ========== 계란 도메인 ==========
 
 mock.onGet(`/api/children/흑룡/experience/log`).reply(() => {
   return new Promise((resolve) => {
