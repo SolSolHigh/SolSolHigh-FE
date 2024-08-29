@@ -52,7 +52,7 @@ export const TodayEgg = () => {
         setCollectedAmount((prev) => prev + 1);
         setTouchesLeft((prev) => prev - 1); // 남은 터치 횟수 감소
 
-        if (reward && reward?.isFailed === false) {
+        if (reward && reward?.isFail === false) {
           console.log('보상 도착:', reward);
           setModalState({
             isOpen: true,
@@ -94,7 +94,7 @@ export const TodayEgg = () => {
           });
         }
 
-        if (reward && reward?.isFailed === true) {
+        if (reward && reward?.isFail === true) {
           console.log('보상 도착:', reward);
           setModalState({
             isOpen: true,

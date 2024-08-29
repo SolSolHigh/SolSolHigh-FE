@@ -64,7 +64,7 @@ export interface IPaginatedTrades {
 }
 
 export interface ISpecialEggReward {
-  isFailed: boolean;
+  isFail: boolean;
   specialEggId?: number;
   specialEggName?: string;
   imageUrl?: string;
