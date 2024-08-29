@@ -30,7 +30,7 @@ const IconNavButtonWithLabel = ({ pathName }: { pathName: IPath }) => {
         {pathName.path === PathNames.MISSION.path && <HiCheckCircle />}
         {pathName.path === PathNames.QUIZ.path && <HiPuzzlePiece />}
         {pathName.path === PathNames.EGG.path && <HiChartBarSquare />}
-        {pathName.path === PathNames.MYPAGE.path && <HiSquares2X2 />}
+        {pathName.path === '/menu' && <HiSquares2X2 />}
       </Icon>
       <Typography size="xs" color="dark" classNameStyles="cursor-default">
         {pathName.name}

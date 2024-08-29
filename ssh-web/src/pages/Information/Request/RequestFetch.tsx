@@ -13,13 +13,13 @@ import { HiChevronLeft } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '../../../components/atoms/Typography';
 import { AvatarWithLabel } from '../../../components/molecules/AvatarWithLabel';
-import { getImgSrc } from '../../../utils/userUtil';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import TextField from '../../../components/atoms/TextField';
 import { IChild } from '../../../interfaces/userInterface';
 import { MascotCard } from '../../../components/molecules/MascotCard';
 import { Button } from '../../../components/atoms/Button';
 import { showToast } from '../../../utils/toastUtil';
+import { getImgSrc } from '../../../utils/userUtil';
 
 export const RequestFetch = () => {
   const userinfoQuery = useSuspenseQuery({
