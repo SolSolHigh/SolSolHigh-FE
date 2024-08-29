@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { EResize } from '../../themes/themeBase';
 import { Mascot } from '../../components/molecules/Mascot';
 import { Typography } from '../../components/atoms/Typography';
@@ -18,7 +18,12 @@ import {
   navigationBgColorState,
 } from '../../atoms/navigation';
 import { MarketContent } from './components/MarketContent';
-import { getEggCount } from '../../apis/eggApi';
+import {
+  getEggCount,
+  searchEggsForSale,
+  getMyRegisteredEggTrades,
+} from '../../apis/eggApi';
+import { IPaginatedTrades } from '../../interfaces/eggInterface';
 
 export const MarketFetch = () => {
   const size = useRecoilValue(resizeState);
@@ -26,7 +31,10 @@ export const MarketFetch = () => {
   setNavigationBgColor(ENavigationBgColors.primary);
 
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [eggCount, setEggCount] = useState<number>(0);
+  const [eggPoints, setEggPoints] = useState<number>(0);
+  const [eggData, setEggData] = useState<IPaginatedTrades['content']>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const TOGGLE_LABELS = ['계란 시장 구경', '내가 판매중인 계란 구경'];
 
@@ -34,11 +42,32 @@ export const MarketFetch = () => {
     setActiveTab(activeTab ? 0 : 1);
   };
 
+  const fetchEggData = useCallback(async () => {
+    try {
+      if (activeTab === 0) {
+        const response = await searchEggsForSale(
+          searchTerm,
+          `price,${sortOrder}`,
+        );
+        setEggData(response.data.content);
+      } else {
+        const response = await getMyRegisteredEggTrades(0, 10);
+        setEggData(response.data.content);
+      }
+    } catch (error) {
+      console.error('계란 데이터 조회 실패', error);
+    }
+  }, [activeTab, searchTerm, sortOrder]);
+
+  useEffect(() => {
+    fetchEggData();
+  }, [activeTab, fetchEggData]);
+
   useEffect(() => {
     const fetchEggCount = async () => {
       try {
         const response = await getEggCount();
-        setEggCount(response.data.count);
+        setEggPoints(response.data.count);
       } catch (error) {
         console.error('계란 재화 조회 실패', error);
       }
@@ -71,7 +100,7 @@ export const MarketFetch = () => {
                 weight="semibold"
                 classNameStyles="!text-primary-400"
               >
-                {eggCount}개
+                {eggPoints}개
               </Typography>
             </div>
           </div>
@@ -82,7 +111,15 @@ export const MarketFetch = () => {
           />
         </div>
         <div className={missionListBoxStyles()}>
-          <MarketContent activeTab={activeTab} />
+          <MarketContent
+            activeTab={activeTab}
+            eggData={eggData}
+            searchTerm={searchTerm}
+            sortOrder={sortOrder}
+            setSearchTerm={setSearchTerm}
+            setSortOrder={setSortOrder}
+            fetchEggData={fetchEggData} // pass the callback to fetch egg data
+          />
         </div>
         <Modal color="light" />
       </div>

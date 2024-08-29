@@ -9,6 +9,7 @@ import {
 import { useSetRecoilState } from 'recoil';
 import { isModalOpenState } from '../../../atoms/modal';
 import { showToast } from '../../../utils/toastUtil';
+import { LastPriceInfoBar } from './LastPriceInfoBar';
 
 interface SpecialEggDetailProps {
   eggName: string;
@@ -104,17 +105,8 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       <div className="w-full h-48 bg-white rounded-lg shadow-lg flex items-center justify-center p-4">
         <PriceChart tradeData={tradeData} />
       </div>
-
-      <div className="w-full bg-primary-200 rounded py-3 mt-4 flex flex-row gap-1 text-center justify-center px-1">
-        <Typography size="md" color="dark" weight="semibold">
-          이 계란이 마지막으로 팔린 가격은
-        </Typography>
-        <Typography size="md" color="primary" weight="semibold">
-          {lastPrice !== null ? `${lastPrice} 계란포인트` : '정보 없음'}
-        </Typography>
-        <Typography size="md" color="dark" weight="semibold">
-          예요
-        </Typography>
+      <div className="mt-4 w-full">
+        <LastPriceInfoBar lastPrice={lastPrice} />
       </div>
 
       {isOwned ? (

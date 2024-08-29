@@ -1,58 +1,46 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 import { Typography } from '../../../components/atoms/Typography';
 import { Button } from '../../../components/atoms/Button';
 import { useSetRecoilState } from 'recoil';
 import { isModalOpenState } from '../../../atoms/modal';
-import TextField from '../../../components/atoms/TextField';
 import { HiSearch } from 'react-icons/hi';
 import { HiOutlinePlus } from 'react-icons/hi2';
 import { EggCardList } from './EggCardList';
 import { SellEggModalContent } from './SellEggModal';
-import {
-  getMyRegisteredEggTrades,
-  searchEggsForSale,
-} from '../../../apis/eggApi';
 import { IPaginatedTrades } from '../../../interfaces/eggInterface';
 
-export const MarketContent = ({ activeTab }: { activeTab: number }) => {
+interface MarketContentProps {
+  activeTab: number;
+  eggData: IPaginatedTrades['content'];
+  searchTerm: string;
+  sortOrder: 'asc' | 'desc';
+  setSearchTerm: (value: string) => void;
+  setSortOrder: (value: 'asc' | 'desc') => void;
+  fetchEggData: () => void;
+}
+
+export const MarketContent: React.FC<MarketContentProps> = ({
+  activeTab,
+  eggData,
+  searchTerm,
+  sortOrder,
+  setSearchTerm,
+  setSortOrder,
+  fetchEggData,
+}) => {
   const CONTENT_LABELS = [
     '특별한 계란을 찾아보아요.',
     '내가 판매하고 있는 계란들이에요.',
   ];
 
-  const [eggData, setEggData] = useState<IPaginatedTrades['content']>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const setIsModalOpen = useSetRecoilState(isModalOpenState);
 
   const handleSellEggContentOpen = () => {
     setIsModalOpen({
       isOpen: true,
-      content: <SellEggModalContent />,
+      content: <SellEggModalContent onComplete={fetchEggData} />, // pass fetchEggData to modal
     });
   };
-
-  const fetchEggData = async () => {
-    try {
-      if (activeTab === 0) {
-        const response = await searchEggsForSale(
-          searchTerm,
-          `price,${sortOrder}`,
-        );
-        console.log(response.data);
-        setEggData(response.data.content);
-      } else {
-        const response = await getMyRegisteredEggTrades(0, 10);
-        setEggData(response.data.content);
-      }
-    } catch (error) {
-      console.error('계란 데이터 조회 실패', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchEggData();
-  }, [activeTab, sortOrder, searchTerm]);
 
   return (
     <div className="TAB-CONTENT bg-white rounded-t-3xl flex-1 pt-5 px-4 h-full">
@@ -68,8 +56,8 @@ export const MarketContent = ({ activeTab }: { activeTab: number }) => {
                 onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
                 className="!text-xs !h-9 animate-popIn"
               >
-                <option value="asc">가격 오름차순</option>
-                <option value="desc">가격 내림차순</option>
+                <option value="asc">가격 낮은순</option>
+                <option value="desc">가격 높은순</option>
               </select>
               <div className="flex flex-row justify-end gap-3 flex-1 animate-popIn">
                 <input
@@ -78,7 +66,7 @@ export const MarketContent = ({ activeTab }: { activeTab: number }) => {
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setSearchTerm(e.target.value)
                   }
-                  className="input-standard"
+                  className="w-full border-b-2 border-transparent focus:outline-none !border-primary-500 focus:border-primary-100 transition duration-300 ease-in-out"
                 />
                 <Button
                   classNameStyles="!text-xl !h-9 !bg-primary-400"

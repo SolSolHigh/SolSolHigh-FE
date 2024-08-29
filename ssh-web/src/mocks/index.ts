@@ -1239,7 +1239,7 @@ mock.onGet('/api/market/trades/search').reply((config) => {
     {
       sellBoardId: 1,
       writtenAt: '2024-05-05 00:00:00',
-      pricePerOnce: 1,
+      eggPricePerOnce: 1,
       sellCount: 1,
       specialEggInfo: {
         specialEggId: 1,
@@ -1273,6 +1273,7 @@ mock.onPatch('/api/eggs/now').reply((config) => {
         resolve([
           202,
           {
+            isFailed: false,
             specialEggId: 1,
             specialEggName: '시공간을 초월한 계란',
             imageUrl:

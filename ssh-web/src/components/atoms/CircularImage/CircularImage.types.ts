@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 
 export interface ICircularImageProps {
-  imageUrl: string;
-  altText: string;
+  imageUrl: string | undefined;
+  altText: string | undefined;
   size?: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
   imgWidth?: string;
   bgColor?:

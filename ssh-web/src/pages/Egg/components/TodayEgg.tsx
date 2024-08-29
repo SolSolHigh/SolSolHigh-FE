@@ -8,6 +8,7 @@ import {
   updateCurrentEggStatus,
 } from '../../../apis/eggApi';
 import { isModalOpenState } from '../../../atoms/modal';
+import { Button } from '../../../components/atoms/Button';
 
 export const TodayEgg = () => {
   const [collectedAmount, setCollectedAmount] = useState(0);
@@ -51,14 +52,43 @@ export const TodayEgg = () => {
         setCollectedAmount((prev) => prev + 1);
         setTouchesLeft((prev) => prev - 1); // 남은 터치 횟수 감소
 
-        if (reward) {
+        if (!reward?.isFailed) {
           console.log('보상 도착:', reward);
           setModalState({
             isOpen: true,
             content: (
-              <div>
-                <img src={reward.imageUrl} alt={reward.specialEggName} />
-                <Typography>{reward.specialEggName}</Typography>
+              <div className="">
+                <div className="flex flex-col gap-1 text-center">
+                  <Typography weight="bold" size="6xl" color="primary">
+                    축하합니다!
+                  </Typography>
+                  <Typography
+                    weight="semibold"
+                    size="3xl"
+                    classNameStyles="!text-primary-300 mb-3"
+                  >
+                    특별한 계란 이름이 나왔어요
+                  </Typography>
+                </div>
+                <div className="relative w-full h-max bg-primary-300 flex flex-row justify-center items-center py-8 rounded-3xl">
+                  <img src={reward?.imageUrl} alt="" className="w-[12rem]" />
+                  <div className="absolute left-1/4 bottom-20 w-full flex flex-col items-center justify-center">
+                    <img
+                      src={'/assets/images/check_icon.png'}
+                      alt=""
+                      className="absolute w-[9rem]"
+                    />
+                  </div>
+                </div>
+                <Button
+                  fullWidth
+                  classNameStyles="!h-24 !text-2xl !font-bold py-6 mt-8 rounded-2xl"
+                  onClick={() => {
+                    setModalState({ isOpen: false, content: null });
+                  }}
+                >
+                  계란 마저 깨러가기
+                </Button>
               </div>
             ),
           });

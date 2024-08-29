@@ -16,6 +16,7 @@ import {
   getLastSpecialEggPrice,
 } from '../../../apis/eggApi';
 import { ALL_SPECIAL_EGG_LIST } from './ALL_SPECIAL_EGG_LIST';
+import { LastPriceInfoBar } from '../../Market/components/LastPriceInfoBar';
 
 SwiperCore.use([EffectCoverflow, Pagination, Navigation]);
 
@@ -25,6 +26,7 @@ export interface IEgg {
   src: string;
   description: string;
   isOwned: boolean;
+  count: number;
 }
 
 export const eggCardBgColors = [
@@ -60,13 +62,19 @@ export const MySpecialEggs: React.FC = () => {
     const fetchOwnedSpecialEggs = async () => {
       try {
         const response = await getOwnedSpecialEggs();
-        const ownedEggIds = response.data.map(
-          (egg) => egg.specialEggInfo.specialEggId,
+
+        const ownedEggsMap = response.data.reduce(
+          (acc, egg) => {
+            acc[egg.specialEggInfo.specialEggId] = egg.eggCount;
+            return acc;
+          },
+          {} as Record<number, number>,
         );
 
         const allEggs = ALL_SPECIAL_EGG_LIST.map((egg) => ({
           ...egg,
-          isOwned: ownedEggIds.includes(egg.id),
+          isOwned: !!ownedEggsMap[egg.id],
+          count: ownedEggsMap[egg.id] || 0,
           description: `이 계란은 ${egg.name}입니다.`,
         }));
 
@@ -87,7 +95,7 @@ export const MySpecialEggs: React.FC = () => {
   const handleDetailClick = async (egg: IEgg) => {
     try {
       const response = await getLastSpecialEggPrice(egg.id);
-      const lastPrice = response.data.price ?? '알 수 없음';
+      const lastPrice = response.data.price;
 
       setModalState({
         isOpen: true,
@@ -104,11 +112,7 @@ export const MySpecialEggs: React.FC = () => {
       setModalState({
         isOpen: true,
         content: (
-          <SpecialEggDetail
-            egg={egg}
-            isOwned={egg.isOwned}
-            lastPrice="알 수 없음"
-          />
+          <SpecialEggDetail egg={egg} isOwned={egg.isOwned} lastPrice={null} />
         ),
       });
     }
@@ -219,13 +223,13 @@ export const MySpecialEggs: React.FC = () => {
   );
 };
 
-interface SpecialEggDetailProps {
+interface ISpecialEggDetailProps {
   egg: IEgg;
   isOwned: boolean;
-  lastPrice: string | number;
+  lastPrice: number | null | undefined;
 }
 
-const SpecialEggDetail: React.FC<SpecialEggDetailProps> = ({
+const SpecialEggDetail: React.FC<ISpecialEggDetailProps> = ({
   egg,
   isOwned,
   lastPrice,
@@ -251,28 +255,15 @@ const SpecialEggDetail: React.FC<SpecialEggDetailProps> = ({
         />
         <div className="absolute bottom-3 right-6">
           <Badge
-            text={isOwned ? '3개 보유중' : '보유중 아님'}
+            text={isOwned ? `${egg.count}개 보유중` : '보유중 아님'}
             classNameStyles={isOwned ? '!bg-primary-500' : '!bg-secondary-700'}
             size="lg"
             weight="semibold"
           />
         </div>
       </div>
-      <div
-        className={`w-full ${
-          isOwned ? '!bg-primary-200' : '!bg-secondary-300'
-        } rounded-b-xl py-3 flex flex-row gap-1 text-center justify-center px-1`}
-      >
-        <Typography size="md" color="dark" weight="semibold">
-          시장에서 마지막으로 팔린 가격은
-        </Typography>
-        <Typography size="md" color="primary" weight="semibold">
-          {lastPrice} 계란포인트
-        </Typography>
-        <Typography size="md" color="dark" weight="semibold">
-          예요
-        </Typography>
-      </div>
+
+      <LastPriceInfoBar lastPrice={lastPrice} />
 
       <button
         className="w-full h-max py-4 bg-primary-400 flex flex-row justify-center items-center gap-4 rounded-3xl mt-8 hover:bg-primary-500 transition-all duration-300"

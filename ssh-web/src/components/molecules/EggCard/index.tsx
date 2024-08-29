@@ -47,20 +47,20 @@ export const EggCard: React.FC<IEggCardProps> = ({
         <div className="flex items-center gap-4">
           <CircularImage
             imageUrl={eggImageUrl}
-            size="xl"
+            size="lg"
             altText="eggImg"
             bgColor="blue"
             imgWidth="60%"
           />
         </div>
-        <div className="flex flex-col items-start text-left gap-2">
-          <div className="w-full flex flex-row gap-3">
-            <Typography color="primary" size="xl" weight="bold">
+        <div className="flex flex-col items-start text-left gap-1">
+          <div className="w-full flex flex-row gap-2">
+            <Typography color="primary" size="lg" weight="bold">
               {eggName}
             </Typography>
             <Typography
               classNameStyles="!text-secondary-600"
-              size="xl"
+              size="lg"
               weight="semibold"
             >
               팔아요
@@ -68,7 +68,7 @@ export const EggCard: React.FC<IEggCardProps> = ({
           </div>
           <Typography
             classNameStyles="!text-secondary-500"
-            size="lg"
+            size="md"
             weight="semibold"
           >
             {eggPrice} 계란포인트
