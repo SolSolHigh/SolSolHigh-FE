@@ -55,20 +55,20 @@ export const IntroductionAccountPage = () => {
             <div className="w-full h-full  bg-primary-200 p-8 rounded-xl">
               {isParent ? (
                 <Typography
-                  size="6xl"
+                  size="4xl"
                   color="primary"
                   weight="semibold"
-                  classNameStyles=" text-center leading-[3rem]"
+                  classNameStyles=" text-center leading-[2.5rem]"
                 >
                   SolSol-High <br></br>자녀 계좌 관리 서비스를 <br></br>이용하기
                   위해서는 <br></br>수시입출금 계좌 개설이 <br></br>필요해요!
                 </Typography>
               ) : (
                 <Typography
-                  size="5xl"
+                  size="4xl"
                   color="primary"
                   weight="semibold"
-                  classNameStyles=" text-center leading-[3rem]"
+                  classNameStyles=" text-center leading-[2.5rem]"
                 >
                   해당 서비스는 <br></br>자신의 용돈통장이 필요해요! <br></br>
                   부모님에게 말씀드려 같이 <br></br>만들어봐요!
