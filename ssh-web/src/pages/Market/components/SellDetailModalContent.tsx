@@ -69,6 +69,7 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       setMySellinEggData(response.data.content);
       console.log('sellBoardId:', sellBoardId);
       console.log('판매중인 계란데이터:', response.data.content);
+      console.log('isMySellingBoard:', isMySellingBoard);
 
       mySellinEggData.map((sellingEggData: ISpecialEggTradeBoard) => {
         if (sellBoardId === sellingEggData.sellBoardId) {
@@ -147,8 +148,8 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       <div className="w-full h-48 bg-white rounded-lg shadow-lg flex items-center justify-center p-4">
         {tradeData?.length === 0 ? (
           <div className="w-full h-full p-4 flex flex-col justify-center items-center text-center">
-            <Typography size="4xl">
-              아직 시장에서 팔린적 없는 계란이에요
+            <Typography size="4xl" weight="bold">
+              시장에서 팔린적 없는 계란이에요
             </Typography>
           </div>
         ) : (

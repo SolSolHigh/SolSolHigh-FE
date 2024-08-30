@@ -1,4 +1,3 @@
-// src/pages/Mission/MissionUpdate/index.tsx
 import React, { useState } from 'react';
 import {
   useMutation,
@@ -25,6 +24,16 @@ export const MissionUpdate: React.FC<MissionUpdateProps> = ({
   mission,
   missionId,
 }) => {
+  const formatToInputTime = (dateTime: string) => {
+    const [date, time] = dateTime.split(' ');
+    return `${date}T${time}`;
+  };
+
+  const formatToRequestTime = (dateTime: string) => {
+    const [date, time] = dateTime.split('T');
+    return `${date} ${time}:00`;
+  };
+
   const [missionDescription, setMissionDescription] = useState(
     mission.description || '',
   );
@@ -32,9 +41,11 @@ export const MissionUpdate: React.FC<MissionUpdateProps> = ({
     parseInt(mission.missionLevel || '2'),
   );
   const [missionStartAt, setMissionStartAt] = useState(
-    mission.missionStartAt || '',
+    formatToInputTime(mission.missionStartAt || ''),
   );
-  const [missionEndAt, setMissionEndAt] = useState(mission.missionEndAt || '');
+  const [missionEndAt, setMissionEndAt] = useState(
+    formatToInputTime(mission.missionEndAt || ''),
+  );
   const setModalState = useSetRecoilState(isModalOpenState);
   const queryClient = useQueryClient();
 
@@ -70,8 +81,8 @@ export const MissionUpdate: React.FC<MissionUpdateProps> = ({
   const handleMissionUpdate = () => {
     const missionData: IMissionUpdateRequest = {
       description: missionDescription,
-      missionStartAt,
-      missionEndAt,
+      missionStartAt: formatToRequestTime(missionStartAt),
+      missionEndAt: formatToRequestTime(missionEndAt),
       missionLevel: difficulty.toString() as '1' | '2' | '3',
     };
 

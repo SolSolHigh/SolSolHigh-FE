@@ -229,11 +229,9 @@ export const TodayEgg = () => {
           <div
             onClick={() => {
               showToast('success', '부모님께 저축계좌를 만들어달라고 해봐요');
-              setEggBgColor('bg-secondary-400');
               setEggScale('scale-110');
 
               setTimeout(() => {
-                setEggBgColor('bg-secondary-500');
                 setEggScale('scale-100');
               }, 100);
             }}
@@ -247,7 +245,7 @@ export const TodayEgg = () => {
             />
           </div>
           <div className="bg-secondary-700 w-full h-24 rounded-3xl items-center flex flex-row justify-center gap-4">
-            <Typography size="6xl" weight="bold" color="light">
+            <Typography size="4xl" weight="bold" color="light">
               내 저축 계좌가 없어요
             </Typography>
           </div>
