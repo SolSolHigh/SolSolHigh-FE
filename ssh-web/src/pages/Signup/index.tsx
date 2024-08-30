@@ -12,14 +12,18 @@ import { BirthdayForm } from '../../components/organisms/BirthdayForm';
 import { nicknameDuplicate, signup } from '../../apis/userApi';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
+import { showToast } from '../../utils/toastUtil';
 
 export const Signup = () => {
   const location = useLocation();
   const nav = useNavigate();
   const { mutate } = useMutation({
     mutationFn: async (request: ISignupRequest) => await signup(request),
-    onSuccess: () => nav('/'),
-    onError: (err) => console.log(err),
+    onSuccess: () => {
+      nav('/login');
+      showToast('success', '회원가입에 성공하였습니다');
+    },
+    onError: () => showToast('error', '회원가입에 실패하였습니다'),
   });
   const [pageType, setPageType] = useState<string>('info');
   const [contents, setContents] = useState<IContent[]>([
@@ -73,11 +77,11 @@ export const Signup = () => {
         !(contents[0].value as string).length ||
         !nicknameCheck.test(contents[0].value as string)
       ) {
-        alert('닉네임은 한글/영문 2~8자 입니다');
+        showToast('error', '닉네임은 한글/영문 2~8자 입니다');
       } else {
         await nicknameDuplicate(contents[0].value as string).then((res) => {
           if (res.data.isDuplicated) {
-            alert('중복된 닉네임입니다');
+            showToast('error', '중복된 닉네임입니다');
           } else {
             mutate({
               code: location.state?.code,
