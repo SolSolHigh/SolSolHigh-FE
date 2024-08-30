@@ -19,6 +19,7 @@ import 'firebase/messaging'; // Import messaging module in v8
 import { messaging } from './firebase/firebaseConfig';
 import Message from './firebase/Message';
 import { toast, ToastContainer } from 'react-toastify';
+import { postFcmToken } from './apis/fcmApi';
 
 function App() {
   useCloseModalOnRouteChange();
@@ -40,9 +41,9 @@ function App() {
           vapidKey:
             'BDJk7HGqH8Z1qegjymTCaE4muy3OdG-tXYnZz5o2imS09412Xx8_YRV3TakKmsBC3eBYanW7kRxiVrRAnHEHt5I',
         });
-
         // We can send token to the server
         console.log('Token generated : ', token);
+        postFcmToken(token);
       } else if (permission === 'denied') {
         // Notifications are blocked
         alert('You denied the notification');
