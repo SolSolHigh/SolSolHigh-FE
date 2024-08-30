@@ -155,7 +155,7 @@ export const QuizMain: React.FC = () => {
 
       api
         .get(
-          `api/children/${childrenList[selectedChild].nickname}/quizzes/strick`,
+          `api/quizzes/${childrenList[selectedChild].nickname}/quizzes/strick`,
         )
         .then((response) => {
           setStrick(response.data);
@@ -165,7 +165,7 @@ export const QuizMain: React.FC = () => {
           showToast('error', '퀴즈 스트릭을 불러오지 못했어요');
         });
       api
-        .get(`api/children/${childrenList[selectedChild].nickname}/keywords`)
+        .get(`api/quizzes/${childrenList[selectedChild].nickname}/keywords`)
         .then((response) => {
           setOwnKeywords(response.data);
           setLoading(false);
