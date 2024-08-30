@@ -20,7 +20,7 @@ export const ChangeChild = ({
       setChildrenList(res.data);
       setIsLoading(false);
     });
-  });
+  }, []);
 
   return (
     <div className="flex flex-row relative items-center mb-2 p-2 px-4 rounded-lg space-x-3">

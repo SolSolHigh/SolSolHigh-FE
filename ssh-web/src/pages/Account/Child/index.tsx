@@ -23,14 +23,14 @@ interface InstallmentAccountCardProps {
   handleDeleteAccountModal: (item: IAccount) => void;
 }
 
-interface ITransaction {
+export interface ITransaction {
   dateTime: string;
   balance: number;
   transactionAfterBalance: number;
   memo: string;
 }
 
-interface IAccount {
+export interface IAccount {
   accountName: string;
   accountNo: string;
   accountTypeCode: string;
