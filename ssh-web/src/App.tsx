@@ -29,6 +29,8 @@ function App() {
   useEffect(() => {
     // Handle incoming messages in the foreground
     messaging.onMessage((payload) => {
+      console.log('payload:', payload);
+      console.log('payload:', payload?.data);
       toast(<Message notification={payload.notification} />);
     });
 
