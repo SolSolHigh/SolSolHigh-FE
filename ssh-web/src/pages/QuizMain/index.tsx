@@ -73,7 +73,7 @@ export const QuizMain: React.FC = () => {
   const onRemoveKeyword = (keywordId: number) => {
     if (isParent) {
       api
-        .post(`/api/children/keywords`, {
+        .patch(`/api/quizzes/keywords`, {
           nickname: childrenList[selectedChild].nickname,
           keywordId: keywordId,
         })
@@ -90,7 +90,7 @@ export const QuizMain: React.FC = () => {
   const onAddKeyword = (keywordId: number) => {
     if (isParent) {
       api
-        .patch(`/api/children/keywords`, {
+        .post(`/api/quizzes/keywords`, {
           nickname: childrenList[selectedChild].nickname,
           keywordId: keywordId,
         })
