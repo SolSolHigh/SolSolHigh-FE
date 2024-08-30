@@ -177,7 +177,7 @@ export const QuizMain: React.FC = () => {
     if (isParent === false) {
       setLoading(true);
       api
-        .get(`/api/api/children/${childNickname}/quizzes/solved?page=0`)
+        .get(`/api/children/${childNickname}/quizzes/solved?page=0`)
         .then((response) => {
           setQuizLog(response.data);
           setLoading(false);
@@ -187,7 +187,7 @@ export const QuizMain: React.FC = () => {
           setLoading(false);
         });
       api
-        .get(`/api/children/${childNickname}/quizzes/strick`)
+        .get(`/api/api/children/${childNickname}/quizzes/strick`)
         .then((response) => {
           setStrick(response.data);
           setLoading(false);
