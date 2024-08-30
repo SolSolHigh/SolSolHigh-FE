@@ -5,14 +5,9 @@ const Message = ({ notification }: any) => {
   return (
     <>
       <div id="notificationHeader">
-        {notification.image && (
-          <div id="imageContainer">
-            <img src={notification.image} width={100} />
-          </div>
-        )}
-        <span>{notification.title}</span>
+        <span>{notification?.title}</span>
       </div>
-      <div id="notificationBody">{notification.body}</div>
+      <div id="notificationBody">{notification?.body}</div>
     </>
   );
 };
