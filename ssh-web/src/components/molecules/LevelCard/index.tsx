@@ -8,12 +8,15 @@ import {
   HiOutlinePuzzlePiece,
   HiPaperAirplane,
 } from 'react-icons/hi2';
+import { useNavigate } from 'react-router-dom';
 
 export const LevelCard = ({
   info,
   children,
   classNameStyles,
 }: LevelCardProps) => {
+  const nav = useNavigate();
+
   return (
     <div className="w-full max-w-[30rem] p-4 flex flex-col justify-between bg-primary-500 gap-y-4 rounded-lg">
       {/* 레벨 & 버튼 영역 */}
@@ -52,12 +55,18 @@ export const LevelCard = ({
                 <HiOutlineBanknotes />
               </Icon>
             </div>
-            <div className="flex items-center justify-center bg-white rounded-full w-7 h-7">
+            <div
+              className="flex items-center justify-center bg-white rounded-full w-7 h-7"
+              onClick={() => nav('/mission')}
+            >
               <Icon size="sm">
                 <HiOutlineCheckCircle />
               </Icon>
             </div>
-            <div className="flex items-center justify-center bg-white rounded-full w-7 h-7">
+            <div
+              className="flex items-center justify-center bg-white rounded-full w-7 h-7"
+              onClick={() => nav('/quiz')}
+            >
               <Icon size="sm">
                 <HiOutlinePuzzlePiece />
               </Icon>

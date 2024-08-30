@@ -9,6 +9,7 @@ import { getChildExpRecords } from '../../apis/experienceApi';
 import { IChildExpRecord } from '../../interfaces/experienceInterface';
 import { Icon } from '../../components/atoms/Icon';
 import { getImgSrc, getImgSrcByType } from '../../utils/userUtil';
+import { useNavigate } from 'react-router-dom';
 
 export interface HomeParentProps {
   parent: IUserInfo;
@@ -28,6 +29,8 @@ export const HomeParent = ({ parent }: HomeParentProps) => {
       .then((res) => setRecords(() => [...res.data]))
       .catch((err) => console.log(err));
   }, [idx]);
+
+  const nav = useNavigate();
 
   return (
     <div className="flex items-center justify-center w-full h-auto tablet:flex-col">
@@ -70,7 +73,10 @@ export const HomeParent = ({ parent }: HomeParentProps) => {
               />
             </div>
           </div>
-          <div className="flex min-h-[7rem] justify-between w-5/12 p-4 bg-primary-400 rounded-2xl transition ease-in-out delay-100 hover:scale-105">
+          <div
+            className="flex min-h-[7rem] justify-between w-5/12 p-4 bg-primary-400 rounded-2xl transition ease-in-out delay-100 hover:scale-105"
+            onClick={() => nav('/mission')}
+          >
             <Typography color="light" size="sm" weight="bold">
               미션
               <br />
@@ -85,7 +91,10 @@ export const HomeParent = ({ parent }: HomeParentProps) => {
           </div>
         </div>
         <div className="w-full max-w-[30rem] flex justify-between gap-x-4 mt-4">
-          <div className="flex min-h-[7rem] justify-between w-5/12 p-4 bg-primary-300 rounded-2xl transition ease-in-out delay-100 hover:scale-105">
+          <div
+            className="flex min-h-[7rem] justify-between w-5/12 p-4 bg-primary-300 rounded-2xl transition ease-in-out delay-100 hover:scale-105"
+            onClick={() => nav('/promise')}
+          >
             <Typography color="light" size="sm" weight="bold">
               약속권
               <br />
@@ -98,7 +107,10 @@ export const HomeParent = ({ parent }: HomeParentProps) => {
               />
             </div>
           </div>
-          <div className="flex min-h-[7rem] justify-between w-7/12 p-4 bg-primary-700 rounded-2xl transition ease-in-out delay-100 hover:scale-105">
+          <div
+            className="flex min-h-[7rem] justify-between w-7/12 p-4 bg-primary-700 rounded-2xl transition ease-in-out delay-100 hover:scale-105"
+            onClick={() => nav('/account')}
+          >
             <Typography color="light" size="sm" weight="bold">
               계좌
               <br />
