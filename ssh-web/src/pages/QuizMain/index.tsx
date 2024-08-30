@@ -261,28 +261,44 @@ export const QuizMain: React.FC = () => {
         </div>
 
         <div className="w-full max-w-[48rem]">
-          {activeTab === 0 ? (
-            <QuizTab
-              size={size}
-              isTodayQuiz={isTodayQuiz}
-              childNickname={childrenList[selectedChild].nickname}
-              loading={loading}
-              setLoading={setLoading}
-              isParent={isParent ? isParent : false}
-              strick={strick}
-            />
+          {!isParent ? (
+            <>자녀에게 보여줄 UI</>
           ) : (
-            <KeywordsTab
-              size={size}
-              quizLogs={quizLogs}
-              childNickname={childrenList[selectedChild].nickname}
-              setLoading={setLoading}
-              keywords={keywords}
-              ownKeywords={ownKeywords}
-              isParent={isParent ? isParent : false}
-              openKeywordModal={openKeywordModal}
-              openQuizLogsModal={openQuizLogsModal}
-            />
+            <>
+              {!childrenList.length ? (
+                <>자녀가 없음을 보여주는 UI</>
+              ) : (
+                <>
+                  {activeTab === 0 ? (
+                    <QuizTab
+                      size={size}
+                      isTodayQuiz={isTodayQuiz}
+                      childNickname={childrenList[selectedChild].nickname}
+                      loading={loading}
+                      setLoading={setLoading}
+                      isParent={isParent ? isParent : false}
+                      strick={strick}
+                    />
+                  ) : (
+                    <KeywordsTab
+                      size={size}
+                      quizLogs={quizLogs}
+                      childNickname={
+                        isParent
+                          ? childNickname
+                          : childrenList[selectedChild].nickname
+                      }
+                      setLoading={setLoading}
+                      keywords={keywords}
+                      ownKeywords={ownKeywords}
+                      isParent={isParent ? isParent : false}
+                      openKeywordModal={openKeywordModal}
+                      openQuizLogsModal={openQuizLogsModal}
+                    />
+                  )}
+                </>
+              )}
+            </>
           )}
         </div>
       </div>
