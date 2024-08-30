@@ -65,6 +65,8 @@ export const QuizMain: React.FC = () => {
   const [isKeywordModal, setIsKeywordModal] = useState(false);
   const size = useRecoilValue<EResize>(resizeState);
 
+  const isParent = true;
+
   //todo
   const onRemoveKeyword = () => {};
 
@@ -156,10 +158,15 @@ export const QuizMain: React.FC = () => {
       />
       <div className="bg-white flex flex-col items-center w-full tablet:h-full mob:p-4 tabletB:p-6 desktop:rounded-2xl desktop:px-4 desktop:max-w-[48rem] desktop:h-[48rem]">
         <div className="flex flex-row w-full justify-between">
-          <Typography size="2xl" weight="bold" color="dark">
+          <Typography
+            size="2xl"
+            weight="bold"
+            color="dark"
+            classNameStyles={isParent ? ' ' : 'mb-4'}
+          >
             쏠쏠 퀴즈
           </Typography>
-          <ChangeChild />
+          {isParent && <ChangeChild />}
         </div>
         <div className="flex w-full max-w-[48rem] mb-4">
           <ToggleTab
@@ -181,7 +188,7 @@ export const QuizMain: React.FC = () => {
               childNickname={childNickname}
               loading={loading}
               setLoading={setLoading}
-              isParent={true}
+              isParent={isParent}
               strick={strick}
             />
           ) : (
@@ -192,7 +199,7 @@ export const QuizMain: React.FC = () => {
               setLoading={setLoading}
               keywords={keywords}
               ownKeywords={ownKeywords}
-              isParent={true}
+              isParent={isParent}
               openKeywordModal={openKeywordModal}
               openQuizLogsModal={openQuizLogsModal}
             />

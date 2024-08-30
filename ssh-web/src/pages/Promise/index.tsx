@@ -23,6 +23,7 @@ import { PromiseDetailModal } from '../../components/organisms/PromiseDetailModa
 import { ConfirmPromiseModal } from '../../components/organisms/ConfirmPromiseModal';
 import { ChangeChild } from '../../components/molecules/ChangeChild';
 import { HiOutlineTicket } from 'react-icons/hi';
+import { showToast } from '../../utils/toastUtil';
 
 export const PromiseTicket = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -59,8 +60,12 @@ export const PromiseTicket = () => {
   };
 
   const handleAddModal = () => {
-    setIsOpen(true);
-    setIsDetailModal(false);
+    if (countTicket <= 0) {
+      showToast('error', '보유한 소원권이 없어요');
+    } else {
+      setIsOpen(true);
+      setIsDetailModal(false);
+    }
   };
 
   //todo
@@ -69,8 +74,9 @@ export const PromiseTicket = () => {
   };
 
   //todo
-  const handlePromiseUpload = () => {
+  const handlePromiseUpload = (content: string) => {
     setIsOpen(false);
+    showToast('success', '부모님에게 성공적으로 약속을 요청했어요!');
   };
 
   const handleCloseModal = () => {

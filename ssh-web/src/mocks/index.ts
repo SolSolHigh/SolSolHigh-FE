@@ -30,7 +30,161 @@ mock.onGet(`/${REQUEST_DOMAINS.auth}/examples`).reply(() => {
   });
 });
 // ========== Test Domain ==========
-// ========== 약속권 도메인 ==========
+
+// ========== 계좌 도메인 ===========
+
+// 세션이 소유한 계좌 조회
+mock.onPost(`/api/accounts`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            accountName: '쏠쏠하이 수시입출금 통장',
+            accountNo: '0205782816344769',
+            accountTypeCode: '1',
+            accountBalance: 1354000,
+          },
+          {
+            accountName: '쏠쏠하이 저축통장',
+            accountNo: '0205782816344768',
+            accountTypeCode: '2',
+            accountBalance: 1500000,
+          },
+          {
+            accountName: '쏠쏠하이 정기적금 통장',
+            accountNo: '0205782816344767',
+            accountTypeCode: '3',
+            accountBalance: 2400000,
+          },
+        ],
+      ]);
+    }, 500);
+  });
+});
+
+// 예금 상품 조회
+mock.onGet(`/api/accounts/deposit/products`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            accountName: '90일 단기 예금',
+            accountTypeUniqueNo: '003-1-bafb564d',
+            subscriptionPeriod: '90',
+            minSubscriptionBalance: '0',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+          {
+            accountName: '180일 단기 예금',
+            accountTypeUniqueNo: '003-2-bafb564d',
+            subscriptionPeriod: '180',
+            minSubscriptionBalance: '0',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+          {
+            accountName: '270일 단기 예금',
+            accountTypeUniqueNo: '003-3-bafb564d',
+            subscriptionPeriod: '270',
+            minSubscriptionBalance: '0',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+          {
+            accountName: '360일 단기 예금',
+            accountTypeUniqueNo: '003-4-bafb564d',
+            subscriptionPeriod: '360',
+            minSubscriptionBalance: '0',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+        ],
+      ]);
+    }, 500);
+  });
+});
+
+//적금 상품 조회
+mock.onGet(`/api/accounts/saving/products`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            accountName: '90일 단기 적금',
+            accountTypeUniqueNo: '004-2-bafb564d',
+            subscriptionPeriod: '90',
+            minSubscriptionBalance: '30000', // 매일마다 나가는 돈 최소
+            maxSubscriptionBalance: '3000000', //매일마다 나가는 돈 최대
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+          {
+            accountName: '180일 단기 적금',
+            accountTypeUniqueNo: '004-3-bafb564d',
+            subscriptionPeriod: '180',
+            minSubscriptionBalance: '30000',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+          {
+            accountName: '270일 단기 적금',
+            accountTypeUniqueNo: '004-4-bafb564d',
+            subscriptionPeriod: '270',
+            minSubscriptionBalance: '30000',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+          {
+            accountName: '360일 단기 적금',
+            accountTypeUniqueNo: '004-5-bafb564d',
+            subscriptionPeriod: '360',
+            minSubscriptionBalance: '30000',
+            maxSubscriptionBalance: '3000000',
+            interestRate: '3.0',
+            rateDescription: '3% 이자',
+            bank: '신한은행',
+          },
+        ],
+      ]);
+    }, 500);
+  });
+});
+
+mock.onGet(`/api/children/account/deposit/remove-request-1`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        {
+          imageUrl: 'https://c.tenor.com/_J-Z2O9x0E0AAAAd/tenor.gif',
+        },
+      ]);
+    }, 5000);
+  });
+});
+// ========== 계좌 도메인 ===========
+
+// ========== 약속권 도메인 ==========xwx
 
 //자식이 자신의 약속권 개수 조회
 mock.onGet(`/api/promise-tickets/count`).reply(() => {
@@ -916,6 +1070,12 @@ mock.onGet('/api/parents/children').reply((config) => {
           },
           {
             name: '양규현',
+            nickname: '백룡',
+            birthday: '1999-05-30',
+            gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+          },
+          {
+            name: '이유승',
             nickname: '백룡',
             birthday: '1999-05-30',
             gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',

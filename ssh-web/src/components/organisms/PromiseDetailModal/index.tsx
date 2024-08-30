@@ -70,6 +70,11 @@ export const PromiseDetailModal = ({
             부모님이 약속을 지켜주셨어요!
           </Typography>
         )}
+        {isParent && isConfirm && (
+          <Typography color="secondary" classNameStyles="mb-2">
+            자녀와의 약속을 지켰어요!
+          </Typography>
+        )}
         <Button fullWidth={true} onClick={closeModal}>
           확인
         </Button>
