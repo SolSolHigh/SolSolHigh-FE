@@ -13,6 +13,7 @@ import {
   useResizeDetection,
   useLockBodyScroll,
 } from './hook';
+import FCMNotification from './FCMNotification';
 
 function App() {
   useCloseModalOnRouteChange();
@@ -25,6 +26,7 @@ function App() {
 
   return (
     <div className="w-full h-full">
+      <FCMNotification />
       {isModalOpen.isOpen && <BackdropFilter />}
       {!(
         location.pathname === '/login' ||
