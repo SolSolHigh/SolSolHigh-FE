@@ -5,10 +5,13 @@ import { CircularImage } from '../../../components/atoms/CircularImage';
 import { Typography } from '../../../components/atoms/Typography';
 import {
   getCurrentEggStatus,
+  getMyAccountList,
   updateCurrentEggStatus,
 } from '../../../apis/eggApi';
 import { isModalOpenState } from '../../../atoms/modal';
 import { Button } from '../../../components/atoms/Button';
+import { ConfettiLottie } from './Lottie/LoadingLottie';
+import { showToast } from '../../../utils/toastUtil';
 
 export const TodayEgg = () => {
   const [collectedAmount, setCollectedAmount] = useState(0);
@@ -17,6 +20,7 @@ export const TodayEgg = () => {
   const [eggScale, setEggScale] = useState('scale-100');
   const [todayDestroyCount, setTodayDestroyCount] = useState(0);
   const [modalState, setModalState] = useRecoilState(isModalOpenState);
+  const [hasSaveAccount, setHasSaveAccount] = useState<boolean>(false);
 
   const fetchEggStatus = async () => {
     try {
@@ -30,11 +34,29 @@ export const TodayEgg = () => {
     }
   };
 
+  const checkMySaveAccount = async () => {
+    try {
+      const response = await getMyAccountList();
+
+      response.data?.map((account) => {
+        if (account.accountType === '2') setHasSaveAccount(true); //저축계좌
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchEggStatus();
+    checkMySaveAccount();
   }, []);
 
   const handleEggClick = async () => {
+    if (touchesLeft <= 0) {
+      // 보상 오는 중 예외처리
+      return;
+    }
+
     if (touchesLeft > 0) {
       // 터치 가능할 때만 동작
       try {
@@ -58,7 +80,10 @@ export const TodayEgg = () => {
             isOpen: true,
             content: (
               <div className="">
-                <div className="flex flex-col gap-1 text-center">
+                <div className="relative flex flex-col gap-1 text-center">
+                  <div className="absolute top-1/3 left-1/2">
+                    <ConfettiLottie />
+                  </div>
                   <Typography weight="bold" size="6xl" color="primary">
                     축하합니다!
                   </Typography>
@@ -67,7 +92,7 @@ export const TodayEgg = () => {
                     size="3xl"
                     classNameStyles="!text-primary-300 mb-3"
                   >
-                    특별한 계란 이름이 나왔어요
+                    {reward?.specialEggName}이 나왔어요
                   </Typography>
                 </div>
                 <div className="relative w-full h-max bg-primary-300 flex flex-row justify-center items-center py-8 rounded-3xl">
@@ -116,7 +141,7 @@ export const TodayEgg = () => {
                   <img
                     src={'/assets/images/egg_crack.png'}
                     alt=""
-                    className="w-[12rem]"
+                    className="w-[14rem]"
                   />
                 </div>
                 <Button
@@ -170,29 +195,64 @@ export const TodayEgg = () => {
           계란을 눌러서 저금한 돈이에요.
         </Typography>
       </div>
-      <div
-        onClick={handleEggClick}
-        className={`relative ${eggBgColor} flex items-center justify-center overflow-hidden transition-all duration-300 w-full h-[18rem] rounded-t-3xl mb-10 cursor-pointer`}
-      >
-        <img
-          src={'/assets/images/samples/eggs/egg_basic.png'}
-          alt={'touchableEgg'}
-          style={{ width: '50%', objectFit: 'cover' }}
-          className={`rounded-full absolute top-10 transform transition-transform duration-300 ${eggScale}`}
-        />
-      </div>
-      <div className="bg-primary-200 w-full h-24 rounded-3xl items-center flex flex-row justify-center gap-4">
-        <Typography
-          size="6xl"
-          weight="bold"
-          classNameStyles="!text-primary-400"
-        >
-          {touchesLeft}번
-        </Typography>
-        <Typography size="6xl" weight="bold" color="light">
-          더 터치!
-        </Typography>
-      </div>
+
+      {hasSaveAccount ? (
+        // 계좌 가진 경우
+        <div>
+          <div
+            onClick={handleEggClick}
+            className={`TOUCHABLE-EGG relative ${eggBgColor} flex items-center justify-center overflow-hidden transition-all duration-300 w-full h-[18rem] rounded-t-3xl mb-10 cursor-pointer`}
+          >
+            <img
+              src={'/assets/images/samples/eggs/egg_basic.png'}
+              alt={'touchableEgg'}
+              style={{ width: '50%', objectFit: 'cover' }}
+              className={`rounded-full absolute top-10 transform transition-transform duration-300 ${eggScale}`}
+            />
+          </div>
+          <div className="bg-primary-200 w-full h-24 rounded-3xl items-center flex flex-row justify-center gap-4">
+            <Typography
+              size="6xl"
+              weight="bold"
+              classNameStyles="!text-primary-400"
+            >
+              {touchesLeft}번
+            </Typography>
+            <Typography size="6xl" weight="bold" color="light">
+              더 터치!
+            </Typography>
+          </div>
+        </div>
+      ) : (
+        // 계좌 없는 경우
+        <div>
+          <div
+            onClick={() => {
+              showToast('success', '부모님께 저축계좌를 만들어달라고 해봐요');
+              setEggBgColor('bg-secondary-400');
+              setEggScale('scale-110');
+
+              setTimeout(() => {
+                setEggBgColor('bg-secondary-500');
+                setEggScale('scale-100');
+              }, 100);
+            }}
+            className={`UNTOUCHABLE-EGG relative bg-secondary-500 flex items-center justify-center overflow-hidden transition-all duration-300 w-full h-[18rem] rounded-t-3xl mb-10 cursor-pointer`}
+          >
+            <img
+              src={'/assets/images/egg_question.png'}
+              alt={'untouchableEgg'}
+              style={{ width: '50%', objectFit: 'cover' }}
+              className={`rounded-full absolute top-10 transform transition-transform duration-300 ${eggScale}`}
+            />
+          </div>
+          <div className="bg-secondary-700 w-full h-24 rounded-3xl items-center flex flex-row justify-center gap-4">
+            <Typography size="6xl" weight="bold" color="light">
+              내 저축 계좌가 없어요
+            </Typography>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -5,11 +5,16 @@ import {
   registerEggForSale,
   getLastSpecialEggPrice,
   getOwnedSpecialEggs,
+  getMyRegisteredEggTrades,
 } from '../../../apis/eggApi';
 import { useSetRecoilState } from 'recoil';
 import { isModalOpenState } from '../../../atoms/modal';
 import { NumberDial } from '../../../components/molecules/NumberDial';
-import { ISpecialEggWithCount } from '../../../interfaces/eggInterface';
+import {
+  IPaginatedTrades,
+  ISpecialEggTradeBoard,
+  ISpecialEggWithCount,
+} from '../../../interfaces/eggInterface';
 import { showToast } from '../../../utils/toastUtil';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -19,12 +24,13 @@ import 'swiper/css/navigation';
 import { eggCardBgColors } from '../../Egg/components/MySpecialEggs';
 import { Badge } from '../../../components/atoms/Badge';
 import { LastPriceInfoBar } from './LastPriceInfoBar'; // import the new component
+import { AxiosResponse } from 'axios';
 
 export const SellEggModalContent: React.FC<{ onComplete: () => void }> = ({
   onComplete,
 }) => {
   const [selectedPrice, setSelectedPrice] = useState<number>(3);
-  const [sellCount, setSellCount] = useState<number>(1);
+  const [sellCount] = useState<number>(1);
   const [lastPrice, setLastPrice] = useState<number | null>(null);
   const [ownedEggs, setOwnedEggs] = useState<ISpecialEggWithCount[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -33,12 +39,6 @@ export const SellEggModalContent: React.FC<{ onComplete: () => void }> = ({
 
   const handlePriceChange = (newPrice: number) => {
     setSelectedPrice(newPrice);
-  };
-
-  const handleSellCountChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setSellCount(Number(event.target.value));
   };
 
   const fetchLastPrice = async (eggId: number) => {
@@ -51,18 +51,6 @@ export const SellEggModalContent: React.FC<{ onComplete: () => void }> = ({
     }
   };
 
-  const fetchOwnedSpecialEggs = async () => {
-    try {
-      const response = await getOwnedSpecialEggs();
-      setOwnedEggs(response.data);
-      if (response.data.length > 0) {
-        await fetchLastPrice(response.data[0].specialEggInfo.specialEggId);
-      }
-    } catch (error) {
-      showToast('error', `${error}`);
-    }
-  };
-
   const handleSlideChange = async (swiper: { realIndex: number }) => {
     setCurrentSlide(swiper.realIndex);
     const selectedEggId =
@@ -71,7 +59,41 @@ export const SellEggModalContent: React.FC<{ onComplete: () => void }> = ({
   };
 
   useEffect(() => {
+    const fetchOwnedSpecialEggs = async () => {
+      try {
+        const response = await getOwnedSpecialEggs();
+        setOwnedEggs(response.data);
+
+        if (response.data.length > 0) {
+          await fetchLastPrice(response.data[0].specialEggInfo.specialEggId);
+        }
+      } catch (error) {
+        showToast('error', `${error}`);
+      }
+    };
+
+    const fetchMyRegisteredEggTrades = async () => {
+      try {
+        const response: AxiosResponse<IPaginatedTrades> =
+          await getMyRegisteredEggTrades(0, 50);
+        const registeredEggIds = response.data.content.map(
+          (eggTradeBoard: ISpecialEggTradeBoard) =>
+            eggTradeBoard.specialEggInfo.specialEggId,
+        );
+
+        setOwnedEggs((prevEggs) =>
+          prevEggs.filter(
+            (ownedEgg) =>
+              !registeredEggIds.includes(ownedEgg.specialEggInfo.specialEggId),
+          ),
+        );
+      } catch (error) {
+        console.error('내 등록된 계란 거래를 불러오는데 실패했습니다.', error);
+      }
+    };
+
     fetchOwnedSpecialEggs();
+    fetchMyRegisteredEggTrades();
   }, []);
 
   const handleSellEgg = async () => {
@@ -165,25 +187,10 @@ export const SellEggModalContent: React.FC<{ onComplete: () => void }> = ({
       </div>
       <LastPriceInfoBar lastPrice={lastPrice} />
       <div className="flex flex-row w-full justify-between bg-white z-10">
-        <div className="flex flex-row items-center justify-start mt-1 gap-3">
+        <div className="flex flex-row items-center justify-center mt-2 gap-3 mb-3">
           <Typography weight="bold" color="dark">
-            몇 개를 팔까요?
+            얼마에 팔까요?
           </Typography>
-
-          <select
-            value={sellCount}
-            onChange={handleSellCountChange}
-            className="p-2 border border-gray-300 rounded-lg"
-          >
-            {Array.from(
-              { length: ownedEggs[currentSlide]?.eggCount || 1 },
-              (_, i) => i + 1,
-            ).map((count) => (
-              <option key={count} value={count}>
-                {count} 개
-              </option>
-            ))}
-          </select>
         </div>
       </div>
 

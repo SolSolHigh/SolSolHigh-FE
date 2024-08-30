@@ -17,6 +17,7 @@ interface MarketContentProps {
   setSearchTerm: (value: string) => void;
   setSortOrder: (value: 'asc' | 'desc') => void;
   fetchEggData: () => void;
+  onCompleteBuy: () => void;
 }
 
 export const MarketContent: React.FC<MarketContentProps> = ({
@@ -27,6 +28,7 @@ export const MarketContent: React.FC<MarketContentProps> = ({
   setSearchTerm,
   setSortOrder,
   fetchEggData,
+  onCompleteBuy,
 }) => {
   const CONTENT_LABELS = [
     '특별한 계란을 찾아보아요.',
@@ -38,7 +40,7 @@ export const MarketContent: React.FC<MarketContentProps> = ({
   const handleSellEggContentOpen = () => {
     setIsModalOpen({
       isOpen: true,
-      content: <SellEggModalContent onComplete={fetchEggData} />, // pass fetchEggData to modal
+      content: <SellEggModalContent onComplete={fetchEggData} />,
     });
   };
 
@@ -92,7 +94,12 @@ export const MarketContent: React.FC<MarketContentProps> = ({
             </div>
           )}
         </div>
-        <EggCardList eggData={eggData} isOwned={activeTab === 1} />
+        <EggCardList
+          eggData={eggData}
+          isOwned={activeTab === 1}
+          onComplete={fetchEggData}
+          onCompleteBuy={onCompleteBuy}
+        />
       </div>
     </div>
   );

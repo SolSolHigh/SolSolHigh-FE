@@ -6,12 +6,17 @@ import {
   requestEggPurchase,
   deleteSpecialEggTrade,
   getSpecialEggTradeHistory,
+  getMyRegisteredEggTrades,
 } from '../../../apis/eggApi';
 import { useSetRecoilState } from 'recoil';
 import { isModalOpenState } from '../../../atoms/modal';
 import { showToast } from '../../../utils/toastUtil';
 import { LastPriceInfoBar } from './LastPriceInfoBar';
-import { ISpecialEggTradeHistory } from '../../../interfaces/eggInterface';
+import {
+  IPaginatedTrades,
+  ISpecialEggTradeBoard,
+  ISpecialEggTradeHistory,
+} from '../../../interfaces/eggInterface';
 
 interface SpecialEggDetailProps {
   eggId: number;
@@ -21,16 +26,9 @@ interface SpecialEggDetailProps {
   timeAgo: string;
   isOwned: boolean;
   sellBoardId: number;
+  onComplete: () => void;
+  onCompleteBuy: () => void;
 }
-
-// const fetchDummyData = (): [] => {
-//   return [
-//     { price: 2, tradeDate: '2024-08-08' },
-//     { price: 3, tradeDate: '2024-08-23' },
-//     { price: 4, tradeDate: '2024-08-26' },
-//     { price: 1, tradeDate: '2024-08-28' },
-//   ];
-// };
 
 export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
   eggId,
@@ -40,11 +38,18 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
   timeAgo,
   isOwned,
   sellBoardId,
+  onComplete,
+  onCompleteBuy,
 }) => {
   const [lastPrice, setLastPrice] = useState<number | null>(null);
   const setIsModalOpen = useSetRecoilState(isModalOpenState);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [tradeData, setTradeData] = useState<ISpecialEggTradeHistory[]>();
+  const [mySellinEggData, setMySellinEggData] = useState<
+    IPaginatedTrades['content']
+  >([]);
+
+  const [isMySellingBoard, setIsMySellingBoard] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchSpecialEggHistory = async (specialEggId: number) => {
@@ -58,6 +63,19 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       }
     };
     fetchSpecialEggHistory(eggId);
+
+    const checkIsMySellingBoard = async () => {
+      const response = await getMyRegisteredEggTrades(0, 10);
+      setMySellinEggData(response.data.content);
+
+      mySellinEggData.map((sellingEggData: ISpecialEggTradeBoard) => {
+        if (sellBoardId === sellingEggData.sellBoardId) {
+          setIsMySellingBoard(true);
+        }
+      });
+    };
+
+    checkIsMySellingBoard();
   }, []);
 
   useEffect(() => {
@@ -74,6 +92,8 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       await requestEggPurchase(sellBoardId, 1);
       showToast('success', '계란 구매에 성공했습니다!');
       setIsModalOpen({ isOpen: false, content: null });
+      onComplete();
+      onCompleteBuy();
     } catch (error) {
       console.error('계란 구매에 실패했습니다.', error);
       showToast('error', '계란 구매에 실패했습니다!');
@@ -85,6 +105,7 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       await deleteSpecialEggTrade(sellBoardId);
       showToast('success', '계란 삭제에 성공했습니다!');
       setIsModalOpen({ isOpen: false, content: null });
+      onComplete();
     } catch (error) {
       console.error('계란 판매글 삭제에 실패했습니다.', error);
       showToast('error', '계란 판매글 삭제에 실패했습니다!');
@@ -122,13 +143,21 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       </div>
 
       <div className="w-full h-48 bg-white rounded-lg shadow-lg flex items-center justify-center p-4">
-        <PriceChart tradeData={tradeData} />
+        {tradeData?.length === 0 ? (
+          <div className="w-full h-full p-4 flex flex-col justify-center items-center text-center">
+            <Typography size="4xl">
+              아직 시장에서 팔린적 없는 계란이에요
+            </Typography>
+          </div>
+        ) : (
+          <PriceChart tradeData={tradeData} />
+        )}
       </div>
       <div className="mt-4 w-full">
         <LastPriceInfoBar lastPrice={lastPrice} />
       </div>
 
-      {isOwned ? (
+      {isOwned || isMySellingBoard ? (
         <button
           className="w-full h-max py-4 bg-red-400 flex flex-row justify-center items-center gap-4 rounded-2xl mt-8 hover:bg-red-500 transition-all duration-300"
           onClick={handleDelete}
