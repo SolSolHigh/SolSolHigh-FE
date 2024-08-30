@@ -142,7 +142,7 @@ export const QuizMain: React.FC = () => {
       setLoading(true);
       api
         .get(
-          `api/children/${childrenList[selectedChild].nickname}/quizzes/solved?page=0`,
+          `/api/children/${childrenList[selectedChild].nickname}/quizzes/solved?page=0`,
         )
         .then((response) => {
           setQuizLog(response.data);
@@ -155,7 +155,7 @@ export const QuizMain: React.FC = () => {
 
       api
         .get(
-          `api/quizzes/${childrenList[selectedChild].nickname}/quizzes/strick`,
+          `/api/quizzes/${childrenList[selectedChild].nickname}/quizzes/strick`,
         )
         .then((response) => {
           setStrick(response.data);
@@ -165,7 +165,7 @@ export const QuizMain: React.FC = () => {
           showToast('error', '퀴즈 스트릭을 불러오지 못했어요');
         });
       api
-        .get(`api/quizzes/${childrenList[selectedChild].nickname}/keywords`)
+        .get(`/api/quizzes/${childrenList[selectedChild].nickname}/keywords`)
         .then((response) => {
           setOwnKeywords(response.data);
           setLoading(false);
@@ -177,7 +177,7 @@ export const QuizMain: React.FC = () => {
     if (isParent === false) {
       setLoading(true);
       api
-        .get(`api/children/${childNickname}/quizzes/solved?page=0`)
+        .get(`/api/children/${childNickname}/quizzes/solved?page=0`)
         .then((response) => {
           setQuizLog(response.data);
           setLoading(false);
@@ -187,7 +187,7 @@ export const QuizMain: React.FC = () => {
           setLoading(false);
         });
       api
-        .get(`api/quizzes/${childNickname}/quizzes/strick`)
+        .get(`/api/children/${childNickname}/quizzes/strick`)
         .then((response) => {
           setStrick(response.data);
           setLoading(false);
@@ -195,7 +195,7 @@ export const QuizMain: React.FC = () => {
         .catch((error: Error) => {
           showToast('error', '퀴즈 스트릭을 불러오지 못했어요');
         });
-      api.get(`api/quizzes/${childNickname}/keywords`).then((response) => {
+      api.get(`/api/quizzes/${childNickname}/keywords`).then((response) => {
         setOwnKeywords(response.data);
         setLoading(false);
       });
