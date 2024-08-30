@@ -36,10 +36,10 @@ export const ToggleTab = ({
             onClick={() => onTabChange(index)}
           >
             <Typography
-              size="md"
-              weight="regular"
+              size="xs"
+              weight="semibold"
               color={
-                index === activeTab ? (outlined ? color : 'light') : 'secondary'
+                index === activeTab ? (outlined ? color : 'light') : 'light'
               }
               classNameStyles="transition-all duration-300"
             >

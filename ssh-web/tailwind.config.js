@@ -1,3 +1,5 @@
+const { transform } = require('typescript');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
@@ -77,16 +79,27 @@ module.exports = {
             borderColor: 'theme("colors.dr-coral-300")',
           },
         },
+        floating: {
+          '0%, 100%': {
+            transform: 'translateY(0px)',
+          },
+          '50%': {
+            transform: 'translateY(-2px)',
+          },
+        },
       },
       animation: {
         shimmer: 'shimmer 2s infinite linear',
         popIn: 'popIn 0.1s ease-out',
         fadeIn: 'fadeIn 0.15s ease-out',
         pulseScale: 'pulseScale 2s infinite ease-in-out',
+        floating: 'floating 1.5s infinite ease-in-out ',
       },
       backgroundImage: {
         'gradient-shimmer':
           'linear-gradient(90deg, #e0e0e0 25%, #e8e8e8 50%, #e0e0e0 75%)',
+        'gradient-E':
+          'radial-gradient(circle, rgba(250,255,112,1) 0%, rgba(255,255,255,1) 70%);',
       },
     },
   },
