@@ -51,7 +51,7 @@ export const QuizSolving: React.FC = () => {
         showToast('error', '현재 유저의 정보를 불러오지 못했습니다.');
       });
     api
-      .get(`/api/quizs/today`)
+      .get(`/api/quizzes/today`)
       .then((response) => {
         setQuizData(response.data);
         setLoading(false);

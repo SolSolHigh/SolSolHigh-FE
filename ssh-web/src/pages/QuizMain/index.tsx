@@ -179,7 +179,7 @@ export const QuizMain: React.FC = () => {
       api
         .get(`/api/children/${childNickname}/quizzes/solved?page=0`)
         .then((response) => {
-          setQuizLog(response.data);
+          setQuizLog(response.data.content);
           setLoading(false);
         })
         .catch((error: Error) => {
