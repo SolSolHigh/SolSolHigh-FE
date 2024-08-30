@@ -4,10 +4,14 @@ import { Button } from '../../atoms/Button';
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 import { api } from '../../../apis/interceptors';
 import { IChild } from '../../../interfaces/userInterface';
+import { ChangeChildeProps } from './ChangeChild,types';
 
-export const ChangeChild = () => {
-  const [childrenList, setChildrenList] = useState<IChild[]>([]);
-  const [selectedChild, setSelectedChild] = useState<number>(0);
+export const ChangeChild = ({
+  childrenList,
+  setChildrenList,
+  selectedChild,
+  setSelectedChild,
+}: ChangeChildeProps) => {
   const [isloading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -17,6 +21,7 @@ export const ChangeChild = () => {
       setIsLoading(false);
     });
   });
+
   return (
     <div className="flex flex-row relative items-center mb-2 p-2 px-4 rounded-lg space-x-3">
       {selectedChild !== 0 && (

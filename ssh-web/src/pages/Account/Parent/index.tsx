@@ -11,6 +11,7 @@ import TextField from '../../../components/atoms/TextField';
 import { Modal } from '../../../components/molecules/QuizModal';
 import { TColor } from '../../../themes/themeBase';
 import { showToast } from '../../../utils/toastUtil';
+import { IChild } from '../../../interfaces/userInterface';
 
 interface DepositAccountCardProps {
   account: IAccount;
@@ -94,6 +95,8 @@ interface DeleteAccountModalProps {
 export const Account = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const [ownAccounts, setOwnAccounts] = useState<IAccount[] | null>(null);
+  const [childrenList, setChildrenList] = useState<IChild[]>([]);
+  const [selectedChild, setSelectedChild] = useState<number>(0);
   const [childAccounts, setChildAccounts] = useState<IAccount[] | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [modalType, setModalTypes] = useState<TModal | null>(null);
@@ -105,7 +108,6 @@ export const Account = () => {
     api.post(`/api/accounts`).then((response) => {
       setOwnAccounts(response.data);
       setChildAccounts(response.data);
-      //todo 대충 계좌가 없으면 introduction 페이지로 넘길것
     });
   }, []);
 
@@ -185,7 +187,12 @@ export const Account = () => {
             <Typography size="2xl" weight="bold" color="dark">
               계좌 관리
             </Typography>
-            <ChangeChild />
+            <ChangeChild
+              childrenList={childrenList}
+              setChildrenList={setChildrenList}
+              selectedChild={selectedChild}
+              setSelectedChild={setSelectedChild}
+            />
           </div>
           <div className="w-full tabletB:max-w-[48rem]">
             <ToggleTab

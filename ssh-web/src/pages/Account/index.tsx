@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Account as ParentAccountPage } from './Parent';
 import { Account as ChildAccountPage } from './Child';
+import { api } from '../../apis/interceptors';
 
-interface AccountProps {
-  isParent: boolean;
-}
+export const Account = () => {
+  const [isParent, setIsParent] = useState<boolean>(false);
 
-export const Account = ({ isParent }: AccountProps) => {
+  useEffect(() => {
+    api.get(`/api/users/info`).then((response) => {
+      setIsParent(response.data);
+    });
+  }, []);
   if (isParent) return <ParentAccountPage />;
   else return <ChildAccountPage />;
 };

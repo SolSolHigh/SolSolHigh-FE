@@ -48,8 +48,7 @@ export const QuizTab: React.FC<QuizTabProps> = ({
                 navigate(PathNames.QUIZ.path + '/solve');
               }}
               classNameStyles="mr-4"
-              //todo : 부모로 접속해도 막아야함
-              disabled={isTodayQuiz || loading}
+              disabled={isTodayQuiz || loading || isParent}
             >
               풀러가기
             </Button>

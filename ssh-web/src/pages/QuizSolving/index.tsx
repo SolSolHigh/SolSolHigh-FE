@@ -40,11 +40,21 @@ export const QuizSolving: React.FC = () => {
   useEffect(() => {
     setLoading(true);
     api
+      .get(`/api/users/info`)
+      .then((response) => {
+        if (response.data.type === 'PARENT') {
+          showToast('error', '아이만 접근할 수 있는 기능입니다');
+          navigate('/quiz');
+        }
+      })
+      .catch((error: Error) => {
+        showToast('error', '현재 유저의 정보를 불러오지 못했습니다.');
+      });
+    api
       .get(`/${REQUEST_DOMAINS.quizs}/today`)
       .then((response) => {
         setQuizData(response.data);
         setLoading(false);
-        console.log(response);
       })
       .catch((error: Error) => {
         showToast('error', '퀴즈를 불러오지 못했어요');
