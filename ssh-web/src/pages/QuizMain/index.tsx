@@ -71,32 +71,36 @@ export const QuizMain: React.FC = () => {
 
   //todo
   const onRemoveKeyword = (keywordId: number) => {
-    api
-      .post(`/api/children/keywords`, {
-        nickname: childrenList[selectedChild].nickname,
-        keywordId: keywordId,
-      })
-      .then((response) => {
-        showToast('success', '키워드를 삭제했어요');
-      })
-      .catch((error: Error) => {
-        showToast('error', '키워드를 삭제하지 못했어요');
-      });
+    if (isParent) {
+      api
+        .post(`/api/children/keywords`, {
+          nickname: childrenList[selectedChild].nickname,
+          keywordId: keywordId,
+        })
+        .then((response) => {
+          showToast('success', '키워드를 삭제했어요');
+        })
+        .catch((error: Error) => {
+          showToast('error', '키워드를 삭제하지 못했어요');
+        });
+    }
   };
 
   //todo
   const onAddKeyword = (keywordId: number) => {
-    api
-      .patch(`/api/children/keywords`, {
-        nickname: childrenList[selectedChild].nickname,
-        keywordId: keywordId,
-      })
-      .then((response) => {
-        showToast('success', '키워드를 추가했어요');
-      })
-      .catch((error: Error) => {
-        showToast('error', '키워드를 추가하지 못했어요');
-      });
+    if (isParent) {
+      api
+        .patch(`/api/children/keywords`, {
+          nickname: childrenList[selectedChild].nickname,
+          keywordId: keywordId,
+        })
+        .then((response) => {
+          showToast('success', '키워드를 추가했어요');
+        })
+        .catch((error: Error) => {
+          showToast('error', '키워드를 추가하지 못했어요');
+        });
+    }
   };
 
   const onClose = () => {
