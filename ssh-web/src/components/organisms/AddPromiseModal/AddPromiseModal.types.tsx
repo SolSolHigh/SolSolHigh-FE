@@ -1,4 +1,4 @@
 export interface AddPromiseModalProps {
   countTicket: number;
-  onUpload: () => void;
+  onUpload: (content: string) => void;
 }

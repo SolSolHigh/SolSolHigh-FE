@@ -47,7 +47,7 @@ mock.onPost(`/api/accounts`).reply(() => {
             accountBalance: 1354000,
           },
           {
-            accountName: '쏠쏠하이 정기예금 통장',
+            accountName: '쏠쏠하이 저축통장',
             accountNo: '0205782816344768',
             accountTypeCode: '2',
             accountBalance: 1500000,
@@ -169,9 +169,22 @@ mock.onGet(`/api/accounts/saving/products`).reply(() => {
     }, 500);
   });
 });
+
+mock.onGet(`/api/children/account/deposit/remove-request-1`).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        {
+          imageUrl: 'https://c.tenor.com/_J-Z2O9x0E0AAAAd/tenor.gif',
+        },
+      ]);
+    }, 5000);
+  });
+});
 // ========== 계좌 도메인 ===========
 
-// ========== 약속권 도메인 ==========
+// ========== 약속권 도메인 ==========xwx
 
 //자식이 자신의 약속권 개수 조회
 mock.onGet(`/api/promise-tickets/count`).reply(() => {
@@ -776,6 +789,12 @@ mock.onGet('/api/parents/children').reply((config) => {
           },
           {
             name: '양규현',
+            nickname: '백룡',
+            birthday: '1999-05-30',
+            gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',
+          },
+          {
+            name: '이유승',
             nickname: '백룡',
             birthday: '1999-05-30',
             gender: Math.floor(Math.random() * 2) ? 'MALE' : 'FEMALE',

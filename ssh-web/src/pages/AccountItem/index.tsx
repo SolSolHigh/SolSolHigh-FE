@@ -6,6 +6,7 @@ import { Button } from '../../components/atoms/Button';
 import { api } from '../../apis/interceptors';
 import { Modal } from '../../components/molecules/QuizModal';
 import TextField from '../../components/atoms/TextField';
+import { showToast } from '../../utils/toastUtil';
 
 interface IDepositItem {
   accountName: string;
@@ -41,10 +42,12 @@ interface SavingItemProps {
 
 interface CreateDepositModalProps {
   item: IDepositItem | null;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface CreateSavingModalProps {
   item: ISavingItem | null;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AccountItemPage = () => {
@@ -80,9 +83,15 @@ export const AccountItemPage = () => {
     <>
       <Modal isOpen={isModalOpen} color="light" setIsOpen={setIsModalOpen}>
         {activeTab === 0 ? (
-          <CreateDepositModal item={selectedItem} />
+          <CreateDepositModal
+            item={selectedItem}
+            setIsModalOpen={setIsModalOpen}
+          />
         ) : (
-          <CreateSavingModal item={selectedItem} />
+          <CreateSavingModal
+            item={selectedItem}
+            setIsModalOpen={setIsModalOpen}
+          />
         )}
       </Modal>
       <div className="flex items-center justify-center w-full h-auto tabletB:flex-col">
@@ -190,7 +199,9 @@ const DepositItem = ({ item, handleModal }: DepositItemProps) => {
 
 const SavingItem = ({ item, handleModal }: SavingItemProps) => {
   //todo
-  const handleCreateSaving = () => {};
+  const handleCreateSaving = () => {
+    showToast('success', '상품가임이성공적으로 완료됐어요');
+  };
   return (
     <div className="bg-secondary-200 p-4 rounded-lg shadow-lg w-full">
       <Typography color="primary" size="2xl" weight="bold">
@@ -239,7 +250,10 @@ const SavingItem = ({ item, handleModal }: SavingItemProps) => {
   );
 };
 
-const CreateDepositModal = ({ item }: CreateDepositModalProps) => {
+const CreateDepositModal = ({
+  item,
+  setIsModalOpen,
+}: CreateDepositModalProps) => {
   const [subscriptionPeriod, setSubscriptionPeriod] = useState<number | null>(
     null,
   );
@@ -259,7 +273,10 @@ const CreateDepositModal = ({ item }: CreateDepositModalProps) => {
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
   // todo
-  const submitCreateAccount = () => {};
+  const submitCreateAccount = () => {
+    showToast('success', '상풍가입이 성공적으로 완료되었어요');
+    setIsModalOpen(false);
+  };
 
   // 거치기간 변경 핸들러
   const handlePeriodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -281,7 +298,10 @@ const CreateDepositModal = ({ item }: CreateDepositModalProps) => {
   useEffect(() => {
     if (item) {
       // 거치기간 검사
-      if (subscriptionPeriod && subscriptionPeriod > item.subscriptionPeriod) {
+      if (
+        subscriptionPeriod &&
+        subscriptionPeriod * 30 > item.subscriptionPeriod
+      ) {
         setPeriodState('danger');
         setPeriodError(
           `가입기간은 최대 ${item.subscriptionPeriod / 30}개월까지 가능합니다.`,
@@ -368,7 +388,6 @@ const CreateDepositModal = ({ item }: CreateDepositModalProps) => {
         </div>
         <div className="flex relative">
           <TextField
-            inputType="number"
             state={balanceState}
             label="거치금액"
             size="xl"
@@ -390,7 +409,6 @@ const CreateDepositModal = ({ item }: CreateDepositModalProps) => {
         )}
         <div className="flex relative mt-8">
           <TextField
-            inputType="number"
             label="거치기간"
             state={periodState}
             size="xl"
@@ -425,7 +443,10 @@ const CreateDepositModal = ({ item }: CreateDepositModalProps) => {
   );
 };
 
-const CreateSavingModal = ({ item }: CreateSavingModalProps) => {
+const CreateSavingModal = ({
+  item,
+  setIsModalOpen,
+}: CreateSavingModalProps) => {
   const [depositDay, setDepositDay] = useState<number | null>(null);
   const [subscriptionPeriod, setSubscriptionPeriod] = useState<number | null>(
     null,
@@ -446,7 +467,10 @@ const CreateSavingModal = ({ item }: CreateSavingModalProps) => {
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
   //todo
-  const submitCreateAccount = () => {};
+  const submitCreateAccount = () => {
+    setIsModalOpen(false);
+    showToast('success', '상품가입이 성공적으로 완료되었어요');
+  };
 
   // 가입기간 변경 핸들러
   const handlePeriodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -480,7 +504,7 @@ const CreateSavingModal = ({ item }: CreateSavingModalProps) => {
       // 가입기간 검사
       if (
         subscriptionPeriod &&
-        subscriptionPeriod > item.subscriptionPeriod / 30
+        subscriptionPeriod * 30 > item.subscriptionPeriod
       ) {
         setPeriodState('danger');
         setPeriodError(
@@ -583,7 +607,6 @@ const CreateSavingModal = ({ item }: CreateSavingModalProps) => {
         </div>
         <div className="flex relative">
           <TextField
-            inputType="number"
             state={balanceState}
             label="매달 적금금액"
             size="xl"
@@ -605,7 +628,6 @@ const CreateSavingModal = ({ item }: CreateSavingModalProps) => {
         )}
         <div className="flex relative mt-8">
           <TextField
-            inputType="number"
             label="가입기간"
             state={periodState}
             size="xl"
@@ -627,7 +649,6 @@ const CreateSavingModal = ({ item }: CreateSavingModalProps) => {
         )}
         <div className="flex relative mt-8">
           <TextField
-            inputType="number"
             label="입금일"
             state={dayState}
             size="xl"
