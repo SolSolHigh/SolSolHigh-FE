@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 
 export const KeywordsTab: React.FC<KeywordsProps> = ({
   size,
-  quizLogs = [],
+  quizLogs,
   childNickname,
   setLoading,
   isParent,
@@ -18,6 +18,7 @@ export const KeywordsTab: React.FC<KeywordsProps> = ({
   openKeywordModal,
   openQuizLogsModal,
 }) => {
+  console.log(quizLogs);
   return (
     <>
       <div className="space-y-4">
