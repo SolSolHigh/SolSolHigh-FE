@@ -24,6 +24,7 @@ function App() {
   useCloseModalOnRouteChange();
   useResizeDetection();
   useLockBodyScroll();
+  console.log("it's deploy test");
 
   useEffect(() => {
     messaging.onMessage((payload) => {
