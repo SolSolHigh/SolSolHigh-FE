@@ -70,7 +70,7 @@ export const QuizSolving: React.FC = () => {
   const handleSubmitAnswer = () => {
     if (selectedOption && quizData) {
       api
-        .post(`/${REQUEST_DOMAINS.quizs}/solve`, {
+        .post(`/api/quizzes/solve`, {
           quizId: quizData.quizId,
           answer: selectedOption === 'O',
         })
