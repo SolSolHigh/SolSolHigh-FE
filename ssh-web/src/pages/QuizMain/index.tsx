@@ -129,6 +129,7 @@ export const QuizMain: React.FC = () => {
           setIsParent(true);
         } else {
           setIsParent(false);
+          setChildNickname(response.data.nickname);
         }
       })
       .catch((error: Error) => {
