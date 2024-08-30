@@ -21,6 +21,8 @@ import {
   containerStyles,
   title,
 } from './styles';
+import { useNavigate } from 'react-router-dom';
+import { showToast } from '../../utils/toastUtil';
 
 export const QuizSolving: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<'O' | 'X' | null>(null);
@@ -32,6 +34,7 @@ export const QuizSolving: React.FC = () => {
     null,
   );
   const size = useRecoilValue<EResize>(resizeState);
+  const navigate = useNavigate();
 
   //오늘의 퀴즈 api
   useEffect(() => {
@@ -44,7 +47,7 @@ export const QuizSolving: React.FC = () => {
         console.log(response);
       })
       .catch((error: Error) => {
-        setError(error.message || '퀴즈를 불러오지 못했습니다.');
+        showToast('error', '퀴즈를 불러오지 못했어요');
         setLoading(false);
       });
   }, []);
@@ -94,9 +97,10 @@ export const QuizSolving: React.FC = () => {
                 </div>
                 <Button
                   fullWidth={true}
-                  onClick={() =>
-                    setIsModalOpen({ isOpen: false, content: null })
-                  }
+                  onClick={() => {
+                    setIsModalOpen({ isOpen: false, content: null });
+                    navigate('/quiz');
+                  }}
                 >
                   확인
                 </Button>
@@ -106,7 +110,7 @@ export const QuizSolving: React.FC = () => {
         })
         .catch((error: Error) => {
           console.log(error);
-          setError(error.message || '정답을 제출하는데 실패했습니다.');
+          showToast('error', '정답을 제출하는데 실패했어요');
         });
     }
   };

@@ -13,6 +13,9 @@ import { Egg } from '../pages/Egg';
 import { Market } from '../pages/Market';
 import { PromiseTicket } from '../pages/Promise';
 import { Request } from '../pages/Information/Request';
+import { IntroductionAccountPage } from '../pages/IntroductionAccount';
+import { AccountItemPage } from '../pages/AccountItem';
+import { Account } from '../pages/Account';
 import { Home } from '../pages/Home';
 import { Menu } from '../pages/Menu';
 
@@ -94,6 +97,18 @@ export const router = createBrowserRouter([
       {
         path: '/request',
         element: <Request />,
+      },
+      {
+        path: '/account',
+        element: <Account isParent={true} />,
+      },
+      {
+        path: '/account/introduction',
+        element: <IntroductionAccountPage />,
+      },
+      {
+        path: '/account/items',
+        element: <AccountItemPage />,
       },
       {
         path: '/menu',

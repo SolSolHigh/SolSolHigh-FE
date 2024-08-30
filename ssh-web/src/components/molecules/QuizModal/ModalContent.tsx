@@ -67,7 +67,7 @@ export const ModalContent = ({
 
   return (
     <div
-      className={modalStyles[size]}
+      className={modalStyles[size] + ' overflow-auto'}
       ref={modalRef}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -75,8 +75,8 @@ export const ModalContent = ({
     >
       <div ref={headerRef} className="cursor-move">
         {size === EResize.M && (
-          <div className="w-full h-14 flex flex-col justify-center items-center">
-            <div className="w-24 h-1 bg-gray-400 rounded-full mb-1 mx-auto" />
+          <div className="w-full h-14 flex flex-col justify-center items-center ">
+            <div className="w-24 h-1  bg-gray-400 rounded-full mb-1 mx-auto" />
           </div>
         )}
         {size !== EResize.M && <ModalCloseButton onClose={onClose} />}
