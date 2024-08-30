@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import NavigationBar from './components/organisms/NavigationBar';
@@ -13,12 +13,44 @@ import {
   useResizeDetection,
   useLockBodyScroll,
 } from './hook';
-import FCMNotification from './FCMNotification';
+
+import firebase from 'firebase/app'; // Firebase needs to be imported like this in v8
+import 'firebase/messaging'; // Import messaging module in v8
+import { messaging } from './firebase/firebaseConfig';
+import Message from './firebase/Message';
+import { toast, ToastContainer } from 'react-toastify';
 
 function App() {
   useCloseModalOnRouteChange();
   useResizeDetection();
   useLockBodyScroll();
+
+  useEffect(() => {
+    // Handle incoming messages in the foreground
+    messaging.onMessage((payload) => {
+      toast(<Message notification={payload.notification} />);
+    });
+
+    async function requestPermission() {
+      // Requesting permission using the Notification API
+      const permission = await Notification.requestPermission();
+
+      if (permission === 'granted') {
+        const token = await messaging.getToken({
+          vapidKey:
+            'BDJk7HGqH8Z1qegjymTCaE4muy3OdG-tXYnZz5o2imS09412Xx8_YRV3TakKmsBC3eBYanW7kRxiVrRAnHEHt5I',
+        });
+
+        // We can send token to the server
+        console.log('Token generated : ', token);
+      } else if (permission === 'denied') {
+        // Notifications are blocked
+        alert('You denied the notification');
+      }
+    }
+
+    requestPermission();
+  }, []);
 
   const isModalOpen = useRecoilValue(isModalOpenState);
   const size = useRecoilValue(resizeState);
@@ -26,7 +58,6 @@ function App() {
 
   return (
     <div className="w-full h-full">
-      <FCMNotification />
       {isModalOpen.isOpen && <BackdropFilter />}
       {!(
         location.pathname === '/login' ||
@@ -41,6 +72,7 @@ function App() {
       >
         <Outlet />
       </div>
+      <ToastContainer />
     </div>
   );
 }

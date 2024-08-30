@@ -1,43 +1,33 @@
-/* eslint-env serviceworker */
+// Scripts for firebase and firebase messaging
+// eslint-disable-next-line no-undef
+importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js');
+// eslint-disable-next-line no-undef
+importScripts(
+  'https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js',
+);
 
-if (typeof importScripts === 'undefined') {
-  // Use dynamic imports if importScripts is not available (e.g., Vite with type: module)
-  (async () => {
-    const { initializeApp } = await import(
-      'https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js'
-    );
-    const { getMessaging, onBackgroundMessage } = await import(
-      'https://www.gstatic.com/firebasejs/10.13.1/firebase-messaging.js'
-    );
+// Initialize the Firebase app in the service worker
+// "Default" Firebase configuration (prevents errors)
+const firebaseConfig = {
+  apiKey: true,
+  projectId: true,
+  messagingSenderId: true,
+  appId: true,
+};
 
-    // Firebase 초기화
-    const app = initializeApp({
-      apiKey: 'AIzaSyDBZkY-La3OUCPyAaNZ_g3pHix8SSAuDRA',
-      authDomain: 'solsolhigh.firebaseapp.com',
-      projectId: 'solsolhigh',
-      storageBucket: 'solsolhigh.appspot.com',
-      messagingSenderId: '75920605236',
-      appId: '1:75920605236:web:f0629ade9cd01b1ceaca61',
-    });
+// eslint-disable-next-line no-undef
+firebase.initializeApp(firebaseConfig);
 
-    const messaging = getMessaging(app);
+// Retrieve firebase messaging
+// eslint-disable-next-line no-undef
+const messaging = firebase.messaging();
 
-    onBackgroundMessage(messaging, (payload) => {
-      console.log(
-        '[firebase-messaging-sw.js] Received background message',
-        payload,
-      );
-      const notificationTitle =
-        payload.notification?.title || 'Background Message Title';
-      const notificationOptions = {
-        body: payload.notification?.body || 'Background Message body',
-        icon: '/firebase-logo.png',
-      };
+messaging.onBackgroundMessage((payload) => {
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: payload.notification.image,
+  };
 
-      self.registration.showNotification(
-        notificationTitle,
-        notificationOptions,
-      );
-    });
-  })();
-}
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
