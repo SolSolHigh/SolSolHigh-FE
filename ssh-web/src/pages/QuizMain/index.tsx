@@ -139,6 +139,7 @@ export const QuizMain: React.FC = () => {
 
   useEffect(() => {
     if (isParent && childrenList) {
+      console.log(childrenList);
       setLoading(true);
       api
         .get(
