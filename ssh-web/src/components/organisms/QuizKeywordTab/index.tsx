@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 
 export const KeywordsTab: React.FC<KeywordsProps> = ({
   size,
-  quizLogs,
+  quizLogs = [],
   childNickname,
   setLoading,
   isParent,
@@ -59,17 +59,18 @@ export const KeywordsTab: React.FC<KeywordsProps> = ({
             </button>
           </div>
           <div className="space-y-2">
-            {quizLogs.slice(0, 8).map((history, index) => (
-              <div
-                key={index}
-                className="flex justify-between text-secondary-600"
-              >
-                {dayjs(history.correctedAt).format('YYYY년 M월 D일')}
-                <Typography color={history.isCorrect ? 'primary' : 'danger'}>
-                  {history.isCorrect ? '맞았어요!!! ' : '틀렸어요...'}
-                </Typography>
-              </div>
-            ))}
+            {quizLogs &&
+              quizLogs.slice(0, 8).map((history, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between text-secondary-600"
+                >
+                  {dayjs(history.correctedAt).format('YYYY년 M월 D일')}
+                  <Typography color={history.isCorrect ? 'primary' : 'danger'}>
+                    {history.isCorrect ? '맞았어요!!! ' : '틀렸어요...'}
+                  </Typography>
+                </div>
+              ))}
           </div>
         </div>
       </div>

@@ -177,7 +177,7 @@ export const QuizMain: React.FC = () => {
     if (isParent === false) {
       setLoading(true);
       api
-        .get(`/api/children/${childNickname}/quizzes/solved?page=0`)
+        .get(`/api/api/children/${childNickname}/quizzes/solved?page=0`)
         .then((response) => {
           setQuizLog(response.data);
           setLoading(false);
