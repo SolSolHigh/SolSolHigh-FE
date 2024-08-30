@@ -67,6 +67,8 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
     const checkIsMySellingBoard = async () => {
       const response = await getMyRegisteredEggTrades(0, 10);
       setMySellinEggData(response.data.content);
+      console.log('sellBoardId:', sellBoardId);
+      console.log('판매중인 계란데이터:', response.data.content);
 
       mySellinEggData.map((sellingEggData: ISpecialEggTradeBoard) => {
         if (sellBoardId === sellingEggData.sellBoardId) {

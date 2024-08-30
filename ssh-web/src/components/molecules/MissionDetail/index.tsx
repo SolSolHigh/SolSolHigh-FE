@@ -101,15 +101,19 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
 
       {/* 미션 상세 정보 표시 */}
       <div className="w-full py-6 px-10 bg-primary-100 rounded-2xl flex flex-col gap-4">
-        <div className="flex flex-col items-center gap-1">
-          <Typography size="xs" color="primary" weight="regular">
-            도전자
-          </Typography>
-          <Typography size="sm" color="dark" weight="semibold">
-            {mission?.childInfo?.name}
-          </Typography>
-        </div>
-        <Divider color="primary" />
+        {mission?.childInfo?.name && (
+          <div>
+            <div className="flex flex-col items-center gap-1">
+              <Typography size="xs" color="primary" weight="regular">
+                도전자
+              </Typography>
+              <Typography size="sm" color="dark" weight="semibold">
+                {mission?.childInfo?.name}
+              </Typography>
+            </div>
+            <Divider color="primary" />
+          </div>
+        )}
         <div className="flex flex-col items-center gap-1">
           <Typography size="xs" color="primary" weight="regular">
             쏠쏠한 미션명

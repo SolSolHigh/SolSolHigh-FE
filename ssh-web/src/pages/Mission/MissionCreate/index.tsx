@@ -64,8 +64,8 @@ export const MissionCreate: React.FC = () => {
     IMissionCreateRequest
   > = {
     onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ['missions'] }); // refetch 호출
-      setModalState({ isOpen: false, content: null }); // 모달 닫기
+      queryClient.refetchQueries({ queryKey: ['missions'] });
+      setModalState({ isOpen: false, content: null });
     },
     onError: (error) => {
       setModalState({
@@ -85,6 +85,11 @@ export const MissionCreate: React.FC = () => {
     ...mutationOptions,
   });
 
+  const formatToRequestTime = (dateTime: string) => {
+    const [date, time] = dateTime.split('T');
+    return `${date} ${time}:00`;
+  };
+
   const handleMissionSubmit = () => {
     if (!selectedChild) {
       setModalState({
@@ -97,8 +102,8 @@ export const MissionCreate: React.FC = () => {
     const missionData: IMissionCreateRequest = {
       nickname: selectedChild,
       description: missionDescription,
-      missionStartAt: missionStartAt,
-      missionEndAt: missionEndAt,
+      missionStartAt: formatToRequestTime(missionStartAt),
+      missionEndAt: formatToRequestTime(missionEndAt),
       missionLevel: difficulty.toString() as '1' | '2' | '3',
     };
 
