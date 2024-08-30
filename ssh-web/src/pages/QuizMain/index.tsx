@@ -172,7 +172,7 @@ export const QuizMain: React.FC = () => {
           showToast('error', '퀴즈 키워드를 불러오지 못했어요');
         });
     }
-    if (!isParent) {
+    if (isParent === false) {
       setLoading(true);
       api
         .get(`api/child/${childNickname}/quizzes/solved?page=0`)
@@ -198,7 +198,7 @@ export const QuizMain: React.FC = () => {
         setLoading(false);
       });
     }
-  }, [selectedChild]);
+  }, [selectedChild, isParent]);
 
   useEffect(() => {
     if (quizLogs.length > 0) {
