@@ -6,8 +6,6 @@ importScripts(
   'https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js',
 );
 
-// Initialize the Firebase app in the service worker
-// "Default" Firebase configuration (prevents errors)
 const firebaseConfig = {
   apiKey: true,
   projectId: true,
@@ -18,7 +16,6 @@ const firebaseConfig = {
 // eslint-disable-next-line no-undef
 firebase.initializeApp(firebaseConfig);
 
-// Retrieve firebase messaging
 // eslint-disable-next-line no-undef
 const messaging = firebase.messaging();
 
