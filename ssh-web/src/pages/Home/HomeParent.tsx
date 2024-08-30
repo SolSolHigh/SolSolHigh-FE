@@ -37,7 +37,7 @@ export const HomeParent = ({ parent }: HomeParentProps) => {
         classNameStyles="tablet:hidden"
       />
       <div className={`${contentStyles()}`}>
-        <div className="flex w-full max-w-[30rem] mt-4 gap-x-4">
+        <div className="flex w-full max-w-[30rem] gap-x-4">
           {childrenQuery.data.data.map((child: IChild, i: number) => {
             return (
               <div
@@ -112,7 +112,7 @@ export const HomeParent = ({ parent }: HomeParentProps) => {
             </div>
           </div>
         </div>
-        <div className="w-full max-w-[30rem] max-h-72 overflow-y-scroll rounded-xl bg-white shadow shadow-secondary-300 p-8 mt-8">
+        <div className="w-full max-w-[30rem] max-h-72 flex-1 overflow-y-scroll rounded-xl bg-white shadow shadow-secondary-300 p-8 mt-8">
           <Typography size="sm" weight="bold" classNameStyles="inline">
             {childrenQuery.data.data[idx].nickname}
           </Typography>

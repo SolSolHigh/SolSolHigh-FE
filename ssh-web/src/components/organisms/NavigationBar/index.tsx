@@ -18,10 +18,10 @@ const NavigationBar = ({ bgColor = 'bg-white', path }: NavigationBarProps) => {
   return (
     <>
       <div
-        className={`tablet:h-12 desktop:h-14 px-5 animate-popIn w-full sticky top-0 ${bgColor} z-30 desktop:hidden`}
+        className={`tablet:h-12 desktop:h-14 px-5 animate-popIn w-full sticky top-0 ${bgColor} z-30 desktop:hidden border-b-2 border-b-secondary-200`}
       >
         <div
-          className={`flex ${getNavHasBack(path) ? 'items-center justify-between' : 'items-end justify-end'} w-full h-full py-2`}
+          className={`flex ${getNavHasBack(path) ? 'items-center justify-between' : 'items-end justify-end'} w-full h-full py-2 `}
         >
           <Icon className="text-primary-400">
             <HiChevronLeft onClick={() => nav(-1)} />
