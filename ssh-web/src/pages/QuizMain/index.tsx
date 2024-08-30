@@ -155,7 +155,7 @@ export const QuizMain: React.FC = () => {
 
       api
         .get(
-          `/api/quizzes/${childrenList[selectedChild].nickname}/quizzes/strick`,
+          `/api/api/quizzes/${childrenList[selectedChild].nickname}/quizzes/strick`,
         )
         .then((response) => {
           setStrick(response.data);
