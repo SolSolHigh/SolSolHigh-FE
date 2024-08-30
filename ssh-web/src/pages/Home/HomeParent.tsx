@@ -60,7 +60,10 @@ export const HomeParent = ({ parent }: HomeParentProps) => {
           })}
         </div>
         <div className="w-full max-w-[30rem] flex justify-between gap-x-4 mt-4">
-          <div className="flex min-h-[7rem] justify-between w-7/12 p-4 bg-primary-900 rounded-2xl transition ease-in-out delay-100 hover:scale-105">
+          <div
+            className="flex min-h-[7rem] justify-between w-7/12 p-4 bg-primary-900 rounded-2xl transition ease-in-out delay-100 hover:scale-105"
+            onClick={() => nav('/account')}
+          >
             <Typography color="light" size="sm" weight="bold">
               용돈
               <br />

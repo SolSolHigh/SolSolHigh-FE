@@ -13,13 +13,29 @@ import {
   HiOutlineUserGroup,
 } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
+import { getPromiseTicketCount } from '../../apis/promiseApi';
+import { showToast } from '../../utils/toastUtil';
 
 export interface MenuChildProps {
   child: IUserInfo;
 }
 
+export interface IPromiseTicketCount {
+  count: number;
+}
+
 export const MenuChild = ({ child }: MenuChildProps) => {
   const nav = useNavigate();
+
+  const onPromiseUse = async () => {
+    await getPromiseTicketCount().then((res) => {
+      if (res.data.count === 0) {
+        showToast('error', '사용할 수 있는 약속권이 없습니다');
+      } else {
+        nav('/promise', { state: { addModal: true } });
+      }
+    });
+  };
 
   return (
     <div className="flex items-center justify-center w-full h-auto tablet:flex-col">
@@ -33,16 +49,22 @@ export const MenuChild = ({ child }: MenuChildProps) => {
         />
         {/* 메이저 버튼 영역 */}
         <div className="flex items-center w-full py-4 bg-white desktop:mt-4 justify-evenly tablet:rounded-t-3xl">
-          <div className="flex flex-col items-center gap-y-2">
+          <div
+            className="flex flex-col items-center gap-y-2"
+            onClick={() => nav('/account')}
+          >
             <img
               src="/assets/images/experience/send-money.png"
               className="w-10 h-10"
             />
             <Typography color="dark" size="xs">
-              용돈 조르기
+              송금하기
             </Typography>
           </div>
-          <div className="flex flex-col items-center gap-y-2">
+          <div
+            className="flex flex-col items-center gap-y-2"
+            onClick={() => nav('/quiz')}
+          >
             <img
               src="/assets/images/experience/bank-check.png"
               className="w-10 h-10"
@@ -71,15 +93,10 @@ export const MenuChild = ({ child }: MenuChildProps) => {
             <Typography color="dark" weight="bold" size="xs">
               통장
             </Typography>
-            <div className="flex items-center gap-x-4">
-              <Icon size="xs">
-                <HiOutlinePaperAirplane />
-              </Icon>
-              <Typography color="dark" size="xs">
-                송금하기
-              </Typography>
-            </div>
-            <div className="flex items-center gap-x-4">
+            <div
+              className="flex items-center gap-x-4"
+              onClick={() => nav('/account')}
+            >
               <Icon size="xs">
                 <HiOutlineBanknotes />
               </Icon>
@@ -96,7 +113,10 @@ export const MenuChild = ({ child }: MenuChildProps) => {
             <Typography color="dark" weight="bold" size="xs">
               약속권
             </Typography>
-            <div className="flex items-center gap-x-4">
+            <div
+              className="flex items-center gap-x-4"
+              onClick={() => nav('/promise')}
+            >
               <Icon size="xs">
                 <HiOutlineGift />
               </Icon>
@@ -104,7 +124,10 @@ export const MenuChild = ({ child }: MenuChildProps) => {
                 약속권 보러가기
               </Typography>
             </div>
-            <div className="flex items-center gap-x-4">
+            <div
+              className="flex items-center gap-x-4"
+              onClick={async () => await onPromiseUse()}
+            >
               <Icon size="xs">
                 <HiOutlineHandRaised />
               </Icon>

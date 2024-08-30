@@ -24,8 +24,10 @@ import { ConfirmPromiseModal } from '../../components/organisms/ConfirmPromiseMo
 import { ChangeChild } from '../../components/molecules/ChangeChild';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { showToast } from '../../utils/toastUtil';
+import { useLocation } from 'react-router-dom';
 
 export const PromiseTicket = () => {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
   const [promiseLogs, setPromiseLogs] = useState<IPromiseLogsList>([]);
@@ -42,7 +44,7 @@ export const PromiseTicket = () => {
 
   useEffect(() => {
     api.get(`/api/promise-tickets/count`).then((response) => {
-      setCountTicket(response.data.count);
+      setCountTicket(() => response.data.count);
     });
   }, []);
 
@@ -52,6 +54,14 @@ export const PromiseTicket = () => {
       console.log(response.data.content);
     });
   }, []);
+
+  useEffect(() => {
+    if (location.state) {
+      if (location.state.addModal) {
+        handleAddModal();
+      }
+    }
+  }, [location]);
 
   const handleDetailModal = (log: IPromiseLogs) => {
     setIsOpen(true);

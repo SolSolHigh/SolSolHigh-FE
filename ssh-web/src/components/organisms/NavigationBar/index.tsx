@@ -11,9 +11,14 @@ import { getHasBottom, getNavHasBack } from '../../../utils/appUtil';
 export interface NavigationBarProps {
   bgColor?: string;
   path: string;
+  backPath?: string;
 }
 
-const NavigationBar = ({ bgColor = 'bg-white', path }: NavigationBarProps) => {
+const NavigationBar = ({
+  bgColor = 'bg-white',
+  path,
+  backPath,
+}: NavigationBarProps) => {
   const nav = useNavigate();
   return (
     <>
@@ -24,7 +29,9 @@ const NavigationBar = ({ bgColor = 'bg-white', path }: NavigationBarProps) => {
           className={`flex ${getNavHasBack(path) ? 'items-center justify-between' : 'items-end justify-end'} w-full h-full py-2 `}
         >
           <Icon className="text-primary-400">
-            <HiChevronLeft onClick={() => nav(-1)} />
+            <HiChevronLeft
+              onClick={() => (backPath ? nav(backPath) : nav(-1))}
+            />
           </Icon>
           <Icon classNameStyles="text-primary-400">
             <MdOutlineNotifications />

@@ -8,7 +8,6 @@ import { Icon } from '../../components/atoms/Icon';
 import {
   HiOutlineBanknotes,
   HiOutlineGift,
-  HiOutlinePaperAirplane,
   HiOutlineUserGroup,
 } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
@@ -32,7 +31,10 @@ export const MenuParent = ({ parent }: MenuParentProps) => {
         />
         {/* 메이저 버튼 영역 */}
         <div className="flex items-center w-full py-4 bg-white desktop:mt-4 justify-evenly tablet:rounded-t-3xl">
-          <div className="flex flex-col items-center gap-y-2">
+          <div
+            className="flex flex-col items-center gap-y-2"
+            onClick={() => nav('/account')}
+          >
             <img
               src="/assets/images/experience/send-money.png"
               className="w-10 h-10"
@@ -41,7 +43,10 @@ export const MenuParent = ({ parent }: MenuParentProps) => {
               송금하기
             </Typography>
           </div>
-          <div className="flex flex-col items-center gap-y-2">
+          <div
+            className="flex flex-col items-center gap-y-2"
+            onClick={() => nav('/quiz')}
+          >
             <img
               src="/assets/images/experience/bank-check.png"
               className="w-10 h-10"
@@ -70,31 +75,21 @@ export const MenuParent = ({ parent }: MenuParentProps) => {
             <Typography color="dark" weight="bold" size="xs">
               통장
             </Typography>
-            <div className="flex items-center gap-x-4">
-              <Icon size="xs">
-                <HiOutlinePaperAirplane />
-              </Icon>
-              <Typography color="dark" size="xs">
-                송금하기
-              </Typography>
-            </div>
-            <div className="flex items-center gap-x-4">
+            <div
+              className="flex items-center gap-x-4"
+              onClick={() => nav('/account')}
+            >
               <Icon size="xs">
                 <HiOutlineBanknotes />
               </Icon>
               <Typography color="dark" size="xs">
-                내 통장 보러가기
+                통장 보러가기
               </Typography>
             </div>
-            <div className="flex items-center gap-x-4">
-              <Icon size="xs">
-                <HiOutlineBanknotes />
-              </Icon>
-              <Typography color="dark" size="xs">
-                내 자녀 통장 보러가기
-              </Typography>
-            </div>
-            <div className="flex items-center gap-x-4">
+            <div
+              className="flex items-center gap-x-4"
+              onClick={() => nav('/account/items')}
+            >
               <Icon size="xs">
                 <HiOutlineBanknotes />
               </Icon>
@@ -111,7 +106,10 @@ export const MenuParent = ({ parent }: MenuParentProps) => {
             <Typography color="dark" weight="bold" size="xs">
               약속권
             </Typography>
-            <div className="flex items-center gap-x-4">
+            <div
+              className="flex items-center gap-x-4"
+              onClick={() => nav('/promise')}
+            >
               <Icon size="xs">
                 <HiOutlineGift />
               </Icon>

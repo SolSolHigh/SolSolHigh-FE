@@ -50,7 +50,10 @@ export const LevelCard = ({
             경험치 얻으러 가기
           </Typography>
           <div className="flex gap-x-2">
-            <div className="flex items-center justify-center bg-white rounded-full w-7 h-7">
+            <div
+              className="flex items-center justify-center bg-white rounded-full w-7 h-7"
+              onClick={() => nav('/account')}
+            >
               <Icon size="sm">
                 <HiOutlineBanknotes />
               </Icon>

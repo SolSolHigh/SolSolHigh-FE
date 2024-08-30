@@ -60,6 +60,7 @@ function App() {
         <NavigationBar
           bgColor={getNavBgColor(location.pathname)}
           path={location.pathname}
+          backPath={location.pathname === '/mypage' ? '/menu' : undefined}
         />
       )}
       <div

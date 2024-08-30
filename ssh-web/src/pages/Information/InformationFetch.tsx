@@ -6,7 +6,11 @@ import { InfoList } from '../../components/molecules/InfoList';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getMyChildren, getMyParents, getUserInfo } from '../../apis/userApi';
 import dayjs from 'dayjs';
-import { IChild, IUserInfoMascot } from '../../interfaces/userInterface';
+import {
+  IChild,
+  IParent,
+  IUserInfoMascot,
+} from '../../interfaces/userInterface';
 import { getImgSrc } from '../../utils/userUtil';
 
 export const InformationFetch = () => {
@@ -41,11 +45,15 @@ export const InformationFetch = () => {
     } else {
       getMyParents().then((res) => {
         setRelated(() => {
-          const newUserInfoMascot: IUserInfoMascot = {
-            src: getImgSrc(res.data.gender, 'PARENT'),
-            label: res.data.nickname,
-          };
-          return [newUserInfoMascot];
+          const newRelated: IUserInfoMascot[] = [];
+          res.data.forEach((parent: IParent) => {
+            const newParent: IUserInfoMascot = {
+              src: getImgSrc(parent.gender, 'PARENT'),
+              label: parent.nickname,
+            };
+            newRelated.push(newParent);
+          });
+          return newRelated;
         });
       });
     }
