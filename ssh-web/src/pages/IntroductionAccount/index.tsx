@@ -21,7 +21,7 @@ interface CreateCommonAccountModalProps {
 export const IntroductionAccountPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   //todo
-  const isParent = false;
+  const isParent = true;
 
   const navigate = useNavigate();
 
@@ -53,16 +53,27 @@ export const IntroductionAccountPage = () => {
               서비스 안내
             </Typography>
             <div className="w-full h-full  bg-primary-200 p-8 rounded-xl">
-              <Typography
-                size="6xl"
-                color="primary"
-                weight="semibold"
-                classNameStyles=" text-center leading-[3rem]"
-              >
-                {isParent
-                  ? 'SolSol-High 자녀 계좌 관리 서비스를 이용하기 위해서는 수시입출금 계좌 개설이 필요해요'
-                  : '해당 서비스는 자신의 용돈통장이 필요해요! 부모님에게 말씀드려 같이 만들어봐요!'}
-              </Typography>
+              {isParent ? (
+                <Typography
+                  size="6xl"
+                  color="primary"
+                  weight="semibold"
+                  classNameStyles=" text-center leading-[3rem]"
+                >
+                  SolSol-High <br></br>자녀 계좌 관리 서비스를 <br></br>이용하기
+                  위해서는 <br></br>수시입출금 계좌 개설이 <br></br>필요해요!
+                </Typography>
+              ) : (
+                <Typography
+                  size="5xl"
+                  color="primary"
+                  weight="semibold"
+                  classNameStyles=" text-center leading-[3rem]"
+                >
+                  해당 서비스는 <br></br>자신의 용돈통장이 필요해요! <br></br>
+                  부모님에게 말씀드려 같이 <br></br>만들어봐요!
+                </Typography>
+              )}
               <div className="flex justify-center">
                 <img src={Img}></img>
               </div>
