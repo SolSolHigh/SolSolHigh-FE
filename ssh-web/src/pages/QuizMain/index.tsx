@@ -262,7 +262,29 @@ export const QuizMain: React.FC = () => {
 
         <div className="w-full max-w-[48rem]">
           {!isParent ? (
-            <>자녀에게 보여줄 UI</>
+            activeTab === 0 ? (
+              <QuizTab
+                size={size}
+                isTodayQuiz={isTodayQuiz}
+                childNickname={childNickname}
+                loading={loading}
+                setLoading={setLoading}
+                isParent={isParent ? isParent : false}
+                strick={strick}
+              />
+            ) : (
+              <KeywordsTab
+                size={size}
+                quizLogs={quizLogs}
+                childNickname={childNickname}
+                setLoading={setLoading}
+                keywords={keywords}
+                ownKeywords={ownKeywords}
+                isParent={isParent ? isParent : false}
+                openKeywordModal={openKeywordModal}
+                openQuizLogsModal={openQuizLogsModal}
+              />
+            )
           ) : (
             <>
               {!childrenList.length ? (
