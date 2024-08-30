@@ -28,7 +28,7 @@ export const getMyChildren = () => {
 };
 
 export const getMyParents = () => {
-  return api.get<IParent[]>('/api/parents');
+  return api.get<IParent>('/api/parents');
 };
 
 export const getMyWaitingChildren = () => {
