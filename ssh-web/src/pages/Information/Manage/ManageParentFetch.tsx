@@ -85,19 +85,20 @@ export const ManageParentFetch = () => {
             />
           </div>
           <div className="flex flex-col w-full mt-4 gap-y-4">
-            {(!activeTab ? parentsQuery.data.data : waitingQuery.data.data).map(
-              (parent: IParent | IRequest) => {
-                return (
-                  <MascotCard
-                    key={parent.nickname}
-                    info={parent}
-                    type="PARENT"
-                    isWaiting={activeTab === 0}
-                    withTrash={activeTab === 1}
-                  />
-                );
-              },
-            )}
+            {(!activeTab
+              ? [parentsQuery.data.data]
+              : waitingQuery.data.data
+            ).map((parent: IParent | IRequest) => {
+              return (
+                <MascotCard
+                  key={parent.nickname}
+                  info={parent}
+                  type="PARENT"
+                  isWaiting={activeTab === 0}
+                  withTrash={activeTab === 1}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
