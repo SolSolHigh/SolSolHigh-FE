@@ -130,7 +130,7 @@ export const TodayEgg = () => {
                 </Typography>
                 <div className="relative w-full h-max flex flex-col justify-center items-center py-8 rounded-3xl">
                   <img src={reward?.imageUrl} alt="" className="w-[12rem]" />
-                  <div className="absolute inset-0 flex justify-center items-center">
+                  <div className="absolute inset-0 flex justify-center items-center top-14">
                     <ConfettiLottie />
                   </div>
                 </div>
