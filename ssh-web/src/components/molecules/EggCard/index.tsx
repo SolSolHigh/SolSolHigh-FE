@@ -14,6 +14,8 @@ interface IEggCardProps {
   timeAgo: string;
   isOwned: boolean;
   sellBoardId: number;
+  onComplete: () => void;
+  onCompleteBuy: () => void;
 }
 
 export const EggCard: React.FC<IEggCardProps> = ({
@@ -24,6 +26,8 @@ export const EggCard: React.FC<IEggCardProps> = ({
   timeAgo,
   isOwned,
   sellBoardId,
+  onComplete,
+  onCompleteBuy,
 }) => {
   const setModalState = useSetRecoilState(isModalOpenState);
 
@@ -39,6 +43,8 @@ export const EggCard: React.FC<IEggCardProps> = ({
           timeAgo={timeAgo}
           isOwned={isOwned}
           sellBoardId={sellBoardId}
+          onComplete={onComplete}
+          onCompleteBuy={onCompleteBuy}
         />
       ),
     });

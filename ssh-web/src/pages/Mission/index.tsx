@@ -88,7 +88,7 @@ export const MissionFetch: React.FC = () => {
 
   const [activePage, setActivePage] = useState<number>(0);
   const [completedPage, setCompletedPage] = useState<number>(0);
-  const [size] = useState<number>(20);
+  const [size] = useState<number>(100);
 
   const sizeState = useRecoilValue(resizeState);
   const setIsModalOpen = useSetRecoilState(isModalOpenState);
@@ -166,7 +166,7 @@ export const MissionFetch: React.FC = () => {
           )}
         </div>
 
-        <div className="flex flex-row gap-3">
+        {/* <div className="flex flex-row gap-3">
           <Button
             onClick={handlePreviousPage}
             disabled={activeTab === 0 ? activePage === 0 : completedPage === 0}
@@ -174,7 +174,7 @@ export const MissionFetch: React.FC = () => {
             이전
           </Button>
           <Button onClick={handleNextPage}>다음</Button>
-        </div>
+        </div> */}
 
         {role === 'parent' && (
           <Button

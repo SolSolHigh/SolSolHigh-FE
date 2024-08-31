@@ -4,7 +4,7 @@ import { Mascot } from '../../components/molecules/Mascot';
 import { Typography } from '../../components/atoms/Typography';
 import { ToggleTab } from '../../components/atoms/ToggleTab';
 import { resizeState } from '../../atoms/resize';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { Modal } from '../../components/molecules/Modal';
 import {
   containerStyles,
@@ -20,10 +20,7 @@ import {
   searchEggsForSale,
   getMyRegisteredEggTrades,
 } from '../../apis/eggApi';
-import {
-  IPaginatedTrades,
-  ISpecialEggInfo,
-} from '../../interfaces/eggInterface';
+import { IPaginatedTrades } from '../../interfaces/eggInterface';
 
 export const MarketFetch = () => {
   const size = useRecoilValue(resizeState);
@@ -38,6 +35,15 @@ export const MarketFetch = () => {
 
   const handleTabChange = () => {
     setActiveTab(activeTab ? 0 : 1);
+  };
+
+  const fetchEggPoint = async () => {
+    try {
+      const response = await getEggCount();
+      setEggPoints(response.data.count);
+    } catch (error) {
+      console.error('계란 재화 조회 실패', error);
+    }
   };
 
   const fetchEggData = useCallback(async () => {
@@ -62,7 +68,7 @@ export const MarketFetch = () => {
   }, [activeTab, fetchEggData]);
 
   useEffect(() => {
-    const fetchEggCount = async () => {
+    const fetchEggPoint = async () => {
       try {
         const response = await getEggCount();
         setEggPoints(response.data.count);
@@ -71,7 +77,7 @@ export const MarketFetch = () => {
       }
     };
 
-    fetchEggCount();
+    fetchEggPoint();
   }, []);
 
   return (
@@ -117,6 +123,7 @@ export const MarketFetch = () => {
             setSearchTerm={setSearchTerm}
             setSortOrder={setSortOrder}
             fetchEggData={fetchEggData}
+            onCompleteBuy={fetchEggPoint}
           />
         </div>
         <Modal color="light" />
