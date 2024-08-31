@@ -17,7 +17,7 @@ export const ChangeChild = ({
   useEffect(() => {
     setIsLoading(true);
     api.get(`/api/parents/children`).then((res) => {
-      setChildrenList(res.data);
+      setChildrenList(() => [...res.data]);
       setIsLoading(false);
     });
   }, []);

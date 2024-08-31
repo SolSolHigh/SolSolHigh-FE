@@ -200,7 +200,7 @@ export const QuizMain: React.FC = () => {
         setLoading(false);
       });
     }
-  }, [selectedChild, isParent]);
+  }, [selectedChild, isParent, childrenList]);
 
   useEffect(() => {
     if (quizLogs.length > 0) {
