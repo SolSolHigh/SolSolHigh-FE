@@ -100,11 +100,11 @@ export const TodayEgg = () => {
         setTouchesLeft((prev) => prev - 1);
 
         const savingsMessage = (
-          <div className="flex flex-col w-full p-4 bg-primary-200 rounded-3xl text-center items-center justify-center">
+          <div className="flex flex-col w-full p-4 bg-primary-100 rounded-3xl text-center items-center justify-center">
             <Typography
               weight="semibold"
               size="lg"
-              classNameStyles="mt-4"
+              classNameStyles="my-4"
               color="dark"
             >
               계란을 깨서 내 계좌에 100원을 저축했어요!
@@ -128,10 +128,14 @@ export const TodayEgg = () => {
                 >
                   {reward?.specialEggName}이 나왔어요
                 </Typography>
-                <div className="relative w-full h-max flex flex-col justify-center items-center py-8 rounded-3xl">
+                <div className="relative w-full h-max bg-primary-300 flex flex-row justify-center items-center py-8 rounded-3xl">
                   <img src={reward?.imageUrl} alt="" className="w-[12rem]" />
-                  <div className="absolute inset-0 flex justify-center items-center top-14">
-                    <ConfettiLottie />
+                  <div className="absolute left-1/4 bottom-20 w-full flex flex-col items-center justify-center">
+                    <img
+                      src={'/assets/images/check_icon.png'}
+                      alt=""
+                      className="absolute w-[9rem]"
+                    />
                   </div>
                 </div>
 
@@ -166,7 +170,7 @@ export const TodayEgg = () => {
                 >
                   아무것도 나오지 않았어요.
                 </Typography>
-                <div className="relative w-full h-max flex flex-col justify-center items-center py-8 rounded-3xl">
+                <div className="relative w-full h-max bg-secondary-400 flex flex-row justify-center items-center py-8 rounded-3xl">
                   <img
                     src={'/assets/images/egg_crack.png'}
                     alt=""
