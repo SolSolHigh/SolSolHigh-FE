@@ -136,6 +136,9 @@ export const TodayEgg = () => {
                       alt=""
                       className="absolute w-[9rem]"
                     />
+                    <div className="absolute inset-0 flex justify-center items-center top-14">
+                      <ConfettiLottie />
+                    </div>
                   </div>
                 </div>
 
