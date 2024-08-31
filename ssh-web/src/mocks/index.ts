@@ -5,6 +5,7 @@ import {
   IMissionCreateRequest,
   IMissionUpdateRequest,
 } from '../interfaces/missionInterface';
+import dayjs from 'dayjs';
 
 export const mock = new AxiosMockAdapter(api);
 
@@ -34,7 +35,7 @@ mock.onGet(`/${REQUEST_DOMAINS.auth}/examples`).reply(() => {
 // ========== 계좌 도메인 ===========
 
 // 세션이 소유한 계좌 조회
-mock.onPost(`/api/accounts`).reply(() => {
+mock.onGet(`/api/accounts`).reply(() => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve([
@@ -196,6 +197,38 @@ mock.onGet(`/api/children/account/deposit/remove-request-1`).reply(() => {
         },
       ]);
     }, 5000);
+  });
+});
+
+const endDate = dayjs().format('YYYYMMDD'); // 오늘 날짜
+const startDate = dayjs().subtract(1, 'day').format('YYYYMMDD'); // 어제 날짜
+
+const url = `/api/accounts/demand-deposit?startDate=19000101&endDate=${endDate}`;
+mock.onGet(url).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            transactionDate: '20240831',
+            transactionTime: '013025',
+            transactionType: '1',
+            transactionBalance: '1000000',
+            transactionAfterBalance: '5000000',
+            transactionSummary: '김다운 용돈 주기',
+          },
+          {
+            transactionDate: '20240831',
+            transactionTime: '013024',
+            transactionType: '2',
+            transactionBalance: '1000000',
+            transactionAfterBalance: '4000000',
+            transactionSummary: '김다운 용돈 뺏기',
+          },
+        ],
+      ]);
+    }, 500);
   });
 });
 // ========== 계좌 도메인 ===========

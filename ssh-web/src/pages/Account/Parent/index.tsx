@@ -12,6 +12,7 @@ import { Modal } from '../../../components/molecules/QuizModal';
 import { TColor } from '../../../themes/themeBase';
 import { showToast } from '../../../utils/toastUtil';
 import { IChild } from '../../../interfaces/userInterface';
+import dayjs from 'dayjs';
 
 interface DepositAccountCardProps {
   account: ICommonAccount | ISavingAccount | IDepositAccount | null;
@@ -88,10 +89,12 @@ export interface IDepositAccount {
 }
 
 export interface ITransaction {
-  dateTime: string;
-  balance: number;
-  transactionAfterBalance: number;
-  memo: string;
+  transactionDate: string;
+  transactionTime: string;
+  transactionType: string;
+  transactionBalance: string;
+  transactionAfterBalance: string;
+  transactionSummary: string;
 }
 
 function formatString(input: string): string {
@@ -102,13 +105,14 @@ function formatString(input: string): string {
   return `${part1}-${part2}-${part3}`;
 }
 
-const formatDateTime = (dateTime: string) => {
-  const date = new Date(dateTime);
-  const formattedDate = `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
-  const formattedTime = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-  return { formattedDate, formattedTime };
-};
+function formatTransactionDate(transactionDate: string) {
+  return dayjs(transactionDate, 'YYYYMMDD').format('YYYY년 MM월 DD일');
+}
 
+// 시간을 포맷하는 함수
+function formatTransactionTime(transactionTime: string) {
+  return dayjs(transactionTime, 'HHmmss').format('HH:mm');
+}
 type TModal = 'SEND' | 'RESERVATION' | 'AUTO' | 'LOG' | 'DEL';
 
 interface SendMoneyModalProps {
@@ -140,6 +144,27 @@ interface DeleteAccountModalProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+function calculateSavingsProgress(accountInfo: ISavingAccount) {
+  const { accountCreateDate, subscriptionPeriod } = accountInfo;
+
+  // 현재 날짜를 가져옴
+  const currentDate = dayjs();
+
+  // 적금 시작 날짜를 dayjs 객체로 변환
+  const startDate = dayjs(accountCreateDate, 'YYYYMMDD');
+
+  // 현재 날짜와 시작 날짜 사이의 차이(개월 수)
+  const monthsElapsed = currentDate.diff(startDate, 'month', true); // true 옵션은 소수점 단위까지 계산
+
+  // 적금 진행률 계산 (소수점 두 자리까지)
+  const progressPercentage = (
+    (monthsElapsed / Number(subscriptionPeriod)) *
+    100
+  ).toFixed(2);
+
+  return progressPercentage;
+}
+
 export const Account = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const [ownAccounts, setOwnAccounts] = useState<
@@ -159,7 +184,7 @@ export const Account = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.post(`/api/accounts`).then((response) => {
+    api.get(`/api/accounts`).then((response) => {
       setOwnAccounts(response.data);
       setChildAccounts(response.data);
     });
@@ -292,7 +317,9 @@ export const Account = () => {
                       <InstallmentAccountCard
                         key={item.accountNo}
                         account={item}
-                        percent={62.5}
+                        percent={Number(
+                          calculateSavingsProgress(item as ISavingAccount),
+                        )}
                         isOwn={true}
                         handleReservationSendModal={handleReservationSendModal}
                         handleAccountLogModal={handleAccountLogModal}
@@ -323,7 +350,9 @@ export const Account = () => {
                       <InstallmentAccountCard
                         key={item.accountNo}
                         account={item}
-                        percent={62.5}
+                        percent={Number(
+                          calculateSavingsProgress(item as ISavingAccount),
+                        )}
                         isOwn={false}
                         handleReservationSendModal={handleReservationSendModal}
                         handleAccountLogModal={handleAccountLogModal}
@@ -929,46 +958,18 @@ export const AutoSendModal = ({ account, setIsOpen }: AutoSendModalProps) => {
   );
 };
 
-const transactions: ITransaction[] = [
-  {
-    dateTime: '2024-04-01 10:24:52',
-    balance: 10000,
-    transactionAfterBalance: 86400,
-    memo: '김다운 용돈 입금',
-  },
-  {
-    dateTime: '2024-04-01 10:24:52',
-    balance: -10000,
-    transactionAfterBalance: 86400,
-    memo: '김다운 용돈 뺏기',
-  },
-  {
-    dateTime: '2024-04-01 10:24:52',
-    balance: 10000,
-    transactionAfterBalance: 86400,
-    memo: '김다운 용돈 입금',
-  },
-  {
-    dateTime: '2024-04-01 10:24:52',
-    balance: 10000,
-    transactionAfterBalance: 86400,
-    memo: '김다운 용돈 입금',
-  },
-  {
-    dateTime: '2024-04-01 10:24:52',
-    balance: 10000,
-    transactionAfterBalance: 86400,
-    memo: '김다운 용돈 입금',
-  },
-  {
-    dateTime: '2024-04-01 10:24:52',
-    balance: 10000,
-    transactionAfterBalance: 86400,
-    memo: '김다운 용돈 입금',
-  },
-];
-
 export const AccountLogModal = ({ account }: AccountLogModalProps) => {
+  const [transactions, setTransactions] = useState<ITransaction[]>([]);
+  const endDate = dayjs().format('YYYYMMDD'); // 오늘 날짜
+
+  useEffect(() => {
+    api
+      .get(`/api/accounts/demand-deposit?startDate=19000101&endDate=${endDate}`)
+      .then((res) => {
+        setTransactions(res.data);
+      });
+  }, []);
+
   return (
     <div className="bg-white p-6 rounded-lg w-full mb-8">
       {transactions.map((transaction, index) => (
@@ -979,28 +980,30 @@ export const AccountLogModal = ({ account }: AccountLogModalProps) => {
 };
 
 export const TransactionItem = ({ transaction }: TransactionItemProps) => {
-  const { formattedDate, formattedTime } = formatDateTime(transaction.dateTime);
-
   return (
     <div className="border-b border-gray-300 py-4">
       <div className="flex flex-col">
         <div className="flex flex-row justify-between">
           <Typography color="secondary" classNameStyles="mr-2">
-            {formattedDate}
+            {formatTransactionDate(transaction.transactionDate)}
           </Typography>
-          <Typography color="dark">{formattedTime}</Typography>
+          <Typography color="dark">
+            {formatTransactionTime(transaction.transactionTime)}
+          </Typography>
         </div>
       </div>
-      <p className="text-gray-900 text-lg mt-2">{transaction.memo}</p>
+      <p className="text-gray-900 text-lg mt-2">
+        {transaction.transactionSummary}
+      </p>
       <div className="flex justify-between items-center mt-2">
-        {transaction.balance > 0 && (
+        {transaction.transactionType === '1' && (
           <Typography color="primary" weight="semibold">
-            + ₩ {transaction.balance.toLocaleString()}
+            + ₩ {transaction.transactionBalance.toLocaleString()}
           </Typography>
         )}
-        {transaction.balance < 0 && (
+        {transaction.transactionType === '2' && (
           <Typography color="danger" weight="semibold">
-            - ₩ {Math.abs(transaction.balance).toLocaleString()}
+            - ₩ {transaction.transactionBalance.toLocaleString()}
           </Typography>
         )}
         <Typography color="secondary" classNameStyles="flex flex-row">
