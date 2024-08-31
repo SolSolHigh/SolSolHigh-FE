@@ -87,7 +87,11 @@ export const ConfirmPromiseModal = ({
           fullWidth={true}
           disabled={!uploadImgUrl}
           onClick={() => {
-            onUpload(0);
+            if (log && uploadImgUrl) {
+              const formData = new FormData();
+              formData.append('image', uploadImgUrl);
+              onUpload(log.id, formData);
+            }
           }}
         >
           약속 인증하기

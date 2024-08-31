@@ -5,6 +5,7 @@ import {
   IMissionCreateRequest,
   IMissionUpdateRequest,
 } from '../interfaces/missionInterface';
+import dayjs from 'dayjs';
 
 export const mock = new AxiosMockAdapter(api);
 
@@ -34,29 +35,45 @@ mock.onGet(`/${REQUEST_DOMAINS.auth}/examples`).reply(() => {
 // ========== 계좌 도메인 ===========
 
 // 세션이 소유한 계좌 조회
-mock.onPost(`/api/accounts`).reply(() => {
+mock.onGet(`/api/accounts`).reply(() => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve([
         200,
+
         [
           {
-            accountName: '쏠쏠하이 수시입출금 통장',
-            accountNo: '0205782816344769',
-            accountTypeCode: '1',
-            accountBalance: 1354000,
+            bankName: '신한은행',
+            accountNo: '0884175745517926',
+            accountName: '신한 우리아이 수시입출금 통장',
+            accountType: '1',
+            accountExpiryDate: '20290831',
+            accountCreatedDate: '20240831',
+            accountBalance: '3990000',
           },
           {
-            accountName: '쏠쏠하이 저축통장',
-            accountNo: '0205782816344768',
-            accountTypeCode: '2',
-            accountBalance: 1500000,
+            bankName: '신한은행',
+            accountNo: '0882070228',
+            accountName: '신한은행 정기 적금 1',
+            accountType: '3',
+            accountExpiryDate: '20240930',
+            subscriptionPeriod: '30',
+            depositBalance: 10000,
+            installmentNumber: '1',
+            totalBalance: 10000,
+            savingRewardMoney: 0,
+            accountCreateDate: '20240831',
           },
           {
-            accountName: '쏠쏠하이 정기적금 통장',
-            accountNo: '0205782816344767',
-            accountTypeCode: '3',
-            accountBalance: 2400000,
+            bankName: '신한은행',
+            accountNo: '0889694240813066',
+            accountName: '신한 우리아이 수시입출금 통장',
+            accountType: '2',
+            accountExpiryDate: '20290831',
+            accountCreatedDate: '20240831',
+            accountBalance: '0',
+            depositGoalMoney: 300000,
+            depositRewardMoney: 0,
           },
         ],
       ]);
@@ -180,6 +197,38 @@ mock.onGet(`/api/children/account/deposit/remove-request-1`).reply(() => {
         },
       ]);
     }, 5000);
+  });
+});
+
+const endDate = dayjs().format('YYYYMMDD'); // 오늘 날짜
+const startDate = dayjs().subtract(1, 'day').format('YYYYMMDD'); // 어제 날짜
+
+const url = `/api/accounts/demand-deposit?startDate=19000101&endDate=${endDate}`;
+mock.onGet(url).reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        200,
+        [
+          {
+            transactionDate: '20240831',
+            transactionTime: '013025',
+            transactionType: '1',
+            transactionBalance: '1000000',
+            transactionAfterBalance: '5000000',
+            transactionSummary: '김다운 용돈 주기',
+          },
+          {
+            transactionDate: '20240831',
+            transactionTime: '013024',
+            transactionType: '2',
+            transactionBalance: '1000000',
+            transactionAfterBalance: '4000000',
+            transactionSummary: '김다운 용돈 뺏기',
+          },
+        ],
+      ]);
+    }, 500);
   });
 });
 // ========== 계좌 도메인 ===========
