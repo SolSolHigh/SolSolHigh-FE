@@ -23,38 +23,39 @@ export const InformationFetch = () => {
   const [related, setRelated] = useState<IUserInfoMascot[]>([]);
 
   useEffect(() => {
-    if (userinfoQuery.data.data.type === 'PARENT') {
-      getMyChildren()
-        .then((res) => {
-          setRelated(() => {
-            const newRelated: IUserInfoMascot[] = [];
-            res.data.forEach((child: IChild) => {
-              const newUserInfoMascot: IUserInfoMascot = {
-                src: getImgSrc(child.gender, 'CHILD'),
-                label: child.nickname,
-              };
-              newRelated.push(newUserInfoMascot);
+    const queryFamily = async () => {
+      if (userinfoQuery.data.data.type === 'PARENT') {
+        await getMyChildren()
+          .then((res) => {
+            setRelated(() => {
+              const newRelated: IUserInfoMascot[] = [];
+              res.data.forEach((child: IChild) => {
+                const newUserInfoMascot: IUserInfoMascot = {
+                  src: getImgSrc(child.gender, 'CHILD'),
+                  label: child.nickname,
+                };
+                newRelated.push(newUserInfoMascot);
+              });
+              return newRelated;
             });
-            return newRelated;
-          });
-        })
-        .catch((err) => console.log(err));
-    } else {
-      getMyParents()
-        .then((res) => {
+          })
+          .catch((err) => console.log(err));
+      } else {
+        try {
+          const parent = await getMyParents();
           setRelated(() => {
             const newRelated: IUserInfoMascot = {
-              src: getImgSrc(res.data.gender, 'PARENT'),
-              label: res.data.nickname,
+              src: getImgSrc(parent.data.gender, 'PARENT'),
+              label: parent.data.nickname,
             };
             return [newRelated];
           });
-        })
-        .catch(() => {
-          console.log('this is error for query parents');
+        } catch {
           showToast('error', '연결된 부모님이 없습니다');
-        });
-    }
+        }
+      }
+    };
+    queryFamily();
   }, []);
 
   return (
