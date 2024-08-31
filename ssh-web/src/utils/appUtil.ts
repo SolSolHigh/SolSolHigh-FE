@@ -16,6 +16,6 @@ export const getNavHasBack = (path?: string) => {
   return true;
 };
 export const getHasBottom = (path: string) => {
-  if (path === '/mypage') return false;
+  if (path === '/mypage' || path === '/quiz/solve') return false;
   return true;
 };
