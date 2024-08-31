@@ -10,7 +10,7 @@ import {
 } from '../../../apis/eggApi';
 import { isModalOpenState } from '../../../atoms/modal';
 import { Button } from '../../../components/atoms/Button';
-import { ConfettiLottie } from './Lottie/LoadingLottie';
+import { ConfettiLottie } from './Lottie/ConfettiLottie';
 import { showToast } from '../../../utils/toastUtil';
 
 export const TodayEgg = () => {
@@ -51,7 +51,32 @@ export const TodayEgg = () => {
     checkMySaveAccount();
   }, []);
 
-  const handleEggClick = async () => {
+  const generateTouchEffect = (event: React.MouseEvent<HTMLDivElement>) => {
+    const touchEffect = document.createElement('div');
+    const size = Math.random() * 60 + 20;
+    const colors = ['#FF6347', '#FFD700', '#4CAF50', '#00BFFF', '#FF69B4'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    touchEffect.style.width = `${size}px`;
+    touchEffect.style.height = `${size}px`;
+    touchEffect.style.backgroundColor = color;
+    touchEffect.style.position = 'absolute';
+    touchEffect.style.borderRadius = '50%';
+    touchEffect.style.left = `${event.clientX - size / 2}px`;
+    touchEffect.style.top = `${event.clientY - size / 2}px`;
+    touchEffect.style.pointerEvents = 'none';
+    touchEffect.style.animation = 'touchEffectAnimation 0.6s ease-out';
+
+    document.body.appendChild(touchEffect);
+
+    setTimeout(() => {
+      touchEffect.remove();
+    }, 600);
+  };
+
+  const handleEggClick = async (event: React.MouseEvent<HTMLDivElement>) => {
+    generateTouchEffect(event);
+
     if (touchesLeft <= 0) {
       // 보상 오는 중 예외처리
       return;
