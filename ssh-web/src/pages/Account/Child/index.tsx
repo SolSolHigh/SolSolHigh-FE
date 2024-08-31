@@ -228,7 +228,7 @@ export const Account = () => {
       </Modal>
       <div className="flex items-center justify-center w-full h-auto tabletB:flex-col">
         <Mascot
-          nickname="닉네임"
+          nickname="요하땅"
           ment="자신의 계좌를 확인해보세요!"
           classNameStyles={'tablet:hidden'}
         />
@@ -619,9 +619,6 @@ export const TransactionItem = ({ transaction }: TransactionItemProps) => {
           <Typography color="secondary" classNameStyles="mr-2">
             {formatTransactionDate(transaction.transactionDate)}
           </Typography>
-          <Typography color="dark">
-            {formatTransactionTime(transaction.transactionTime)}
-          </Typography>
         </div>
       </div>
       <p className="text-gray-900 text-lg mt-2">
@@ -726,6 +723,9 @@ export const DeleteAccountModal = ({
             classNameStyles="duration-200"
             onClick={() => {
               setIsOpen(false);
+              api.delete(`/api/accounts/deposit`).then((res) => {
+                showToast('success', '성공적으로 계좌를 삭제했어요');
+              });
             }}
           >
             <Typography size="lg" color="light" weight="semibold">
