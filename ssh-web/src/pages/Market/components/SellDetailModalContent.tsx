@@ -72,8 +72,8 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       console.log('isMySellingBoard:', isMySellingBoard);
 
       mySellinEggData.map((sellingEggData: ISpecialEggTradeBoard) => {
+        console.log('map boardId:', sellingEggData.sellBoardId);
         if (sellBoardId === sellingEggData.sellBoardId) {
-          console.log('map boardId:', sellingEggData.sellBoardId);
           setIsMySellingBoard(true);
         }
       });
