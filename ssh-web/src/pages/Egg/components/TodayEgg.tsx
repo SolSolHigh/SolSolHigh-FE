@@ -53,7 +53,7 @@ export const TodayEgg = () => {
 
   const generateTouchEffect = (event: React.MouseEvent<HTMLDivElement>) => {
     const touchEffect = document.createElement('div');
-    const size = Math.random() * 60 + 20;
+    const size = Math.random() * 40 + 10; // 크기 줄임
     const colors = ['#FF6347', '#FFD700', '#4CAF50', '#00BFFF', '#FF69B4'];
     const color = colors[Math.floor(Math.random() * colors.length)];
 
@@ -65,25 +65,25 @@ export const TodayEgg = () => {
     touchEffect.style.left = `${event.clientX - size / 2}px`;
     touchEffect.style.top = `${event.clientY - size / 2}px`;
     touchEffect.style.pointerEvents = 'none';
-    touchEffect.style.animation = 'touchEffectAnimation 0.6s ease-out';
+    touchEffect.style.opacity = '0.5';
+    touchEffect.style.transform = 'scale(0.5)';
+    touchEffect.style.animation = 'touchEffectAnimation 0.4s ease-out forwards';
 
     document.body.appendChild(touchEffect);
 
     setTimeout(() => {
       touchEffect.remove();
-    }, 600);
+    }, 400);
   };
 
   const handleEggClick = async (event: React.MouseEvent<HTMLDivElement>) => {
     generateTouchEffect(event);
 
     if (touchesLeft <= 0) {
-      // 보상 오는 중 예외처리
       return;
     }
 
     if (touchesLeft > 0) {
-      // 터치 가능할 때만 동작
       try {
         setEggBgColor('bg-primary-300');
         setEggScale('scale-110');
@@ -97,39 +97,35 @@ export const TodayEgg = () => {
         const reward = response.data;
 
         setCollectedAmount((prev) => prev + 1);
-        setTouchesLeft((prev) => prev - 1); // 남은 터치 횟수 감소
+        setTouchesLeft((prev) => prev - 1);
+
+        const savingsMessage = (
+          <Typography weight="semibold" size="2xl" classNameStyles="mt-4">
+            계란을 깨서 100원을 저축했어요!
+          </Typography>
+        );
 
         if (reward && reward?.isFail === false) {
           console.log('보상 도착:', reward);
           setModalState({
             isOpen: true,
             content: (
-              <div className="">
-                <div className="relative flex flex-col gap-1 text-center">
-                  <div className="absolute top-1/3 left-1/2">
-                    <ConfettiLottie />
-                  </div>
-                  <Typography weight="bold" size="6xl" color="primary">
-                    축하합니다!
-                  </Typography>
-                  <Typography
-                    weight="semibold"
-                    size="3xl"
-                    classNameStyles="!text-primary-300 mb-3"
-                  >
-                    {reward?.specialEggName}이 나왔어요
-                  </Typography>
-                </div>
-                <div className="relative w-full h-max bg-primary-300 flex flex-row justify-center items-center py-8 rounded-3xl">
+              <div className="flex flex-col items-center justify-center gap-4">
+                <ConfettiLottie />
+                <Typography weight="bold" size="6xl" color="primary">
+                  축하합니다!
+                </Typography>
+                <Typography
+                  weight="semibold"
+                  size="3xl"
+                  classNameStyles="!text-primary-300 mb-3"
+                >
+                  {reward?.specialEggName}이 나왔어요
+                </Typography>
+                <div className="relative w-full h-max bg-primary-300 flex flex-col justify-center items-center py-8 rounded-3xl">
                   <img src={reward?.imageUrl} alt="" className="w-[12rem]" />
-                  <div className="absolute left-1/4 bottom-20 w-full flex flex-col items-center justify-center">
-                    <img
-                      src={'/assets/images/check_icon.png'}
-                      alt=""
-                      className="absolute w-[9rem]"
-                    />
-                  </div>
                 </div>
+                {savingsMessage}
                 <Button
                   fullWidth
                   classNameStyles="!h-24 !text-2xl !font-bold py-6 mt-8 rounded-2xl"
@@ -149,26 +145,25 @@ export const TodayEgg = () => {
           setModalState({
             isOpen: true,
             content: (
-              <div className="">
-                <div className="flex flex-col gap-1 text-center">
-                  <Typography weight="bold" size="6xl" color="primary">
-                    아쉬워요!
-                  </Typography>
-                  <Typography
-                    weight="semibold"
-                    size="2xl"
-                    classNameStyles="!text-primary-300 mb-3"
-                  >
-                    아무것도 나오지 않았어요.
-                  </Typography>
-                </div>
-                <div className="relative w-full h-max bg-secondary-400 flex flex-row justify-center items-center py-8 rounded-3xl">
+              <div className="flex flex-col items-center justify-center gap-4">
+                <Typography weight="bold" size="6xl" color="primary">
+                  아쉬워요!
+                </Typography>
+                <Typography
+                  weight="semibold"
+                  size="2xl"
+                  classNameStyles="!text-primary-300 mb-3"
+                >
+                  아무것도 나오지 않았어요.
+                </Typography>
+                <div className="relative w-full h-max bg-secondary-400 flex flex-col justify-center items-center py-8 rounded-3xl">
                   <img
                     src={'/assets/images/egg_crack.png'}
                     alt=""
                     className="w-[14rem]"
                   />
                 </div>
+                {savingsMessage}
                 <Button
                   fullWidth
                   classNameStyles="!h-24 !text-2xl !font-bold py-6 mt-8 rounded-2xl"
@@ -183,7 +178,7 @@ export const TodayEgg = () => {
           });
         }
         if (touchesLeft === 1) {
-          fetchEggStatus(); // 터치 후 남은 횟수가 0이 되면 상태를 새로 가져오기
+          fetchEggStatus();
         }
       } catch (error) {
         console.error('계란 상태 업데이트 실패', error);
@@ -222,7 +217,6 @@ export const TodayEgg = () => {
       </div>
 
       {hasSaveAccount ? (
-        // 계좌 가진 경우
         <div>
           <div
             onClick={handleEggClick}
@@ -249,7 +243,6 @@ export const TodayEgg = () => {
           </div>
         </div>
       ) : (
-        // 계좌 없는 경우
         <div>
           <div
             onClick={() => {
@@ -279,3 +272,17 @@ export const TodayEgg = () => {
     </div>
   );
 };
+
+const styles = document.createElement('style');
+styles.innerHTML = `
+@keyframes touchEffectAnimation {
+  from {
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}`;
+document.head.appendChild(styles);
