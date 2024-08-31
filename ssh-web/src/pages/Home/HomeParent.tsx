@@ -25,9 +25,11 @@ export const HomeParent = ({ parent }: HomeParentProps) => {
   const [records, setRecords] = useState<IChildExpRecord[]>([]);
 
   useEffect(() => {
-    getChildExpRecords(childrenQuery.data.data[idx].nickname)
-      .then((res) => setRecords(() => [...res.data]))
-      .catch((err) => console.log(err));
+    if (childrenQuery.data.data.length) {
+      getChildExpRecords(childrenQuery.data.data[idx].nickname)
+        .then((res) => setRecords(() => [...res.data]))
+        .catch((err) => console.log(err));
+    }
   }, [idx]);
 
   const nav = useNavigate();
