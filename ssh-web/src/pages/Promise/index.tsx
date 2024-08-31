@@ -80,7 +80,7 @@ export const PromiseTicket = () => {
     if (isParent === true && childrenList.length > 0) {
       api
         .get(
-          `/api/promise-tickets/${childrenList[selectedChild].nickname}/count`,
+          `/api/promise-tickets/children/${childrenList[selectedChild].nickname}/count`,
         )
         .then((response) => {
           setCountTicket(response.data.count);
@@ -91,7 +91,7 @@ export const PromiseTicket = () => {
 
       api
         .get(
-          `/api/promise-tickets/${childrenList[selectedChild].nickname}?page=0&size=50`,
+          `/api/promise-tickets/children/${childrenList[selectedChild].nickname}?page=0&size=50`,
         )
         .then((response) => {
           setPromiseLogs(response.data.content);
