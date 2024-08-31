@@ -1,8 +1,14 @@
+const koreaTimeDiff = 9 * 60 * 60 * 1000;
+
 export const formatTimeAgo = (dateString: string) => {
   const tradeDate = new Date(dateString);
   const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60 * 1000;
+  const koreaTimeDiff = 9 * 60 * 60 * 1000;
+  const korNow = new Date(utc + koreaTimeDiff);
+
   const diffInSeconds = Math.floor(
-    (now.getTime() - tradeDate.getTime()) / 1000,
+    (korNow.getTime() - tradeDate.getTime()) / 1000,
   );
 
   const intervals: [number, string][] = [

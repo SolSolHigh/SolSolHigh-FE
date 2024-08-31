@@ -28,7 +28,7 @@ export const deleteSpecialEggTrade = async (
   sellBoardId: number,
 ): Promise<AxiosResponse<void>> => {
   try {
-    const response = await api.patch(`/api/market/trades/${sellBoardId}`);
+    const response = await api.delete(`/api/market/trades/${sellBoardId}`);
     return response;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
@@ -169,3 +169,57 @@ export const updateCurrentEggStatus = async (
     throw new Error('계란 상태 변경에 실패했습니다.');
   }
 };
+
+// 세션이 소유한 계좌 조회
+export const getMyAccountList = async (): Promise<
+  AxiosResponse<TAccountType[]>
+> => {
+  try {
+    const response = await api.get('/api/accounts');
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw new Error('계좌 조회에 실패했습니다.');
+  }
+};
+export type TAccountType =
+  | IAccountTypeOne
+  | IAccountTypeTwo
+  | IAccountTypeThree;
+
+export interface IAccountTypeOne {
+  bankName: string;
+  accountNo: string;
+  accountName: string;
+  accountType: string;
+  accountExpiryDate: string;
+  accountCreatedDate: string;
+  accountBalance: string;
+}
+
+export interface IAccountTypeTwo {
+  bankName: string;
+  accountNo: string;
+  accountName: string;
+  accountType: string;
+  accountExpiryDate: string;
+  accountCreatedDate: string;
+  accountBalance: string;
+  depositGoalMoney: number;
+  depositRewardMoney: number;
+}
+
+export interface IAccountTypeThree {
+  bankName: string;
+  accountNo: string;
+  accountName: string;
+  accountType: string;
+  accountExpiryDate: string;
+  subscriptionPeriod: string;
+  depositBalance: number;
+  installmentNumber: string;
+  totalBalance: number;
+  savingRewardMoney: number;
+  accountCreatedDate: string;
+  accountBalance: string;
+}

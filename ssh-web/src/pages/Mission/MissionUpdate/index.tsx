@@ -1,67 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import React, { useState } from 'react';
 import {
   useMutation,
-  useQuery,
   useQueryClient,
   UseMutationOptions,
 } from '@tanstack/react-query';
 import { Typography } from '../../../components/atoms/Typography';
 import { Button } from '../../../components/atoms/Button';
-import { resizeState } from '../../../atoms/resize';
+import { useSetRecoilState } from 'recoil';
 import { isModalOpenState } from '../../../atoms/modal';
-import { IMissionCreateRequest } from '../../../interfaces/missionInterface';
-import { AxiosResponse, AxiosError } from 'axios';
-import { missionCreateStyles } from './MissionCreate.styles';
-import { createMission } from '../../../apis/missionApi';
-import { getMyChildren } from '../../../apis/userApi';
-import { tv } from 'tailwind-variants';
 import TextField from '../../../components/atoms/TextField';
 import { NumberDial } from '../../../components/molecules/NumberDial';
+import { missionCreateStyles } from '../MissionCreate/MissionCreate.styles';
+import { updateMission } from '../../../apis/missionApi';
+import { IMissionUpdateRequest } from '../../../interfaces/missionInterface';
+import { tv } from 'tailwind-variants';
 
-export const MissionCreate: React.FC = () => {
-  const [selectedChild, setSelectedChild] = useState('');
-  const [missionDescription, setMissionDescription] = useState('');
-  const [difficulty, setDifficulty] = useState(2);
-  const [missionStartAt, setMissionStartAt] = useState('');
-  const [missionEndAt, setMissionEndAt] = useState('');
+interface MissionUpdateProps {
+  mission: IMissionUpdateRequest;
+  missionId: number;
+}
+
+export const MissionUpdate: React.FC<MissionUpdateProps> = ({
+  mission,
+  missionId,
+}) => {
+  const formatToInputTime = (dateTime: string) => {
+    const [date, time] = dateTime.split(' ');
+    return `${date}T${time}`;
+  };
+
+  const formatToRequestTime = (dateTime: string) => {
+    const [date, time] = dateTime.split('T');
+    return `${date} ${time}:00`;
+  };
+
+  const [missionDescription, setMissionDescription] = useState(
+    mission.description || '',
+  );
+  const [difficulty, setDifficulty] = useState(
+    parseInt(mission.missionLevel || '2'),
+  );
+  const [missionStartAt, setMissionStartAt] = useState(
+    formatToInputTime(mission.missionStartAt || ''),
+  );
+  const [missionEndAt, setMissionEndAt] = useState(
+    formatToInputTime(mission.missionEndAt || ''),
+  );
   const setModalState = useSetRecoilState(isModalOpenState);
-  const size = useRecoilValue(resizeState);
   const queryClient = useQueryClient();
 
-  const { data: children, isLoading: isChildrenLoading } = useQuery({
-    queryKey: ['myChildren'],
-    queryFn: async () => {
-      const response = await getMyChildren();
-      return response.data;
-    },
-  });
-
-  useEffect(() => {
-    const now = new Date();
-    const nextHour = new Date(now.getTime() + 3600000);
-
-    const formatDate = (date: Date) => {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    };
-
-    const formatTime = (date: Date) => {
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      return `${hours}:${minutes}`;
-    };
-
-    setMissionStartAt(`${formatDate(now)}T${formatTime(now)}`);
-    setMissionEndAt(`${formatDate(nextHour)}T${formatTime(nextHour)}`);
-  }, []);
-
   const mutationOptions: UseMutationOptions<
-    AxiosResponse<IMissionCreateRequest>,
-    AxiosError,
-    IMissionCreateRequest
+    void,
+    Error,
+    IMissionUpdateRequest
   > = {
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['missions'] });
@@ -72,35 +63,23 @@ export const MissionCreate: React.FC = () => {
         isOpen: true,
         content: (
           <Typography size="lg">
-            미션 등록에 실패했습니다. 다시 시도해 주세요.
+            미션 수정에 실패했습니다. 다시 시도해 주세요.
           </Typography>
         ),
       });
-      console.error('Mission registration failed:', error);
+      console.error('Mission update failed:', error);
     },
   };
 
-  const missionMutation = useMutation({
-    mutationFn: createMission,
+  const missionMutation = useMutation<void, Error, IMissionUpdateRequest>({
+    mutationFn: async (updatedData: IMissionUpdateRequest) => {
+      await updateMission(missionId, updatedData);
+    },
     ...mutationOptions,
   });
 
-  const formatToRequestTime = (dateTime: string) => {
-    const [date, time] = dateTime.split('T');
-    return `${date} ${time}:00`;
-  };
-
-  const handleMissionSubmit = () => {
-    if (!selectedChild) {
-      setModalState({
-        isOpen: true,
-        content: <Typography size="lg">도전자를 선택해 주세요.</Typography>,
-      });
-      return;
-    }
-
-    const missionData: IMissionCreateRequest = {
-      nickname: selectedChild,
+  const handleMissionUpdate = () => {
+    const missionData: IMissionUpdateRequest = {
       description: missionDescription,
       missionStartAt: formatToRequestTime(missionStartAt),
       missionEndAt: formatToRequestTime(missionEndAt),
@@ -111,43 +90,21 @@ export const MissionCreate: React.FC = () => {
   };
 
   return (
-    <div className={missionCreateStyles({ size })}>
+    <div className={missionCreateStyles()}>
       <div className="text-left w-full flex flex-col">
         <Typography size="2xl" weight="bold">
-          쏠쏠한 미션 등록
+          미션 수정
         </Typography>
       </div>
 
-      <div className="w-full">
-        {isChildrenLoading ? (
-          <Typography size="lg">도전자 목록을 불러오는 중입니다...</Typography>
-        ) : (
-          <div className="mb-4">
-            <label className="text-primary-500">도전자</label>
-            <select
-              value={selectedChild}
-              onChange={(e) => setSelectedChild(e.target.value)}
-              className="input w-full p-2 border rounded"
-            >
-              <option value="">도전자를 선택해 주세요</option>
-              {children?.map((child) => (
-                <option key={child.nickname} value={child.nickname}>
-                  {child.name} ({child.nickname})
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        <TextField
-          label="쏠쏠한 미션 설명"
-          fullWidth
-          size="sm"
-          defaultValue={missionDescription}
-          onChange={(e) => setMissionDescription(e.target.value)}
-          classNameStyles="!mb-0"
-        />
-      </div>
+      <TextField
+        label="미션 설명"
+        fullWidth
+        size="sm"
+        defaultValue={missionDescription}
+        onChange={(e) => setMissionDescription(e.target.value)}
+        classNameStyles="!mb-0"
+      />
 
       <div className="flex gap-4 w-full">
         <div className="flex flex-col gap-1 w-1/2">
@@ -229,10 +186,10 @@ export const MissionCreate: React.FC = () => {
       </div>
 
       <Button
-        onClick={handleMissionSubmit}
+        onClick={handleMissionUpdate}
         classNameStyles={`${bigButtonStyles()}`}
       >
-        등록하기
+        수정하기
       </Button>
     </div>
   );
