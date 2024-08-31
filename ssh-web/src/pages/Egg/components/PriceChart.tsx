@@ -49,7 +49,7 @@ export const PriceChart: React.FC<IPriceChartProps> = ({ tradeData }) => {
               display: false,
             },
             tooltip: {
-              backgroundColor: '#0000',
+              backgroundColor: '#000000',
               titleColor: '#FFFFFF',
               bodyColor: '#FFFFFF',
               displayColors: false,
