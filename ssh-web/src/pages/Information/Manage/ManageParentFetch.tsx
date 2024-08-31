@@ -57,9 +57,7 @@ export const ManageParentFetch = () => {
             return { ...res.data };
           }),
         )
-        .catch(() => {
-          showToast('error', '연결된 부모님이 없습니다');
-        });
+        .catch(() => {});
     };
     getParent();
   }, []);
@@ -125,40 +123,44 @@ export const ManageParentFetch = () => {
             })}
           </div>
         </div>
-        <div className="flex flex-col items-center w-full gap-y-1">
-          <Typography>
-            {selected === -1
-              ? ''
-              : waitingQuery.data.data[selected].nickname + ' 부모님'}
-          </Typography>
-          <Button
-            fullWidth
-            onClick={async () => {
-              await refuseRequest(
-                waitingQuery.data.data[selected].requestId,
-                true,
-              )
-                .then(() => window.location.reload())
-                .catch((err) => console.log(err));
-            }}
-          >
-            승인
-          </Button>
-          <Button
-            color="danger"
-            fullWidth
-            onClick={async () => {
-              await refuseRequest(
-                waitingQuery.data.data[selected].requestId,
-                false,
-              )
-                .then(() => window.location.reload())
-                .catch((err) => console.log(err));
-            }}
-          >
-            거절
-          </Button>
-        </div>
+        {activeTab && (
+          <div className="flex flex-col items-center w-full gap-y-1">
+            <Typography>
+              {selected === -1
+                ? ''
+                : waitingQuery.data.data[selected].nickname + ' 부모님'}
+            </Typography>
+            <div className="flex w-full">
+              <Button
+                fullWidth
+                onClick={async () => {
+                  await refuseRequest(
+                    waitingQuery.data.data[selected].requestId,
+                    true,
+                  )
+                    .then(() => window.location.reload())
+                    .catch((err) => console.log(err));
+                }}
+              >
+                승인
+              </Button>
+              <Button
+                color="danger"
+                fullWidth
+                onClick={async () => {
+                  await refuseRequest(
+                    waitingQuery.data.data[selected].requestId,
+                    false,
+                  )
+                    .then(() => window.location.reload())
+                    .catch((err) => console.log(err));
+                }}
+              >
+                거절
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

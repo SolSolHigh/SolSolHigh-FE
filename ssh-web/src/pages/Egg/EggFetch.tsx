@@ -45,15 +45,11 @@ export const EggFetch = () => {
 
   return (
     <div className={containerStyles()}>
-      {size === EResize.D && (
-        <div className={mascotWrapperStyles()}>
-          <Mascot
-            nickname="닉네임"
-            ment="여기서 오늘의 계란을 깨서 저금해보세요!"
-          />
-        </div>
-      )}
-
+      <Mascot
+        nickname="닉네임"
+        ment="여기서 오늘의 계란을 깨서 저금해보세요!"
+        classNameStyles="tablet:hidden"
+      />
       <div className={contentStyles()}>
         <div className={titleBoxStyles()}>
           <Typography size="4xl" color="dark" weight="semibold">
