@@ -51,6 +51,7 @@ export const InformationFetch = () => {
           });
         })
         .catch(() => {
+          console.log('this is error for query parents');
           showToast('error', '연결된 부모님이 없습니다');
         });
     }
