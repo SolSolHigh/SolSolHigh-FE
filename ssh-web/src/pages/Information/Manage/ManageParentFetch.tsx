@@ -133,28 +133,27 @@ export const ManageParentFetch = () => {
           </Typography>
           <Button
             fullWidth
-            onClick={
-              () => {
-                console.log(selected);
-                console.log(waitingQuery.data.data[selected]);
-              } /*async () => {
+            onClick={async () => {
               await refuseRequest(
                 waitingQuery.data.data[selected].requestId,
                 true,
               )
                 .then(() => window.location.reload())
                 .catch((err) => console.log(err));
-            }*/
-            }
+            }}
           >
             승인
           </Button>
           <Button
             color="danger"
             fullWidth
-            onClick={() => {
-              console.log(selected);
-              console.log(waitingQuery.data.data[selected]);
+            onClick={async () => {
+              await refuseRequest(
+                waitingQuery.data.data[selected].requestId,
+                false,
+              )
+                .then(() => window.location.reload())
+                .catch((err) => console.log(err));
             }}
           >
             거절
