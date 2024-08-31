@@ -34,7 +34,7 @@ export const contentStyles = tv({
 });
 
 export const gridStyles = tv({
-  base: 'grid ',
+  base: 'grid py-14',
   variants: {
     size: {
       M: 'grid-cols-2 gap-[15vw]',

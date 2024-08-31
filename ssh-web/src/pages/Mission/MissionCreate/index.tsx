@@ -112,7 +112,7 @@ export const MissionCreate: React.FC = () => {
 
   return (
     <div className={missionCreateStyles({ size })}>
-      <div className="text-left w-full flex flex-col">
+      <div className="flex flex-col w-full text-left">
         <Typography size="2xl" weight="bold">
           쏠쏠한 미션 등록
         </Typography>
@@ -127,7 +127,7 @@ export const MissionCreate: React.FC = () => {
             <select
               value={selectedChild}
               onChange={(e) => setSelectedChild(e.target.value)}
-              className="input w-full p-2 border rounded"
+              className="w-full p-2 border rounded input"
             >
               <option value="">도전자를 선택해 주세요</option>
               {children?.map((child) => (
@@ -149,8 +149,8 @@ export const MissionCreate: React.FC = () => {
         />
       </div>
 
-      <div className="flex gap-4 w-full">
-        <div className="flex flex-col gap-1 w-1/2">
+      <div className="flex w-full gap-4">
+        <div className="flex flex-col w-1/2 gap-1">
           <label className="text-primary-500">미션 시작 날짜</label>
           <input
             type="date"
@@ -160,11 +160,11 @@ export const MissionCreate: React.FC = () => {
                 `${e.target.value}T${missionStartAt.split('T')[1] || '00:00'}`,
               )
             }
-            className="input w-full p-2 border rounded"
+            className="w-full p-2 border rounded input"
           />
         </div>
 
-        <div className="flex flex-col gap-1 w-1/2">
+        <div className="flex flex-col w-1/2 gap-1">
           <label className="text-primary-500">미션 시작 시간</label>
           <input
             type="time"
@@ -174,13 +174,13 @@ export const MissionCreate: React.FC = () => {
                 `${missionStartAt.split('T')[0] || '2024-01-01'}T${e.target.value}`,
               )
             }
-            className="input w-full p-2 border rounded"
+            className="w-full p-2 border rounded input"
           />
         </div>
       </div>
 
-      <div className="flex gap-4 w-full mt-0">
-        <div className="flex flex-col gap-1 w-1/2">
+      <div className="flex w-full gap-4 mt-0">
+        <div className="flex flex-col w-1/2 gap-1">
           <label className="text-primary-500">미션 종료 날짜</label>
           <input
             type="date"
@@ -190,11 +190,11 @@ export const MissionCreate: React.FC = () => {
                 `${e.target.value}T${missionEndAt.split('T')[1] || '00:00'}`,
               )
             }
-            className="input w-full p-2 border rounded"
+            className="w-full p-2 border rounded input"
           />
         </div>
 
-        <div className="flex flex-col gap-1 w-1/2">
+        <div className="flex flex-col w-1/2 gap-1">
           <label className="text-primary-500">미션 종료 시간</label>
           <input
             type="time"
@@ -204,7 +204,7 @@ export const MissionCreate: React.FC = () => {
                 `${missionEndAt.split('T')[0] || '2024-01-01'}T${e.target.value}`,
               )
             }
-            className="input w-full p-2 border rounded"
+            className="w-full p-2 border rounded input"
           />
         </div>
       </div>
@@ -230,7 +230,7 @@ export const MissionCreate: React.FC = () => {
 
       <Button
         onClick={handleMissionSubmit}
-        classNameStyles={`${bigButtonStyles()}`}
+        classNameStyles={`${bigButtonStyles()} absolute bottom-0`}
       >
         등록하기
       </Button>
@@ -239,5 +239,5 @@ export const MissionCreate: React.FC = () => {
 };
 
 const bigButtonStyles = tv({
-  base: '!bg-primary-400 hover:!bg-primary-300 active:!bg-primary-300 !rounded-3xl !w-full !px-4 !z-10 !py-8 font-bold !text-2xl mt-4',
+  base: '!bg-primary-400 hover:!bg-primary-300 active:!bg-primary-300 !rounded-md !w-full !z-10 !py-4 font-semibold !text-xl',
 });
