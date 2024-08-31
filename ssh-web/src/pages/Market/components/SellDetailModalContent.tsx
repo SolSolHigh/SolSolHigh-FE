@@ -69,18 +69,19 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       setMySellinEggData(response.data.content);
       console.log('sellBoardId:', sellBoardId);
       console.log('판매중인 계란데이터:', response.data.content[0].sellBoardId);
-      console.log('isMySellingBoard:', isMySellingBoard);
-
-      mySellinEggData.map((sellingEggData: ISpecialEggTradeBoard) => {
-        console.log('map boardId:', sellingEggData.sellBoardId);
-        if (sellBoardId === sellingEggData.sellBoardId) {
-          setIsMySellingBoard(true);
-        }
-      });
     };
-
     checkIsMySellingBoard();
   }, []);
+
+  useEffect(() => {
+    console.log('isMySellingBoard:', isMySellingBoard);
+    mySellinEggData.map((sellingEggData: ISpecialEggTradeBoard) => {
+      console.log('map boardId:', sellingEggData.sellBoardId);
+      if (sellBoardId === sellingEggData.sellBoardId) {
+        setIsMySellingBoard(true);
+      }
+    });
+  }, [mySellinEggData]);
 
   useEffect(() => {
     if (tradeData && tradeData?.length > 0) {
@@ -149,7 +150,7 @@ export const SellDetailModalContent: React.FC<SpecialEggDetailProps> = ({
       <div className="w-full h-48 bg-white rounded-lg shadow-lg flex items-center justify-center p-4">
         {tradeData?.length === 0 ? (
           <div className="w-full h-full p-4 flex flex-col justify-center items-center text-center">
-            <Typography size="4xl" weight="bold">
+            <Typography size="2xl" weight="bold">
               시장에서 팔린적 없는 계란이에요
             </Typography>
           </div>
