@@ -100,8 +100,13 @@ export const TodayEgg = () => {
         setTouchesLeft((prev) => prev - 1);
 
         const savingsMessage = (
-          <div className="flex flex-col w-full p-4 bg-primary-400">
-            <Typography weight="semibold" size="xl" classNameStyles="mt-4">
+          <div className="flex flex-col w-full p-4 bg-primary-200 rounded-3xl text-center items-center justify-center">
+            <Typography
+              weight="semibold"
+              size="lg"
+              classNameStyles="mt-4"
+              color="dark"
+            >
               계란을 깨서 내 계좌에 100원을 저축했어요!
             </Typography>
           </div>
@@ -113,12 +118,6 @@ export const TodayEgg = () => {
             isOpen: true,
             content: (
               <div className="flex flex-col items-center justify-center gap-4">
-                <div className="relative w-full h-max flex flex-col justify-center items-center py-8 rounded-3xl">
-                  <img src={reward?.imageUrl} alt="" className="w-[12rem]" />
-                  <div className="absolute inset-0 flex justify-center items-center">
-                    <ConfettiLottie />
-                  </div>
-                </div>
                 <Typography weight="bold" size="6xl" color="primary">
                   축하합니다!
                 </Typography>
@@ -129,6 +128,13 @@ export const TodayEgg = () => {
                 >
                   {reward?.specialEggName}이 나왔어요
                 </Typography>
+                <div className="relative w-full h-max flex flex-col justify-center items-center py-8 rounded-3xl">
+                  <img src={reward?.imageUrl} alt="" className="w-[12rem]" />
+                  <div className="absolute inset-0 flex justify-center items-center">
+                    <ConfettiLottie />
+                  </div>
+                </div>
+
                 {savingsMessage}
                 <Button
                   fullWidth
