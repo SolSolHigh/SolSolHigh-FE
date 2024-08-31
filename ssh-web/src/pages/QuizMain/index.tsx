@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { api } from '../../apis/interceptors';
 import { resizeState } from '../../atoms/resize';
@@ -209,124 +209,126 @@ export const QuizMain: React.FC = () => {
   }, [quizLogs]); // quizLogs가 업데이트될 때마다 실행
 
   return (
-    <div className={containerStyles({ size })}>
-      <Modal color="primary" isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-        {isKeywordModal ? (
-          <KeywordEditModal
-            keywords={keywords}
-            ownKeywords={ownKeywords}
-            onRemoveKeyword={onRemoveKeyword}
-            onAddKeyword={onAddKeyword}
-            onClose={onClose}
-          />
-        ) : (
-          <QuizLogsDetailModal
-            quizLogs={quizLogs}
-            openQuizId={openQuizId}
-            toggleQuizDetail={toggleQuizDetail}
-          />
-        )}
-      </Modal>
-      <Mascot
-        nickname="닉네임"
-        ment="오늘의 퀴즈를 한번 풀어보세요!"
-        classNameStyles={'tablet:hidden'}
-      />
-      <div className="bg-white flex flex-col items-center w-full tablet:h-full mob:p-4 tabletB:p-6 desktop:rounded-2xl desktop:px-4 desktop:max-w-[48rem] desktop:h-[48rem]">
-        <div className="flex flex-row w-full justify-between">
-          <Typography
-            size="2xl"
-            weight="bold"
-            color="dark"
-            classNameStyles={isParent ? ' ' : 'mb-4'}
-          >
-            쏠쏠 퀴즈
-          </Typography>
-          {isParent && (
-            <ChangeChild
-              childrenList={childrenList}
-              setChildrenList={setChildrenList}
-              selectedChild={selectedChild}
-              setSelectedChild={setSelectedChild}
+    <Suspense>
+      <div className={containerStyles({ size })}>
+        <Modal color="primary" isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+          {isKeywordModal ? (
+            <KeywordEditModal
+              keywords={keywords}
+              ownKeywords={ownKeywords}
+              onRemoveKeyword={onRemoveKeyword}
+              onAddKeyword={onAddKeyword}
+              onClose={onClose}
+            />
+          ) : (
+            <QuizLogsDetailModal
+              quizLogs={quizLogs}
+              openQuizId={openQuizId}
+              toggleQuizDetail={toggleQuizDetail}
             />
           )}
-        </div>
-        <div className="flex w-full max-w-[48rem] mb-4">
-          <ToggleTab
-            activeTab={activeTab}
-            onTabChange={(index: number) => {
-              setActiveTab(index);
-            }}
-            labels={labels}
-            outlined={false}
-            color="dark"
-          />
-        </div>
+        </Modal>
+        <Mascot
+          nickname="닉네임"
+          ment="오늘의 퀴즈를 한번 풀어보세요!"
+          classNameStyles={'tablet:hidden'}
+        />
+        <div className="bg-white flex flex-col items-center w-full tablet:h-full mob:p-4 tabletB:p-6 desktop:rounded-2xl desktop:px-4 desktop:max-w-[48rem] desktop:h-[48rem]">
+          <div className="flex flex-row w-full justify-between">
+            <Typography
+              size="2xl"
+              weight="bold"
+              color="dark"
+              classNameStyles={isParent ? ' ' : 'mb-4'}
+            >
+              쏠쏠 퀴즈
+            </Typography>
+            {isParent && (
+              <ChangeChild
+                childrenList={childrenList}
+                setChildrenList={setChildrenList}
+                selectedChild={selectedChild}
+                setSelectedChild={setSelectedChild}
+              />
+            )}
+          </div>
+          <div className="flex w-full max-w-[48rem] mb-4">
+            <ToggleTab
+              activeTab={activeTab}
+              onTabChange={(index: number) => {
+                setActiveTab(index);
+              }}
+              labels={labels}
+              outlined={false}
+              color="dark"
+            />
+          </div>
 
-        <div className="w-full max-w-[48rem]">
-          {!isParent ? (
-            activeTab === 0 ? (
-              <QuizTab
-                size={size}
-                isTodayQuiz={isTodayQuiz}
-                childNickname={childNickname}
-                loading={loading}
-                setLoading={setLoading}
-                isParent={isParent ? isParent : false}
-                strick={strick}
-              />
-            ) : (
-              <KeywordsTab
-                size={size}
-                quizLogs={quizLogs}
-                childNickname={childNickname}
-                setLoading={setLoading}
-                keywords={keywords}
-                ownKeywords={ownKeywords}
-                isParent={isParent ? isParent : false}
-                openKeywordModal={openKeywordModal}
-                openQuizLogsModal={openQuizLogsModal}
-              />
-            )
-          ) : (
-            <>
-              {!childrenList.length ? (
-                <>자녀가 없음을 보여주는 UI</>
+          <div className="w-full max-w-[48rem]">
+            {!isParent ? (
+              activeTab === 0 ? (
+                <QuizTab
+                  size={size}
+                  isTodayQuiz={isTodayQuiz}
+                  childNickname={childNickname}
+                  loading={loading}
+                  setLoading={setLoading}
+                  isParent={isParent ? isParent : false}
+                  strick={strick}
+                />
               ) : (
-                <>
-                  {activeTab === 0 ? (
-                    <QuizTab
-                      size={size}
-                      isTodayQuiz={isTodayQuiz}
-                      childNickname={childrenList[selectedChild].nickname}
-                      loading={loading}
-                      setLoading={setLoading}
-                      isParent={isParent ? isParent : false}
-                      strick={strick}
-                    />
-                  ) : (
-                    <KeywordsTab
-                      size={size}
-                      quizLogs={quizLogs}
-                      childNickname={
-                        isParent
-                          ? childNickname
-                          : childrenList[selectedChild].nickname
-                      }
-                      setLoading={setLoading}
-                      keywords={keywords}
-                      ownKeywords={ownKeywords}
-                      isParent={isParent ? isParent : false}
-                      openKeywordModal={openKeywordModal}
-                      openQuizLogsModal={openQuizLogsModal}
-                    />
-                  )}
-                </>
-              )}
-            </>
-          )}
+                <KeywordsTab
+                  size={size}
+                  quizLogs={quizLogs}
+                  childNickname={childNickname}
+                  setLoading={setLoading}
+                  keywords={keywords}
+                  ownKeywords={ownKeywords}
+                  isParent={isParent ? isParent : false}
+                  openKeywordModal={openKeywordModal}
+                  openQuizLogsModal={openQuizLogsModal}
+                />
+              )
+            ) : (
+              <>
+                {!childrenList.length ? (
+                  <>자녀가 없음을 보여주는 UI</>
+                ) : (
+                  <>
+                    {activeTab === 0 ? (
+                      <QuizTab
+                        size={size}
+                        isTodayQuiz={isTodayQuiz}
+                        childNickname={childrenList[selectedChild].nickname}
+                        loading={loading}
+                        setLoading={setLoading}
+                        isParent={isParent ? isParent : false}
+                        strick={strick}
+                      />
+                    ) : (
+                      <KeywordsTab
+                        size={size}
+                        quizLogs={quizLogs}
+                        childNickname={
+                          isParent
+                            ? childNickname
+                            : childrenList[selectedChild].nickname
+                        }
+                        setLoading={setLoading}
+                        keywords={keywords}
+                        ownKeywords={ownKeywords}
+                        isParent={isParent ? isParent : false}
+                        openKeywordModal={openKeywordModal}
+                        openQuizLogsModal={openQuizLogsModal}
+                      />
+                    )}
+                  </>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
