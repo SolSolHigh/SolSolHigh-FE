@@ -52,7 +52,7 @@ export const findChildByNickname = (nickname: string) => {
 };
 
 export const requestChild = (nickname: string) => {
-  return api.post('/api/parents/children/requests', { nickname: nickname });
+  return api.post('/api/parents/children/request', { nickname: nickname });
 };
 
 export const refuseRequest = (requestId: number, isAccept: boolean) => {
