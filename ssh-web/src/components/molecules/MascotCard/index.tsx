@@ -26,13 +26,11 @@ export const MascotCard = ({
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: async () =>
-      type === 'CHILD'
-        ? !isWaiting
-          ? await deleteMyChild((info as IChild).nickname)
-          : await deleteMyWaitingChild((info as IRequest).requestId)
-        : await refuseRequest((info as IRequest).requestId, false),
-    onSuccess: (res) => {
-      showToast('success', res.data.description);
+      type === 'CHILD' &&
+      (!isWaiting
+        ? await deleteMyChild((info as IChild).nickname)
+        : await deleteMyWaitingChild((info as IRequest).requestId)),
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['children', 'waiting'],
       });

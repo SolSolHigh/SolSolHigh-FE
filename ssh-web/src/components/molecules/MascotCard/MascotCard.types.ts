@@ -6,6 +6,7 @@ export interface MascotCardProps extends React.ComponentProps<'div'> {
   type: 'PARENT' | 'CHILD';
   isWaiting?: boolean;
   withTrash?: boolean;
+  seleced?: boolean;
   children?: ReactNode;
   classNameStyles?: string;
 }

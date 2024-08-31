@@ -12,11 +12,13 @@ import {
   getMyParents,
   getMyWaitingParent,
   getUserInfo,
+  refuseRequest,
 } from '../../../apis/userApi';
 import { IParent, IRequest } from '../../../interfaces/userInterface';
 import { useNavigate } from 'react-router-dom';
 import { getImgSrc } from '../../../utils/userUtil';
 import { showToast } from '../../../utils/toastUtil';
+import { Button } from '../../../components/atoms/Button';
 
 export const ManageParentFetch = () => {
   const [userinfoQuery, waitingQuery] = useSuspenseQueries({
@@ -61,6 +63,8 @@ export const ManageParentFetch = () => {
     };
     getParent();
   }, []);
+  const [selected, setSelected] = useState<number>(-1);
+
   return (
     <div className={containerStyles()}>
       <Mascot
@@ -102,7 +106,7 @@ export const ManageParentFetch = () => {
                 ? [parent]
                 : []
               : waitingQuery.data.data
-            ).map((parent: IParent | IRequest) => {
+            ).map((parent: IParent | IRequest, idx: number) => {
               return (
                 <MascotCard
                   key={parent.nickname}
@@ -110,10 +114,45 @@ export const ManageParentFetch = () => {
                   type="PARENT"
                   isWaiting={activeTab === 0}
                   withTrash={activeTab === 1}
+                  onClick={() => setSelected(idx)}
                 />
               );
             })}
           </div>
+        </div>
+        <div className="flex flex-col items-center w-full gap-y-1">
+          <Typography>
+            {selected === -1
+              ? ''
+              : waitingQuery.data.data[selected].nickname + ' 부모님'}
+          </Typography>
+          <Button
+            fullWidth
+            onClick={async () => {
+              await refuseRequest(
+                waitingQuery.data.data[selected].requestId,
+                true,
+              )
+                .then(() => window.location.reload())
+                .catch((err) => console.log(err));
+            }}
+          >
+            승인
+          </Button>
+          <Button
+            color="danger"
+            fullWidth
+            onClick={async () => {
+              await refuseRequest(
+                waitingQuery.data.data[selected].requestId,
+                false,
+              )
+                .then(() => window.location.reload())
+                .catch((err) => console.log(err));
+            }}
+          >
+            거절
+          </Button>
         </div>
       </div>
     </div>
