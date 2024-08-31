@@ -2,7 +2,7 @@ name: SolSolHigh-FE Deploy
 
 on:
   push:
-    branches: fix/#69-egg
+    branches: develop
 
 jobs:
   deploy:
@@ -17,4 +17,4 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd ~/solsol-high
-            ./static.sh fix/#69-egg
+            ./static.sh develop
