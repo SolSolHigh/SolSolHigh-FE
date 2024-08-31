@@ -14,29 +14,77 @@ import { showToast } from '../../../utils/toastUtil';
 import { IChild } from '../../../interfaces/userInterface';
 
 interface DepositAccountCardProps {
-  account: IAccount;
+  account: ICommonAccount | ISavingAccount | IDepositAccount | null;
   isOwn: boolean;
-  handleSendMoney: (item: IAccount) => void;
-  handleReservationSendModal: (item: IAccount) => void;
-  handleAutoSendModal: (item: IAccount) => void;
-  handleAccountLogModal: (item: IAccount) => void;
-  handleDeleteAccountModal: (item: IAccount) => void;
+  handleSendMoney: (
+    item: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => void;
+  handleReservationSendModal: (
+    item: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => void;
+  handleAutoSendModal: (
+    item: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => void;
+  handleAccountLogModal: (
+    item: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => void;
+  handleDeleteAccountModal: (
+    item: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => void;
 }
 
 interface InstallmentAccountCardProps {
-  account: IAccount;
-  percent: number;
+  account: ICommonAccount | ISavingAccount | IDepositAccount | null;
   isOwn: boolean;
-  handleReservationSendModal: (item: IAccount) => void;
-  handleAccountLogModal: (item: IAccount) => void;
-  handleDeleteAccountModal: (item: IAccount) => void;
+  percent: number;
+  handleReservationSendModal: (
+    item: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => void;
+  handleAccountLogModal: (
+    item: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => void;
+  handleDeleteAccountModal: (
+    item: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => void;
 }
 
-export interface IAccount {
-  accountName: string;
+//수시입출금
+export interface ICommonAccount {
+  bankName: string;
   accountNo: string;
-  accountTypeCode: string;
-  accountBalance: number;
+  accountName: string;
+  accountType: string;
+  accountExpiryDate: string;
+  accountCreateDate: string;
+  accountBalance: string;
+}
+
+//적금
+export interface ISavingAccount {
+  bankName: string;
+  accountNo: string;
+  accountName: string;
+  accountType: string;
+  accountExpiryDate: string;
+  accountCreateDate: string;
+  depositBalance: number;
+  totalBalance: number;
+  subscriptionPeriod: string;
+  installmentNumber: string;
+  savingRewardMoney: string;
+}
+
+//저축계좌
+export interface IDepositAccount {
+  bankName: string;
+  accountNo: string;
+  accountName: string;
+  accountType: string;
+  accountExpiryDate: string;
+  accountCreatedDate: string;
+  accountBalance: string;
+  depositGoalMoney: string;
+  depositRewardMoney: string;
 }
 
 export interface ITransaction {
@@ -64,17 +112,17 @@ const formatDateTime = (dateTime: string) => {
 type TModal = 'SEND' | 'RESERVATION' | 'AUTO' | 'LOG' | 'DEL';
 
 interface SendMoneyModalProps {
-  account: IAccount | null;
+  account: ICommonAccount | ISavingAccount | IDepositAccount | null;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface ReservationSendModalProps {
-  account: IAccount | null;
+  account: ICommonAccount | ISavingAccount | IDepositAccount | null;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface AutoSendModalProps {
-  account: IAccount | null;
+  account: ICommonAccount | ISavingAccount | IDepositAccount | null;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -83,24 +131,30 @@ interface TransactionItemProps {
 }
 
 interface AccountLogModalProps {
-  account: IAccount | null;
+  account: ICommonAccount | ISavingAccount | IDepositAccount | null;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface DeleteAccountModalProps {
-  account: IAccount | null;
+  account: ICommonAccount | ISavingAccount | IDepositAccount | null;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Account = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [ownAccounts, setOwnAccounts] = useState<IAccount[] | null>(null);
+  const [ownAccounts, setOwnAccounts] = useState<
+    (ICommonAccount | ISavingAccount | IDepositAccount)[] | null
+  >(null);
   const [childrenList, setChildrenList] = useState<IChild[]>([]);
   const [selectedChild, setSelectedChild] = useState<number>(0);
-  const [childAccounts, setChildAccounts] = useState<IAccount[] | null>(null);
+  const [childAccounts, setChildAccounts] = useState<
+    (ICommonAccount | ISavingAccount | IDepositAccount)[] | null
+  >(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [modalType, setModalTypes] = useState<TModal | null>(null);
-  const [selectedAccount, setSelectedAccount] = useState<IAccount | null>(null);
+  const [selectedAccount, setSelectedAccount] = useState<
+    ICommonAccount | ISavingAccount | IDepositAccount | null
+  >(null);
 
   const navigate = useNavigate();
 
@@ -111,31 +165,41 @@ export const Account = () => {
     });
   }, []);
 
-  const handleSendMoneyModal = (account: IAccount) => {
+  const handleSendMoneyModal = (
+    account: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => {
     setIsOpen(true);
     setModalTypes('SEND');
     setSelectedAccount(account);
   };
 
-  const handleReservationSendModal = (account: IAccount) => {
+  const handleReservationSendModal = (
+    account: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => {
     setIsOpen(true);
     setModalTypes('RESERVATION');
     setSelectedAccount(account);
   };
 
-  const handleAutoSendModal = (account: IAccount) => {
+  const handleAutoSendModal = (
+    account: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => {
     setIsOpen(true);
     setModalTypes('AUTO');
     setSelectedAccount(account);
   };
 
-  const handleAccountLogModal = (account: IAccount) => {
+  const handleAccountLogModal = (
+    account: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => {
     setIsOpen(true);
     setModalTypes('LOG');
     setSelectedAccount(account);
   };
 
-  const handleDeleteAccountModal = (account: IAccount) => {
+  const handleDeleteAccountModal = (
+    account: ICommonAccount | ISavingAccount | IDepositAccount | null,
+  ) => {
     setIsOpen(true);
     setModalTypes('DEL');
     setSelectedAccount(account);
@@ -210,10 +274,7 @@ export const Account = () => {
             {activeTab === 0 ? (
               <>
                 {ownAccounts?.map((item) => {
-                  if (
-                    item.accountTypeCode === '1' ||
-                    item.accountTypeCode === '2'
-                  ) {
+                  if (item.accountType === '1' || item.accountType === '2') {
                     return (
                       <DepositAccountCard
                         key={item.accountNo}
@@ -226,7 +287,7 @@ export const Account = () => {
                         handleDeleteAccountModal={handleDeleteAccountModal}
                       />
                     );
-                  } else if (item.accountTypeCode === '3') {
+                  } else if (item.accountType === '3') {
                     return (
                       <InstallmentAccountCard
                         key={item.accountNo}
@@ -244,10 +305,7 @@ export const Account = () => {
             ) : (
               <>
                 {childAccounts?.map((item) => {
-                  if (
-                    item.accountTypeCode === '1' ||
-                    item.accountTypeCode === '2'
-                  ) {
+                  if (item.accountType === '1' || item.accountType === '2') {
                     return (
                       <DepositAccountCard
                         key={item.accountNo}
@@ -260,7 +318,7 @@ export const Account = () => {
                         handleDeleteAccountModal={handleDeleteAccountModal}
                       />
                     );
-                  } else if (item.accountTypeCode === '3') {
+                  } else if (item.accountType === '3') {
                     return (
                       <InstallmentAccountCard
                         key={item.accountNo}
@@ -306,10 +364,10 @@ export const InstallmentAccountCard = ({
   return (
     <div className="bg-secondary-200 p-4 rounded-lg shadow-lg w-full">
       <Typography color="primary" size="2xl" weight="bold">
-        {account.accountName}
+        {account?.accountName}
       </Typography>
       <Typography color="secondary" size="md" classNameStyles="mt-1 mb-2">
-        {formatString(account.accountNo)}
+        {formatString(account ? account?.accountNo : '')}
       </Typography>
       <ProgressBar percent={percent} size="sm" classNameStyles="mt-2" />
       <Typography
@@ -318,7 +376,7 @@ export const InstallmentAccountCard = ({
         weight="bold"
         classNameStyles="flex flex-row justify-end mt-2 text-end"
       >
-        {Number(account.accountBalance).toLocaleString()}
+        {Number((account as ISavingAccount)?.depositBalance).toLocaleString()}
         <Typography
           color="primary"
           size="3xl"
@@ -391,10 +449,10 @@ export const DepositAccountCard = ({
   return (
     <div className="bg-secondary-200 p-4 rounded-lg shadow-lg w-full">
       <Typography color="primary" size="2xl" weight="bold">
-        {account.accountName}
+        {account?.accountName}
       </Typography>
       <Typography color="secondary">
-        {formatString(account.accountNo)}
+        {account && formatString(account?.accountNo)}
       </Typography>
       <Typography
         color="dark"
@@ -402,7 +460,9 @@ export const DepositAccountCard = ({
         weight="bold"
         classNameStyles="flex flex-row justify-end mt-4 text-end"
       >
-        {account.accountBalance.toLocaleString()}
+        {(
+          account as ICommonAccount | IDepositAccount
+        )?.accountBalance.toLocaleString()}
         <Typography
           color="primary"
           size="3xl"
@@ -428,7 +488,7 @@ export const DepositAccountCard = ({
           </Button>
         )}
         {!isOwn ? (
-          account.accountTypeCode === '1' ? (
+          account?.accountType === '1' ? (
             <>
               <Button
                 color="primary"
@@ -473,7 +533,7 @@ export const DepositAccountCard = ({
                 내역 조회
               </Typography>
             </Button>
-            {account.accountTypeCode !== '1' && (
+            {account?.accountType !== '1' && (
               <Button
                 color="danger"
                 size="sm"
@@ -527,10 +587,14 @@ export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
         amount: '유효한 금액을 입력해주세요.',
       }));
       setAmountState('danger');
-    } else if (account && numericValue > account.accountBalance) {
+    } else if (
+      account &&
+      numericValue >
+        Number((account as ICommonAccount | IDepositAccount).accountBalance)
+    ) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        amount: `송금 금액은 잔액(${account.accountBalance.toLocaleString()}원) 이하이어야 합니다.`,
+        amount: `송금 금액은 잔액(${(account as ICommonAccount | IDepositAccount).accountBalance.toLocaleString()}원) 이하이어야 합니다.`,
       }));
       setAmountState('danger');
     } else {

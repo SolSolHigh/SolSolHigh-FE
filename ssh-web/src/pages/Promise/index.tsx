@@ -77,7 +77,7 @@ export const PromiseTicket = () => {
           showToast('error', '약속권 로그를 불러오지 못했습니다');
         });
     }
-    if (isParent === true) {
+    if (isParent === true && childrenList.length > 0) {
       api
         .get(`/api/promise-tickets/${childrenList[selectedChild]}/count`)
         .then((response) => {

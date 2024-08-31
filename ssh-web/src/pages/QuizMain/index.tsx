@@ -155,7 +155,7 @@ export const QuizMain: React.FC = () => {
 
       api
         .get(
-          `/api/api/children/${childrenList[selectedChild].nickname}/quizzes/strick`,
+          `/api/children/${childrenList[selectedChild].nickname}/quizzes/strick`,
         )
         .then((response) => {
           setStrick(response.data);
@@ -187,7 +187,7 @@ export const QuizMain: React.FC = () => {
           setLoading(false);
         });
       api
-        .get(`/api/api/children/${childNickname}/quizzes/strick`)
+        .get(`/api/children/${childNickname}/quizzes/strick`)
         .then((response) => {
           setStrick(response.data);
           setLoading(false);
@@ -200,7 +200,7 @@ export const QuizMain: React.FC = () => {
         setLoading(false);
       });
     }
-  }, [childrenList, isParent]);
+  }, [selectedChild, isParent]);
 
   useEffect(() => {
     if (quizLogs.length > 0) {

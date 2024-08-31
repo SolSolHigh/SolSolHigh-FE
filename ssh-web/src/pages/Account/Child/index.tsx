@@ -31,10 +31,13 @@ export interface ITransaction {
 }
 
 export interface IAccount {
-  accountName: string;
+  bankName: string;
   accountNo: string;
-  accountTypeCode: string;
-  accountBalance: number;
+  accountName: string;
+  accountType: string;
+  accountExpiryDate: string;
+  accountCreateDate: string;
+  accountBalance: string;
 }
 
 type TModal = 'SEND' | 'RESERVATION' | 'AUTO' | 'LOG' | 'DEL';
@@ -133,10 +136,7 @@ export const Account = () => {
 
           <div className="space-y-5 mt-4 w-full max-w-[48rem] overflow-auto">
             {ownAccounts?.map((item) => {
-              if (
-                item.accountTypeCode === '1' ||
-                item.accountTypeCode === '2'
-              ) {
+              if (item.accountType === '1' || item.accountType === '2') {
                 return (
                   <DepositAccountCard
                     key={item.accountNo}
@@ -146,7 +146,7 @@ export const Account = () => {
                     handleDeleteAccountModal={handleDeleteAccountModal}
                   />
                 );
-              } else if (item.accountTypeCode === '3') {
+              } else if (item.accountType === '3') {
                 return (
                   <InstallmentAccountCard
                     key={item.accountNo}
@@ -283,7 +283,7 @@ export const DepositAccountCard = ({
             내역 조회
           </Typography>
         </Button>
-        {account.accountTypeCode !== '1' && (
+        {account.accountType !== '1' && (
           <Button
             color="danger"
             size="sm"
@@ -335,7 +335,7 @@ export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
         amount: '유효한 금액을 입력해주세요.',
       }));
       setAmountState('danger');
-    } else if (account && numericValue > account.accountBalance) {
+    } else if (account && numericValue > Number(account.accountBalance)) {
       setErrors((prevErrors) => ({
         ...prevErrors,
         amount: `송금 금액은 잔액(${account.accountBalance.toLocaleString()}원) 이하이어야 합니다.`,
