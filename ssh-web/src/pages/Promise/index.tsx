@@ -138,7 +138,7 @@ export const PromiseTicket = () => {
   const handlePromiseUpload = async (description: string) => {
     setIsOpen(false);
     try {
-      const response = await api.post(`/api/promise-tickets/request`, {
+      const response = await api.post('/api/promise-tickets/request', {
         description: description,
       });
       showToast('success', '부모님에게 성공적으로 약속을 요청했어요!');
