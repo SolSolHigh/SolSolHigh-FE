@@ -4,8 +4,10 @@ import { InformationFetch } from './InformationFetch';
 
 export const Information = () => {
   return (
-    <Suspense fallback={<>로딩중</>}>
-      <InformationFetch />
-    </Suspense>
+    <ErrorBoundary fallback={<>에러</>}>
+      <Suspense fallback={<>로딩중</>}>
+        <InformationFetch />
+      </Suspense>
+    </ErrorBoundary>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { containerStyles, contentStyles, infoBoxStyles } from './styles';
 import { Mascot } from '../../../components/molecules/Mascot';
 import { Icon } from '../../../components/atoms/Icon';
@@ -16,17 +16,14 @@ import {
 import { IParent, IRequest } from '../../../interfaces/userInterface';
 import { useNavigate } from 'react-router-dom';
 import { getImgSrc } from '../../../utils/userUtil';
+import { showToast } from '../../../utils/toastUtil';
 
 export const ManageParentFetch = () => {
-  const [userinfoQuery, parentsQuery, waitingQuery] = useSuspenseQueries({
+  const [userinfoQuery, waitingQuery] = useSuspenseQueries({
     queries: [
       {
         queryKey: ['userinfo'],
         queryFn: async () => await getUserInfo(),
-      },
-      {
-        queryKey: ['parents'],
-        queryFn: async () => await getMyParents(),
       },
       {
         queryKey: ['waiting'],
@@ -35,7 +32,7 @@ export const ManageParentFetch = () => {
     ],
   });
 
-  [userinfoQuery, parentsQuery, waitingQuery].some((query) => {
+  [userinfoQuery, waitingQuery].some((query) => {
     if (query.error && !query.isFetching) {
       throw query.error;
     }
@@ -49,6 +46,21 @@ export const ManageParentFetch = () => {
       else return 1;
     });
   };
+  const [parent, setParent] = useState<IParent | null>(null);
+  useEffect(() => {
+    const getParent = async () => {
+      await getMyParents()
+        .then((res) =>
+          setParent(() => {
+            return { ...res.data };
+          }),
+        )
+        .catch(() => {
+          showToast('error', '연결된 부모님이 없습니다');
+        });
+    };
+    getParent();
+  }, []);
   return (
     <div className={containerStyles()}>
       <Mascot
@@ -86,7 +98,9 @@ export const ManageParentFetch = () => {
           </div>
           <div className="flex flex-col w-full mt-4 gap-y-4">
             {(!activeTab
-              ? [parentsQuery.data.data]
+              ? parent
+                ? [parent]
+                : []
               : waitingQuery.data.data
             ).map((parent: IParent | IRequest) => {
               return (
