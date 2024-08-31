@@ -5,9 +5,15 @@ import { Typography } from '../../atoms/Typography';
 import { Icon } from '../../atoms/Icon';
 import { HiTrash } from 'react-icons/hi2';
 import dayjs from 'dayjs';
-import { deleteMyChild, deleteMyWaitingChild } from '../../../apis/userApi';
+import {
+  deleteMyChild,
+  deleteMyWaitingChild,
+  refuseRequest,
+} from '../../../apis/userApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getImgSrc } from '../../../utils/userUtil';
+import { showToast } from '../../../utils/toastUtil';
+import { IChild, IRequest } from '../../../interfaces/userInterface';
 
 export const MascotCard = ({
   info,
@@ -19,12 +25,12 @@ export const MascotCard = ({
 }: MascotCardProps) => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
-    mutationFn: async (nickname: string) =>
-      type === 'CHILD' && !isWaiting
-        ? await deleteMyChild(nickname)
-        : await deleteMyWaitingChild(nickname),
-    onSuccess: (res) => {
-      alert(res.data.description);
+    mutationFn: async () =>
+      type === 'CHILD' &&
+      (!isWaiting
+        ? await deleteMyChild((info as IChild).nickname)
+        : await deleteMyWaitingChild((info as IRequest).requestId)),
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['children', 'waiting'],
       });
@@ -33,10 +39,10 @@ export const MascotCard = ({
   });
 
   return (
-    <div className="relative flex items-center w-full p-4 rounded-md shadow-sm">
+    <div className="relative flex items-center w-full rounded-md">
       <CircularImage
         imageUrl={getImgSrc(info.gender, type)}
-        altText={info.nickname}
+        altText={info.name}
         size="xl"
       />
       <div className="flex flex-col justify-between ml-4 gap-y-2">
@@ -61,7 +67,15 @@ export const MascotCard = ({
           color="danger"
           classNameStyles="absolute right-4 top-4 mob:right-2 mob:top-2"
         >
-          <HiTrash onClick={() => mutate(info.nickname)} />
+          <HiTrash onClick={() => mutate()} />
+        </Icon>
+      )}
+      {type === 'PARENT' && withTrash && isWaiting && (
+        <Icon
+          color="danger"
+          classNameStyles="absolute right-4 top-4 mob:right-2 mob:top-2"
+        >
+          <HiTrash onClick={() => mutate()} />
         </Icon>
       )}
     </div>

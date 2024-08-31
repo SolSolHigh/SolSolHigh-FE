@@ -21,7 +21,7 @@ import { Menu } from '../pages/Menu';
 
 export const PathNames: IPathNames = {
   HOME: {
-    path: '/home',
+    path: '/',
     name: '홈',
   },
   MISSION: {
@@ -48,10 +48,6 @@ export const router = createBrowserRouter([
       {
         index: true,
         path: '/',
-        element: <></>,
-      },
-      {
-        path: PathNames.HOME.path,
         element: <Home />,
       },
       {
@@ -78,14 +74,7 @@ export const router = createBrowserRouter([
         path: PathNames.MYPAGE.path,
         element: <Information />,
       },
-      {
-        path: PathNames.LOGIN.path,
-        element: <Login />,
-      },
-      {
-        path: PathNames.SIGNUP.path,
-        element: <Signup />,
-      },
+
       {
         path: '/manage',
         element: <Manage />,
@@ -100,7 +89,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/account',
-        element: <Account isParent={true} />,
+        element: <Account />,
       },
       {
         path: '/account/introduction',
@@ -115,5 +104,13 @@ export const router = createBrowserRouter([
         element: <Menu />,
       },
     ],
+  },
+  {
+    path: PathNames.LOGIN.path,
+    element: <Login />,
+  },
+  {
+    path: PathNames.SIGNUP.path,
+    element: <Signup />,
   },
 ]);

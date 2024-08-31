@@ -2,6 +2,6 @@ import { IPromiseLogs } from '../../../interfaces/promiseTicketInterface';
 
 export interface PromiseDetailModalProps {
   log: IPromiseLogs | null;
-  isParent: boolean;
+  isParent: boolean | null;
   closeModal: () => void;
 }

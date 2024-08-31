@@ -24,34 +24,93 @@ import { ConfirmPromiseModal } from '../../components/organisms/ConfirmPromiseMo
 import { ChangeChild } from '../../components/molecules/ChangeChild';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { showToast } from '../../utils/toastUtil';
+import { useLocation } from 'react-router-dom';
+import { IChild } from '../../interfaces/userInterface';
 
 export const PromiseTicket = () => {
+  const location = useLocation();
+  const [isParent, setIsParent] = useState<boolean | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [childrenList, setChildrenList] = useState<IChild[]>([]);
+  const [selectedChild, setSelectedChild] = useState<number>(0);
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
   const [promiseLogs, setPromiseLogs] = useState<IPromiseLogsList>([]);
   const [countTicket, setCountTicket] = useState<number>(0);
   const [selectedPromise, setSelectedPromise] = useState<IPromiseLogs | null>(
     null,
   );
-
-  // isParent를 50% 확률로 true 또는 false로 설정
-  const [isParent] = useState<boolean>(() => Math.random() >= 0.5);
-
+  const [relenderingKey, setRelenderingKey] = useState<number>(0);
   const size = useRecoilValue<EResize>(resizeState);
   const isConfirm = selectedPromise?.usedAt;
 
   useEffect(() => {
-    api.get(`/api/promise-tickets/count`).then((response) => {
-      setCountTicket(response.data.count);
-    });
+    api
+      .get(`/api/users/info`)
+      .then((response) => {
+        if (response.data.type === 'PARENT') {
+          setIsParent(true);
+        } else {
+          setIsParent(false);
+        }
+      })
+      .catch((error: Error) => {
+        showToast('error', '현재 유저의 정보를 불러오지 못했습니다.');
+      });
   }, []);
 
   useEffect(() => {
-    api.get(`/api/promise-tickets?page=0&size=5`).then((response) => {
-      setPromiseLogs(response.data.content);
-      console.log(response.data.content);
-    });
-  }, []);
+    if (isParent === false) {
+      api
+        .get(`/api/promise-tickets/count`)
+        .then((response) => {
+          setCountTicket(response.data.count);
+        })
+        .catch((error: Error) => {
+          showToast('error', '약속권 갯수를 불러오지 못했습니다');
+        });
+
+      api
+        .get(`/api/promise-tickets?page=0&size=50`)
+        .then((response) => {
+          setPromiseLogs(response.data.content);
+        })
+        .catch((error: Error) => {
+          showToast('error', '약속권 로그를 불러오지 못했습니다');
+        });
+    }
+    if (isParent === true && childrenList.length > 0) {
+      api
+        .get(
+          `/api/promise-tickets/children/${childrenList[selectedChild].nickname}/count`,
+        )
+        .then((response) => {
+          setCountTicket(response.data.count);
+        })
+        .catch((error: Error) => {
+          showToast('error', '약속권 갯수를 불러오지 못했습니다');
+        });
+
+      api
+        .get(
+          `/api/promise-tickets/children/${childrenList[selectedChild].nickname}?page=0&size=50`,
+        )
+        .then((response) => {
+          setPromiseLogs(response.data.content);
+          console.log(response.data.content);
+        })
+        .catch((error: Error) => {
+          showToast('error', '약속권 로그를 불러오지 못했습니다');
+        });
+    }
+  }, [isParent, selectedChild, relenderingKey]);
+
+  useEffect(() => {
+    if (location.state) {
+      if (location.state.addModal) {
+        handleAddModal();
+      }
+    }
+  }, [location]);
 
   const handleDetailModal = (log: IPromiseLogs) => {
     setIsOpen(true);
@@ -61,7 +120,7 @@ export const PromiseTicket = () => {
 
   const handleAddModal = () => {
     if (countTicket <= 0) {
-      showToast('error', '보유한 소원권이 없어요');
+      showToast('error', '보유한 약속권이 없어요');
     } else {
       setIsOpen(true);
       setIsDetailModal(false);
@@ -69,14 +128,35 @@ export const PromiseTicket = () => {
   };
 
   //todo
-  const handleConfirmUpload = (id: number) => {
+  const handleConfirmUpload = async (id: number, image: FormData) => {
     setIsOpen(false);
+    try {
+      const response = await api.post(`/api/promise-tickets/${id}/use`, image, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      showToast('success', '약속 인증에 성공했어요!');
+      setRelenderingKey(relenderingKey + 1);
+      return response;
+    } catch (error) {
+      showToast('error', '약속 인증에 실패했어요');
+    }
   };
 
   //todo
-  const handlePromiseUpload = (content: string) => {
+  const handlePromiseUpload = async (description: string) => {
     setIsOpen(false);
-    showToast('success', '부모님에게 성공적으로 약속을 요청했어요!');
+    try {
+      const response = await api.post('/api/promise-tickets/request', {
+        description: description,
+      });
+      showToast('success', '부모님에게 성공적으로 약속을 요청했어요!');
+      setRelenderingKey(relenderingKey + 1);
+      return response;
+    } catch (error) {
+      showToast('error', '약속 요청에 실패했어요');
+    }
   };
 
   const handleCloseModal = () => {
@@ -128,7 +208,14 @@ export const PromiseTicket = () => {
             <Typography size="2xl" weight="bold" color="dark">
               약속권
             </Typography>
-            {isParent && <ChangeChild />}
+            {isParent && (
+              <ChangeChild
+                childrenList={childrenList}
+                setChildrenList={setChildrenList}
+                selectedChild={selectedChild}
+                setSelectedChild={setSelectedChild}
+              />
+            )}
           </div>
           <div className={contentStyles({ size })}>
             <Typography

@@ -1,6 +1,7 @@
 import {
   IChild,
   IParent,
+  IRequest,
   ISignupRequest,
   IUserInfo,
 } from '../interfaces/userInterface';
@@ -27,23 +28,23 @@ export const getMyChildren = () => {
 };
 
 export const getMyParents = () => {
-  return api.get<IParent>('/api/children/parents');
+  return api.get<IParent>('/api/parents');
 };
 
 export const getMyWaitingChildren = () => {
-  return api.get<IChild[]>('/api/parents/children/waiting');
+  return api.get<IRequest[]>('/api/parents/children/requests');
 };
 
 export const getMyWaitingParent = () => {
-  return api.get<IParent>('/api/children/parents/waiting');
+  return api.get<IRequest[]>('/api/children/parents/requests');
 };
 
 export const deleteMyChild = (nickname: string) => {
   return api.patch('/api/parents/children', { nickname: nickname });
 };
 
-export const deleteMyWaitingChild = (nickname: string) => {
-  return api.patch('/api/parents/children/waiting', { nickname: nickname });
+export const deleteMyWaitingChild = (requestId: number) => {
+  return api.delete(`/api/parents/children/requests/${requestId}`);
 };
 
 export const findChildByNickname = (nickname: string) => {
@@ -52,4 +53,11 @@ export const findChildByNickname = (nickname: string) => {
 
 export const requestChild = (nickname: string) => {
   return api.post('/api/parents/children/request', { nickname: nickname });
+};
+
+export const refuseRequest = (requestId: number, isAccept: boolean) => {
+  return api.post('/api/children/parent', {
+    requestId: requestId,
+    isAccept: isAccept,
+  });
 };
