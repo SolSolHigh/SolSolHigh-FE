@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '../../atoms/Icon';
 import IconNavButtonWithLabel from '../../molecules/IconNavButtonWithLabel';
 import TextNavButton from '../../molecules/TextNavButton';
@@ -7,6 +7,8 @@ import { PathNames } from '../../../utils/router';
 import { HiChevronLeft } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import { getHasBottom, getNavHasBack } from '../../../utils/appUtil';
+import { IUserInfo } from '../../../interfaces/userInterface';
+import { getUserInfo } from '../../../apis/userApi';
 
 export interface NavigationBarProps {
   bgColor?: string;
@@ -20,6 +22,21 @@ const NavigationBar = ({
   backPath,
 }: NavigationBarProps) => {
   const nav = useNavigate();
+  const [user, setUser] = useState<IUserInfo | null>();
+
+  useEffect(() => {
+    const getUsers = async () => {
+      await getUserInfo()
+        .then((res) =>
+          setUser(() => {
+            return { ...res.data };
+          }),
+        )
+        .catch((err) => console.log(err));
+    };
+    getUsers();
+  }, []);
+
   return (
     <>
       <div
@@ -45,7 +62,9 @@ const NavigationBar = ({
               <IconNavButtonWithLabel pathName={PathNames.HOME} />
               <IconNavButtonWithLabel pathName={PathNames.MISSION} />
               <IconNavButtonWithLabel pathName={PathNames.QUIZ} />
-              <IconNavButtonWithLabel pathName={PathNames.EGG} />
+              {user && user.type === 'CHILD' && (
+                <IconNavButtonWithLabel pathName={PathNames.EGG} />
+              )}
               <IconNavButtonWithLabel
                 pathName={{ path: '/menu', name: '메뉴' }}
               />
@@ -59,7 +78,9 @@ const NavigationBar = ({
           <TextNavButton pathName={PathNames.HOME} />
           <TextNavButton pathName={PathNames.MISSION} />
           <TextNavButton pathName={PathNames.QUIZ} />
-          <TextNavButton pathName={PathNames.EGG} />
+          {user && user.type === 'CHILD' && (
+            <TextNavButton pathName={PathNames.EGG} />
+          )}
           <TextNavButton pathName={{ path: '/menu', name: '메뉴' }} />
           <div className="absolute flex items-center py-2 right-12 h-max">
             <Icon

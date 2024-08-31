@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 export const missionCreateStyles = tv({
-  base: 'flex flex-col w-full items-center justify-center bg-white gap-4',
+  base: 'flex flex-col w-full items-center justify-center bg-white gap-4 relative',
   variants: {
     size: {
       M: 'px-4 py-1',

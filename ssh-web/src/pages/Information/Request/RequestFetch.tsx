@@ -43,8 +43,7 @@ export const RequestFetch = () => {
 
   const { mutate } = useMutation({
     mutationFn: async (nickname: string) => await requestChild(nickname),
-    onSuccess: (res) => {
-      showToast('success', res.data.description);
+    onSuccess: () => {
       nav('/manage', { state: { type: userinfoQuery.data.data.type } });
     },
     onError: () => showToast('error', '자식 신청에 실패했습니다'),
