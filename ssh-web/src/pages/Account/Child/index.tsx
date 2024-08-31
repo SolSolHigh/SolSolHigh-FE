@@ -413,12 +413,6 @@ export const DepositAccountCard = ({
   );
 };
 
-interface SendMoneyReqeust {
-  transactionBalance: number;
-  depositAccountNo: string;
-  transactionSummary: string;
-}
-
 export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
   const [accountNumber, setAccountNumber] = useState('');
   const [amount, setAmount] = useState('');
@@ -656,7 +650,7 @@ export const DeleteAccountModal = ({
   useEffect(() => {
     setIsLoading(true);
     api
-      .post(`/api/children/accounts/deposit/recommanded`)
+      .post(`/api/children/accounts/deposit/recommended`)
       .then((res) => {
         setImageUrl(res.data.imageUrl);
         setIsLoading(false);
