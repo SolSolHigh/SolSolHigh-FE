@@ -51,7 +51,7 @@ export const InformationFetch = () => {
             return [newRelated];
           });
         } catch {
-          showToast('error', '연결된 부모님이 없습니다');
+          console.log('no parent');
         }
       }
     };

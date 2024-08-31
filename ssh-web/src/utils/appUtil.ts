@@ -1,4 +1,4 @@
-const targets = ['/login', '/signup', '/manage', '/quiz/solve', '/request'];
+const targets = ['/login', '/signup', '/manage', '/request'];
 
 export const isTarget = (path: string) => targets.includes(path);
 export const getNavBgColor = (path: string) => {
@@ -16,6 +16,6 @@ export const getNavHasBack = (path?: string) => {
   return true;
 };
 export const getHasBottom = (path: string) => {
-  if (path === '/mypage') return false;
+  if (path === '/mypage' || path === '/quiz/solve') return false;
   return true;
 };

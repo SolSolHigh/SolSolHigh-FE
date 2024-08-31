@@ -152,7 +152,7 @@ export const MissionFetch: React.FC = () => {
 
         {role === 'parent' && (
           <Button
-            classNameStyles={`${bigButtonStyles()} absolute bottom-8`}
+            classNameStyles={`${bigButtonStyles()} absolute bottom-12`}
             onClick={onClickCreateModalOpen}
           >
             새 미션 등록하기

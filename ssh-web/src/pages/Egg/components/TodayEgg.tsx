@@ -130,7 +130,7 @@ export const TodayEgg = () => {
                 </Typography>
                 <div className="relative w-full h-max bg-primary-300 flex flex-row justify-center items-center py-8 rounded-3xl">
                   <img src={reward?.imageUrl} alt="" className="w-[12rem]" />
-                  <div className="absolute left-1/4 bottom-20 w-full flex flex-col items-center justify-center">
+                  <div className="absolute flex flex-col items-center justify-center w-full left-1/4 bottom-20">
                     <img
                       src={'/assets/images/check_icon.png'}
                       alt=""
@@ -214,7 +214,7 @@ export const TodayEgg = () => {
           + {collectedAmount}원
         </Typography>
       </div>
-      <div className="flex flex-row justify-between w-full items-end mb-5">
+      <div className="flex flex-row items-end justify-between w-full mb-5">
         <Badge
           text={`${todayDestroyCount} / 10`}
           weight="semibold"
@@ -246,7 +246,7 @@ export const TodayEgg = () => {
               className={`rounded-full absolute top-10 transform transition-transform duration-300 ${eggScale}`}
             />
           </div>
-          <div className="bg-primary-200 w-full h-24 rounded-3xl items-center flex flex-row justify-center gap-4">
+          <div className="flex flex-row items-center justify-center w-full h-24 gap-4 bg-primary-200 rounded-3xl">
             <Typography
               size="6xl"
               weight="bold"
@@ -279,8 +279,8 @@ export const TodayEgg = () => {
               className={`rounded-full absolute top-10 transform transition-transform duration-300 ${eggScale}`}
             />
           </div>
-          <div className="bg-secondary-700 w-full h-24 rounded-3xl items-center flex flex-row justify-center gap-4">
-            <Typography size="4xl" weight="bold" color="light">
+          <div className="flex flex-row items-center justify-center w-full py-4 rounded-md bg-secondary-700">
+            <Typography size="xl" weight="semibold" color="light">
               내 저축 계좌가 없어요
             </Typography>
           </div>

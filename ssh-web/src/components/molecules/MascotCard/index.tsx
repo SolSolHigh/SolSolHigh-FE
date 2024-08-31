@@ -23,7 +23,6 @@ export const MascotCard = ({
   children,
   classNameStyles,
 }: MascotCardProps) => {
-  const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: async () =>
       type === 'CHILD' &&
@@ -31,9 +30,7 @@ export const MascotCard = ({
         ? await deleteMyChild((info as IChild).nickname)
         : await deleteMyWaitingChild((info as IRequest).requestId)),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['children', 'waiting'],
-      });
+      window.location.reload();
     },
     onError: (err) => alert(err.message),
   });
