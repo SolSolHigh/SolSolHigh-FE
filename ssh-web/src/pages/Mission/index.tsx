@@ -111,22 +111,6 @@ export const MissionFetch: React.FC = () => {
     setIsModalOpen({ isOpen: true, content: <MissionCreate /> });
   };
 
-  const handleNextPage = () => {
-    if (activeTab === 0) {
-      setActivePage((prev) => prev + 1);
-    } else {
-      setCompletedPage((prev) => prev + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (activeTab === 0) {
-      setActivePage((prev) => (prev > 0 ? prev - 1 : 0));
-    } else {
-      setCompletedPage((prev) => (prev > 0 ? prev - 1 : 0));
-    }
-  };
-
   return (
     <div className={containerStyles()}>
       {sizeState === EResize.D && (
@@ -166,19 +150,9 @@ export const MissionFetch: React.FC = () => {
           )}
         </div>
 
-        {/* <div className="flex flex-row gap-3">
-          <Button
-            onClick={handlePreviousPage}
-            disabled={activeTab === 0 ? activePage === 0 : completedPage === 0}
-          >
-            이전
-          </Button>
-          <Button onClick={handleNextPage}>다음</Button>
-        </div> */}
-
         {role === 'parent' && (
           <Button
-            classNameStyles={bigButtonStyles()}
+            classNameStyles={`${bigButtonStyles()} absolute bottom-8`}
             onClick={onClickCreateModalOpen}
           >
             새 미션 등록하기
