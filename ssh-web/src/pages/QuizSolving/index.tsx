@@ -23,6 +23,8 @@ import {
 } from './styles';
 import { useNavigate } from 'react-router-dom';
 import { showToast } from '../../utils/toastUtil';
+import crying from './Crying.png';
+import yay from './yay.png';
 
 export const QuizSolving: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<'O' | 'X' | null>(null);
@@ -86,11 +88,7 @@ export const QuizSolving: React.FC = () => {
                   </Typography>
                 </h1>
                 <img
-                  src={
-                    response.data.isCorrect
-                      ? 'https://media.tenor.com/EBBE8SMl93gAAAAi/pepe-yay.gif'
-                      : 'https://media1.tenor.com/m/5aF7np_zPEgAAAAd/pepe-why-pepe-the-frog.gif'
-                  }
+                  src={response.data.isCorrect ? yay : crying}
                   alt={
                     response.data.isCorrect ? '기뻐하는 페페' : '슬퍼하는 페페'
                   }

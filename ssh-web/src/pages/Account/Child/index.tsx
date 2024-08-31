@@ -21,6 +21,7 @@ interface DepositAccountCardProps {
   handleDeleteAccountModal: (
     item: ICommonAccount | ISavingAccount | IDepositAccount | null,
   ) => void;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface InstallmentAccountCardProps {
@@ -177,6 +178,30 @@ export const Account = () => {
     setSelectedAccount(account);
   };
 
+  interface submitSendMoneyProps {
+    amount: string;
+    accountNumber: string;
+    memo: string;
+  }
+
+  const submitSendMoney = ({
+    amount,
+    accountNumber,
+    memo,
+  }: submitSendMoneyProps) => {
+    setIsOpen(false);
+    api
+      .post(`/api/accounts/transfer`, {
+        transactionBalance: amount,
+        depositAccountNo: accountNumber,
+        transactionSummary: memo,
+      })
+      .then((response) => {
+        showToast('success', '송금이 성공적으로 완료되었습니다.');
+      })
+      .catch((error: Error) => {});
+  };
+
   const ReturnTypeModal = () => {
     switch (modalType) {
       case 'SEND':
@@ -203,7 +228,7 @@ export const Account = () => {
       </Modal>
       <div className="flex items-center justify-center w-full h-auto tabletB:flex-col">
         <Mascot
-          nickname="닉네임"
+          nickname="요하땅"
           ment="자신의 계좌를 확인해보세요!"
           classNameStyles={'tablet:hidden'}
         />
@@ -224,6 +249,7 @@ export const Account = () => {
                     handleSendMoney={handleSendMoneyModal}
                     handleAccountLogModal={handleAccountLogModal}
                     handleDeleteAccountModal={handleDeleteAccountModal}
+                    setIsOpen={setIsOpen}
                   />
                 );
               } else if (item?.accountType === '3') {
@@ -314,6 +340,7 @@ export const DepositAccountCard = ({
   handleSendMoney,
   handleAccountLogModal,
   handleDeleteAccountModal,
+  setIsOpen,
 }: DepositAccountCardProps) => {
   return (
     <div className="bg-secondary-200 p-4 rounded-lg shadow-lg w-full">
@@ -397,6 +424,7 @@ export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
     'primary',
   );
   const [isFormValid, setIsFormValid] = useState(false);
+  const [memo, setMemo] = useState<string>('');
 
   const validateAccountNumber = (value: string) => {
     if (value.length !== 16) {
@@ -409,6 +437,10 @@ export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
       setErrors((prevErrors) => ({ ...prevErrors, accountNumber: '' }));
       setAccountNumberState('primary');
     }
+  };
+  const handlMemoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setMemo(value);
   };
 
   const validateAmount = (value: string) => {
@@ -503,11 +535,16 @@ export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
             </Typography>
           </div>
         </div>
-        {errors.amount && (
-          <Typography color="danger" size="sm" classNameStyles="mt-2">
-            {errors.amount}
-          </Typography>
-        )}
+
+        <div className="flex w-full relative mt-8">
+          <TextField
+            label="메모"
+            size="xl"
+            fullWidth={true}
+            variant="standard"
+            onChange={handlMemoChange}
+          />
+        </div>
 
         <div className="flex justify-center">
           <Button
@@ -515,7 +552,17 @@ export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
             classNameStyles="mt-8"
             disabled={!isFormValid}
             onClick={() => {
-              // todo
+              setIsOpen(false);
+              api
+                .post(`/api/accounts/transfer`, {
+                  transactionBalance: amount,
+                  depositAccountNo: accountNumber,
+                  transactionSummary: memo,
+                })
+                .then((response) => {
+                  showToast('success', '송금이 성공적으로 완료되었습니다.');
+                })
+                .catch((error: Error) => {});
             }}
           >
             송금하기
@@ -538,11 +585,21 @@ export const AccountLogModal = ({ account }: AccountLogModalProps) => {
   const endDate = dayjs().format('YYYYMMDD'); // 오늘 날짜
 
   useEffect(() => {
-    api
-      .get(`/api/accounts/demand-deposit?startDate=19000101&endDate=${endDate}`)
-      .then((res) => {
-        setTransactions(res.data);
-      });
+    if (account?.accountType === '1') {
+      api
+        .get(
+          `/api/accounts/demand-deposit?startDate=19000101&endDate=${endDate}`,
+        )
+        .then((res) => {
+          setTransactions(res.data);
+        });
+    } else if (account?.accountType === '2') {
+      api
+        .get(`/api/accounts/deposit?startDate=19000101&endDate=${endDate}`)
+        .then((res) => {
+          setTransactions(res.data);
+        });
+    }
   }, []);
 
   return (
@@ -561,9 +618,6 @@ export const TransactionItem = ({ transaction }: TransactionItemProps) => {
         <div className="flex flex-row justify-between">
           <Typography color="secondary" classNameStyles="mr-2">
             {formatTransactionDate(transaction.transactionDate)}
-          </Typography>
-          <Typography color="dark">
-            {formatTransactionTime(transaction.transactionTime)}
           </Typography>
         </div>
       </div>
@@ -603,7 +657,7 @@ export const DeleteAccountModal = ({
   useEffect(() => {
     setIsLoading(true);
     api
-      .get(`/api/children/account/deposit/remove-request-1`)
+      .post(`/api/children/accounts/deposit/recommended`)
       .then((res) => {
         setImageUrl(res.data.imageUrl);
         setIsLoading(false);
@@ -667,6 +721,12 @@ export const DeleteAccountModal = ({
             color="danger"
             fullWidth={true}
             classNameStyles="duration-200"
+            onClick={() => {
+              setIsOpen(false);
+              api.delete(`/api/accounts/deposit`).then((res) => {
+                showToast('success', '성공적으로 계좌를 삭제했어요');
+              });
+            }}
           >
             <Typography size="lg" color="light" weight="semibold">
               그래도 해지하기

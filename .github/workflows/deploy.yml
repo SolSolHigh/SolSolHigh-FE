@@ -1,4 +1,4 @@
-name: SolSolHigh-FE Deploy
+name: SolSolHigh-FE feat/#75-sending-image
 
 on:
   push:

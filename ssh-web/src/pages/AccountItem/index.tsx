@@ -96,7 +96,7 @@ export const AccountItemPage = () => {
       </Modal>
       <div className="flex items-center justify-center w-full h-auto tabletB:flex-col">
         <Mascot
-          nickname="닉네임"
+          nickname="규효니"
           ment="자신의 계좌를 확인해보세요!"
           classNameStyles="tablet:hidden"
         />
