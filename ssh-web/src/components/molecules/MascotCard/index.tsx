@@ -39,7 +39,7 @@ export const MascotCard = ({
   });
 
   return (
-    <div className="relative flex items-center w-full p-4 rounded-md shadow-sm">
+    <div className="relative flex items-center w-full rounded-md">
       <CircularImage
         imageUrl={getImgSrc(info.gender, type)}
         altText={info.name}

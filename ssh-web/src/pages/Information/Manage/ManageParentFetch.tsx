@@ -108,14 +108,19 @@ export const ManageParentFetch = () => {
               : waitingQuery.data.data
             ).map((parent: IParent | IRequest, idx: number) => {
               return (
-                <MascotCard
+                <div
                   key={parent.nickname}
-                  info={parent}
-                  type="PARENT"
-                  isWaiting={activeTab === 0}
-                  withTrash={activeTab === 1}
-                  onClick={() => setSelected(idx)}
-                />
+                  className="flex items-center w-full p-4 rounded-md shadow-sm"
+                  onClick={() => setSelected(() => idx)}
+                >
+                  <MascotCard
+                    key={parent.nickname}
+                    info={parent}
+                    type="PARENT"
+                    isWaiting={activeTab === 0}
+                    withTrash={activeTab === 1}
+                  />
+                </div>
               );
             })}
           </div>
