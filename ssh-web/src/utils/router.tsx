@@ -89,7 +89,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/account',
-        element: <Account isParent={true} />,
+        element: <Account />,
       },
       {
         path: '/account/introduction',

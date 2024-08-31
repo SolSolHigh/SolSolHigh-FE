@@ -4,18 +4,22 @@ import { Button } from '../../atoms/Button';
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 import { api } from '../../../apis/interceptors';
 import { IChild } from '../../../interfaces/userInterface';
+import { ChangeChildeProps } from './ChangeChild,types';
 import { getImgSrc } from '../../../utils/userUtil';
 
-export const ChangeChild = () => {
-  const [childrenList, setChildrenList] = useState<IChild[]>([]);
-  const [selectedChild, setSelectedChild] = useState<number>(0);
+export const ChangeChild = ({
+  childrenList,
+  setChildrenList,
+  selectedChild,
+  setSelectedChild,
+}: ChangeChildeProps) => {
   const [isloading, setIsLoading] = useState<boolean>(false);
   const [childImg, setChildImg] = useState<string>();
 
   useEffect(() => {
     setIsLoading(true);
     api.get(`/api/parents/children`).then((res) => {
-      setChildrenList(res.data);
+      setChildrenList(() => [...res.data]);
       setIsLoading(false);
     });
   });

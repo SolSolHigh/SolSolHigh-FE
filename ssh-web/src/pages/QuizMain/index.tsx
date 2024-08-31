@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { api } from '../../apis/interceptors';
 import { resizeState } from '../../atoms/resize';
@@ -20,6 +20,8 @@ import {
 } from '../../interfaces/quizInterface';
 import { EResize } from '../../themes/themeBase';
 import { containerStyles } from './styles';
+import { IChild } from '../../interfaces/userInterface';
+import { showToast } from '../../utils/toastUtil';
 
 const labels = ['쏠쏠 퀴즈', '키워드 및 내역'];
 
@@ -55,23 +57,51 @@ export const QuizMain: React.FC = () => {
   const [isTodayQuiz, setIsTodayQuiz] = useState<boolean>(false);
   const [quizLogs, setQuizLog] = useState<IQuizLogResponseList>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
-  const [childNickname, setChildNickname] = useState<string>('chacha');
+  const [childrenList, setChildrenList] = useState<IChild[]>([]);
+  const [selectedChild, setSelectedChild] = useState<number>(0);
   const [strick, setStrick] = useState<IStrickResponseList>([]);
   const [keywords, setKeywords] = useState<IKeywordResponseList>([]);
   const [ownKeywords, setOwnKeywords] = useState<IKeywordResponseList>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openQuizId, setOpenQuizId] = useState<number>(0);
   const [isKeywordModal, setIsKeywordModal] = useState(false);
+  const [isParent, setIsParent] = useState<boolean | null>(null);
+  const [childNickname, setChildNickname] = useState<string>('');
   const size = useRecoilValue<EResize>(resizeState);
 
-  const isParent = true;
+  //todo
+  const onRemoveKeyword = (keywordId: number) => {
+    if (isParent) {
+      api
+        .patch(`/api/quizzes/keywords`, {
+          nickname: childrenList[selectedChild].nickname,
+          keywordId: keywordId,
+        })
+        .then((response) => {
+          showToast('success', '키워드를 삭제했어요');
+        })
+        .catch((error: Error) => {
+          showToast('error', '키워드를 삭제하지 못했어요');
+        });
+    }
+  };
 
   //todo
-  const onRemoveKeyword = () => {};
-
-  //todo
-  const onAddKeyword = () => {};
+  const onAddKeyword = (keywordId: number) => {
+    if (isParent) {
+      api
+        .post(`/api/quizzes/keywords`, {
+          nickname: childrenList[selectedChild].nickname,
+          keywordId: keywordId,
+        })
+        .then((response) => {
+          showToast('success', '키워드를 추가했어요');
+        })
+        .catch((error: Error) => {
+          showToast('error', '키워드를 추가하지 못했어요');
+        });
+    }
+  };
 
   const onClose = () => {
     setIsModalOpen(false);
@@ -91,40 +121,86 @@ export const QuizMain: React.FC = () => {
     setOpenQuizId(openQuizId === quizId ? 0 : quizId);
   };
 
-  useMemo(() => {
-    setLoading(true);
+  useEffect(() => {
     api
-      .get(`api/child/${childNickname}/quizzes/solved?page=0`)
+      .get(`/api/users/info`)
       .then((response) => {
-        setQuizLog(response.data);
-        setLoading(false);
+        if (response.data.type === 'PARENT') {
+          setIsParent(true);
+        } else {
+          setIsParent(false);
+          setChildNickname(response.data.nickname);
+        }
       })
       .catch((error: Error) => {
-        setError(error.message || '퀴즈 로그 조회 실패');
-        setLoading(false);
+        showToast('error', '현재 유저의 정보를 불러오지 못했습니다.');
       });
-  }, [childNickname]);
-
-  useMemo(() => {
-    api.get(`api/child/${childNickname}/quizzes/strick`).then((response) => {
-      setStrick(response.data);
-      setLoading(false);
-    });
-  }, [childNickname]);
-
-  useMemo(() => {
-    api.get(`api/quizzes/keywords`).then((response) => {
-      setKeywords(response.data);
-      setLoading(false);
-    });
   }, []);
 
-  useMemo(() => {
-    api.get(`api/children/${childNickname}/keywords`).then((response) => {
-      setOwnKeywords(response.data);
-      setLoading(false);
-    });
-  }, [childNickname]);
+  useEffect(() => {
+    if (isParent && childrenList.length > 0) {
+      setLoading(true);
+      api
+        .get(
+          `/api/children/${childrenList[selectedChild].nickname}/quizzes/solved?page=0`,
+        )
+        .then((response) => {
+          setQuizLog(response.data.content);
+          setLoading(false);
+        })
+        .catch((error: Error) => {
+          showToast('error', '퀴즈 로그를 불러오지 못했어요');
+          setLoading(false);
+        });
+
+      api
+        .get(
+          `/api/children/${childrenList[selectedChild].nickname}/quizzes/strick`,
+        )
+        .then((response) => {
+          setStrick(response.data);
+          setLoading(false);
+        })
+        .catch((error: Error) => {
+          showToast('error', '퀴즈 스트릭을 불러오지 못했어요');
+        });
+      api
+        .get(`/api/quizzes/${childrenList[selectedChild].nickname}/keywords`)
+        .then((response) => {
+          setOwnKeywords(response.data);
+          setLoading(false);
+        })
+        .catch((error: Error) => {
+          showToast('error', '퀴즈 키워드를 불러오지 못했어요');
+        });
+    }
+    if (isParent === false) {
+      setLoading(true);
+      api
+        .get(`/api/children/${childNickname}/quizzes/solved?page=0`)
+        .then((response) => {
+          setQuizLog(response.data.content);
+          setLoading(false);
+        })
+        .catch((error: Error) => {
+          showToast('error', '퀴즈 로그를 불러오지 못했어요');
+          setLoading(false);
+        });
+      api
+        .get(`/api/children/${childNickname}/quizzes/strick`)
+        .then((response) => {
+          setStrick(response.data);
+          setLoading(false);
+        })
+        .catch((error: Error) => {
+          showToast('error', '퀴즈 스트릭을 불러오지 못했어요');
+        });
+      api.get(`/api/quizzes/${childNickname}/keywords`).then((response) => {
+        setOwnKeywords(response.data);
+        setLoading(false);
+      });
+    }
+  }, [selectedChild, isParent, childrenList]);
 
   useEffect(() => {
     if (quizLogs.length > 0) {
@@ -133,79 +209,126 @@ export const QuizMain: React.FC = () => {
   }, [quizLogs]); // quizLogs가 업데이트될 때마다 실행
 
   return (
-    <div className={containerStyles({ size })}>
-      <Modal color="primary" isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-        {isKeywordModal ? (
-          <KeywordEditModal
-            keywords={keywords}
-            ownKeywords={ownKeywords}
-            onRemoveKeyword={onRemoveKeyword}
-            onAddKeyword={onAddKeyword}
-            onClose={onClose}
-          />
-        ) : (
-          <QuizLogsDetailModal
-            quizLogs={quizLogs}
-            openQuizId={openQuizId}
-            toggleQuizDetail={toggleQuizDetail}
-          />
-        )}
-      </Modal>
-      <Mascot
-        nickname="닉네임"
-        ment="오늘의 퀴즈를 한번 풀어보세요!"
-        classNameStyles={'tablet:hidden'}
-      />
-      <div className="bg-white flex flex-col items-center w-full tablet:h-full mob:p-4 tabletB:p-6 desktop:rounded-2xl desktop:px-4 desktop:max-w-[48rem] desktop:h-[48rem]">
-        <div className="flex flex-row w-full justify-between">
-          <Typography
-            size="2xl"
-            weight="bold"
-            color="dark"
-            classNameStyles={isParent ? ' ' : 'mb-4'}
-          >
-            쏠쏠 퀴즈
-          </Typography>
-          {isParent && <ChangeChild />}
-        </div>
-        <div className="flex w-full max-w-[48rem] mb-4">
-          <ToggleTab
-            activeTab={activeTab}
-            onTabChange={(index: number) => {
-              setActiveTab(index);
-            }}
-            labels={labels}
-            outlined={false}
-            color="dark"
-          />
-        </div>
-
-        <div className="w-full max-w-[48rem]">
-          {activeTab === 0 ? (
-            <QuizTab
-              size={size}
-              isTodayQuiz={isTodayQuiz}
-              childNickname={childNickname}
-              loading={loading}
-              setLoading={setLoading}
-              isParent={isParent}
-              strick={strick}
-            />
-          ) : (
-            <KeywordsTab
-              size={size}
-              quizLogs={quizLogs}
-              childNickname={childNickname}
-              setLoading={setLoading}
+    <Suspense>
+      <div className={containerStyles({ size })}>
+        <Modal color="primary" isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+          {isKeywordModal ? (
+            <KeywordEditModal
               keywords={keywords}
               ownKeywords={ownKeywords}
-              isParent={isParent}
-              openKeywordModal={openKeywordModal}
-              openQuizLogsModal={openQuizLogsModal}
+              onRemoveKeyword={onRemoveKeyword}
+              onAddKeyword={onAddKeyword}
+              onClose={onClose}
+            />
+          ) : (
+            <QuizLogsDetailModal
+              quizLogs={quizLogs}
+              openQuizId={openQuizId}
+              toggleQuizDetail={toggleQuizDetail}
             />
           )}
+        </Modal>
+        <Mascot
+          nickname="닉네임"
+          ment="오늘의 퀴즈를 한번 풀어보세요!"
+          classNameStyles={'tablet:hidden'}
+        />
+        <div className="bg-white flex flex-col items-center w-full tablet:h-full mob:p-4 tabletB:p-6 desktop:rounded-2xl desktop:px-4 desktop:max-w-[48rem] desktop:h-[48rem]">
+          <div className="flex flex-row w-full justify-between">
+            <Typography
+              size="2xl"
+              weight="bold"
+              color="dark"
+              classNameStyles={isParent ? ' ' : 'mb-4'}
+            >
+              쏠쏠 퀴즈
+            </Typography>
+            {isParent && (
+              <ChangeChild
+                childrenList={childrenList}
+                setChildrenList={setChildrenList}
+                selectedChild={selectedChild}
+                setSelectedChild={setSelectedChild}
+              />
+            )}
+          </div>
+          <div className="flex w-full max-w-[48rem] mb-4">
+            <ToggleTab
+              activeTab={activeTab}
+              onTabChange={(index: number) => {
+                setActiveTab(index);
+              }}
+              labels={labels}
+              outlined={false}
+              color="dark"
+            />
+          </div>
+
+          <div className="w-full max-w-[48rem]">
+            {!isParent ? (
+              activeTab === 0 ? (
+                <QuizTab
+                  size={size}
+                  isTodayQuiz={isTodayQuiz}
+                  childNickname={childNickname}
+                  loading={loading}
+                  setLoading={setLoading}
+                  isParent={isParent ? isParent : false}
+                  strick={strick}
+                />
+              ) : (
+                <KeywordsTab
+                  size={size}
+                  quizLogs={quizLogs}
+                  childNickname={childNickname}
+                  setLoading={setLoading}
+                  keywords={keywords}
+                  ownKeywords={ownKeywords}
+                  isParent={isParent ? isParent : false}
+                  openKeywordModal={openKeywordModal}
+                  openQuizLogsModal={openQuizLogsModal}
+                />
+              )
+            ) : (
+              <>
+                {!childrenList.length ? (
+                  <>자녀가 없음을 보여주는 UI</>
+                ) : (
+                  <>
+                    {activeTab === 0 ? (
+                      <QuizTab
+                        size={size}
+                        isTodayQuiz={isTodayQuiz}
+                        childNickname={childrenList[selectedChild].nickname}
+                        loading={loading}
+                        setLoading={setLoading}
+                        isParent={isParent ? isParent : false}
+                        strick={strick}
+                      />
+                    ) : (
+                      <KeywordsTab
+                        size={size}
+                        quizLogs={quizLogs}
+                        childNickname={
+                          isParent
+                            ? childNickname
+                            : childrenList[selectedChild].nickname
+                        }
+                        setLoading={setLoading}
+                        keywords={keywords}
+                        ownKeywords={ownKeywords}
+                        isParent={isParent ? isParent : false}
+                        openKeywordModal={openKeywordModal}
+                        openQuizLogsModal={openQuizLogsModal}
+                      />
+                    )}
+                  </>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
