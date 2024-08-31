@@ -5,6 +5,7 @@ import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 import { api } from '../../../apis/interceptors';
 import { IChild } from '../../../interfaces/userInterface';
 import { ChangeChildeProps } from './ChangeChild,types';
+import { getImgSrc } from '../../../utils/userUtil';
 
 export const ChangeChild = ({
   childrenList,
@@ -13,6 +14,7 @@ export const ChangeChild = ({
   setSelectedChild,
 }: ChangeChildeProps) => {
   const [isloading, setIsLoading] = useState<boolean>(false);
+  const [childImg, setChildImg] = useState<string>();
 
   useEffect(() => {
     setIsLoading(true);
@@ -20,6 +22,10 @@ export const ChangeChild = ({
       setChildrenList(() => [...res.data]);
       setIsLoading(false);
     });
+  });
+
+  useEffect(() => {
+    setChildImg(getImgSrc(childrenList[selectedChild]?.gender, 'CHILD'));
   }, []);
 
   return (
@@ -35,7 +41,7 @@ export const ChangeChild = ({
         />
       )}
       <AvatarWithLabel
-        imageUrl="https://media1.tenor.com/m/o2nJ-w0v7lAAAAAC/teemo.gif"
+        imageUrl={childImg}
         altText="캐릭터"
         size="md"
         bgColor="blue"

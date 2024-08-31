@@ -63,7 +63,9 @@ function App() {
         location.pathname === '/mypage' ||
         location.pathname === '/manage' ||
         location.pathname === '/quiz/solve' ||
-        location.pathname === '/request'
+        location.pathname === '/request' ||
+        location.pathname === '/egg' ||
+        location.pathname === '/market'
       ) && <NavigationBar />}
       <div
         className={`${size === 'M' || size === 'T' ? (location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/mypage' || location.pathname === '/manage' || location.pathname === '/quiz/solve' || location.pathname === '/request' ? '!min-h-full' : 'pb-[4rem]') : 'pb-0'} BODY-LAYOUT h-[calc(100%-3.5rem)] desktop:flex-1 relative w-full flex justify-center`}

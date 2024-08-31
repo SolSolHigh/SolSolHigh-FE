@@ -56,7 +56,7 @@ export const QuizTab: React.FC<QuizTabProps> = ({
         </div>
         <div className="col-span-1 border-l flex justify-center items-center">
           <img
-            src="https://media1.tenor.com/m/1fx68zKvE14AAAAC/thumbs-up-double-thumbs-up.gif"
+            src={`/assets/mascot_study.png`}
             alt="Mascot"
             className="w-24 h-24 border"
           />

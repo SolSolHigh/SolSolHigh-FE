@@ -6,11 +6,15 @@ import { IPaginatedTrades } from '../../../interfaces/eggInterface';
 interface IEggCardListProps {
   eggData: IPaginatedTrades['content'];
   isOwned: boolean;
+  onComplete: () => void;
+  onCompleteBuy: () => void;
 }
 
 export const EggCardList: React.FC<IEggCardListProps> = ({
   eggData,
   isOwned,
+  onComplete,
+  onCompleteBuy,
 }) => {
   return (
     <>
@@ -24,6 +28,8 @@ export const EggCardList: React.FC<IEggCardListProps> = ({
           timeAgo={formatTimeAgo(egg.writtenAt)}
           isOwned={isOwned}
           sellBoardId={egg.sellBoardId}
+          onComplete={onComplete}
+          onCompleteBuy={onCompleteBuy}
         />
       ))}
     </>

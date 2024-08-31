@@ -1,3 +1,4 @@
+// src/components/molecules/MissionDetail/index.tsx
 import React from 'react';
 import { Typography } from '../../atoms/Typography';
 import { IMissionDetailProps } from './MissionDetail.types';
@@ -5,11 +6,12 @@ import { missionContent, badgeStyles } from './MissionDetail.styles';
 import { Badge } from '../../atoms/Badge';
 import { Divider } from '../../atoms/Divider';
 import { Button } from '../../atoms/Button';
-import { updateMission, deleteMission } from '../../../apis/missionApi';
+import { deleteMission, updateMission } from '../../../apis/missionApi';
 import { showToast } from '../../../utils/toastUtil';
 import { useSetRecoilState } from 'recoil';
 import { isModalOpenState } from '../../../atoms/modal';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { MissionUpdate } from '../../../pages/Mission/MissionUpdate';
 
 export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
   const setIsModalOpen = useSetRecoilState(isModalOpenState);
@@ -47,27 +49,14 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
     },
   });
 
-  const updateMutation = useMutation<void, Error, void>({
-    mutationFn: async () => {
-      await updateMission(mission?.missionId, {
-        description: mission?.description || '미션 설명',
-        isFinished: mission?.isFinished || false,
-        missionStartAt: mission?.missionStartAt || '',
-        missionEndAt: mission?.missionEndAt || '',
-        missionLevel: mission?.missionLevel || '1',
-      });
-    },
-    onSuccess: () => {
-      showToast('success', '미션이 성공적으로 수정되었습니다.');
-      queryClient.refetchQueries({ queryKey: ['missions'] });
-      setIsModalOpen({ isOpen: false, content: null });
-    },
-    onError: (error: Error) => {
-      showToast('error', '미션 수정에 실패했습니다.');
-      console.error('수정 실패:', error);
-      setIsModalOpen({ isOpen: false, content: null });
-    },
-  });
+  const handleUpdateClick = () => {
+    setIsModalOpen({
+      isOpen: true,
+      content: (
+        <MissionUpdate mission={mission} missionId={mission.missionId} />
+      ),
+    });
+  };
 
   return (
     <div className={missionContent({ size })}>
@@ -95,7 +84,7 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
             classNameStyles="!bg-primary-400 hover:bg-primary-300"
             fullWidth
             size="sm"
-            onClick={() => updateMutation.mutate()}
+            onClick={handleUpdateClick}
           >
             수정
           </Button>
@@ -112,15 +101,19 @@ export const MissionDetail = ({ mission, size, role }: IMissionDetailProps) => {
 
       {/* 미션 상세 정보 표시 */}
       <div className="w-full py-6 px-10 bg-primary-100 rounded-2xl flex flex-col gap-4">
-        <div className="flex flex-col items-center gap-1">
-          <Typography size="xs" color="primary" weight="regular">
-            도전자
-          </Typography>
-          <Typography size="sm" color="dark" weight="semibold">
-            {mission?.childInfo?.name}
-          </Typography>
-        </div>
-        <Divider color="primary" />
+        {mission?.childInfo?.name && (
+          <div>
+            <div className="flex flex-col items-center gap-1">
+              <Typography size="xs" color="primary" weight="regular">
+                도전자
+              </Typography>
+              <Typography size="sm" color="dark" weight="semibold">
+                {mission?.childInfo?.name}
+              </Typography>
+            </div>
+            <Divider color="primary" />
+          </div>
+        )}
         <div className="flex flex-col items-center gap-1">
           <Typography size="xs" color="primary" weight="regular">
             쏠쏠한 미션명
