@@ -8,6 +8,7 @@ import { getMyChildren, getMyParents, getUserInfo } from '../../apis/userApi';
 import dayjs from 'dayjs';
 import { IChild, IUserInfoMascot } from '../../interfaces/userInterface';
 import { getImgSrc } from '../../utils/userUtil';
+import { showToast } from '../../utils/toastUtil';
 
 export const InformationFetch = () => {
   const userinfoQuery = useSuspenseQuery({
@@ -22,33 +23,39 @@ export const InformationFetch = () => {
   const [related, setRelated] = useState<IUserInfoMascot[]>([]);
 
   useEffect(() => {
-    if (userinfoQuery.data.data.type === 'PARENT') {
-      getMyChildren()
-        .then((res) => {
-          setRelated(() => {
-            const newRelated: IUserInfoMascot[] = [];
-            res.data.forEach((child: IChild) => {
-              const newUserInfoMascot: IUserInfoMascot = {
-                src: getImgSrc(child.gender, 'CHILD'),
-                label: child.nickname,
-              };
-              newRelated.push(newUserInfoMascot);
+    const queryFamily = async () => {
+      if (userinfoQuery.data.data.type === 'PARENT') {
+        await getMyChildren()
+          .then((res) => {
+            setRelated(() => {
+              const newRelated: IUserInfoMascot[] = [];
+              res.data.forEach((child: IChild) => {
+                const newUserInfoMascot: IUserInfoMascot = {
+                  src: getImgSrc(child.gender, 'CHILD'),
+                  label: child.nickname,
+                };
+                newRelated.push(newUserInfoMascot);
+              });
+              return newRelated;
             });
-            return newRelated;
+          })
+          .catch((err) => console.log(err));
+      } else {
+        try {
+          const parent = await getMyParents();
+          setRelated(() => {
+            const newRelated: IUserInfoMascot = {
+              src: getImgSrc(parent.data.gender, 'PARENT'),
+              label: parent.data.nickname,
+            };
+            return [newRelated];
           });
-        })
-        .catch((err) => console.log(err));
-    } else {
-      getMyParents().then((res) => {
-        setRelated(() => {
-          const newUserInfoMascot: IUserInfoMascot = {
-            src: getImgSrc(res.data.gender, 'PARENT'),
-            label: res.data.nickname,
-          };
-          return [newUserInfoMascot];
-        });
-      });
-    }
+        } catch {
+          showToast('error', '연결된 부모님이 없습니다');
+        }
+      }
+    };
+    queryFamily();
   }, []);
 
   return (

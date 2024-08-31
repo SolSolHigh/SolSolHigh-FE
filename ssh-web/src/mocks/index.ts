@@ -1079,6 +1079,14 @@ mock.onPatch(/\/api\/children\/missions\/\d+/).reply((config) => {
 // ========== 미션 도메인 ==========
 
 // ========== 사용자 도메인 ==========
+mock.onOptions('/api/users/info').reply(() => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([Math.floor(Math.random() * 2) ? 200 : 200]);
+    }, 500);
+  });
+});
+
 mock.onGet('/api/users/info').reply((config) => {
   return new Promise((resolve) => {
     setTimeout(() => {

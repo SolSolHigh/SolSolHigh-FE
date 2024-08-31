@@ -55,3 +55,12 @@ export interface IParent {
   birthday: string;
   gender: string;
 }
+
+export interface IRequest {
+  requestId: number;
+  createdAt: string;
+  nickname: string;
+  name: string;
+  gender: string;
+  birthday: string;
+}

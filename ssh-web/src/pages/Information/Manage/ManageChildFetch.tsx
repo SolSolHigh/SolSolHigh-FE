@@ -14,7 +14,7 @@ import {
   getMyWaitingChildren,
   getUserInfo,
 } from '../../../apis/userApi';
-import { IChild } from '../../../interfaces/userInterface';
+import { IChild, IRequest } from '../../../interfaces/userInterface';
 import { useNavigate } from 'react-router-dom';
 import { getImgSrc } from '../../../utils/userUtil';
 
@@ -89,7 +89,7 @@ export const ManageChildFetch = () => {
             {(!activeTab
               ? childrenQuery.data.data
               : waitingQuery.data.data
-            ).map((child: IChild) => {
+            ).map((child: IChild | IRequest) => {
               return (
                 <MascotCard
                   key={child.nickname}

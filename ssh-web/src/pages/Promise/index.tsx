@@ -24,9 +24,11 @@ import { ConfirmPromiseModal } from '../../components/organisms/ConfirmPromiseMo
 import { ChangeChild } from '../../components/molecules/ChangeChild';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { showToast } from '../../utils/toastUtil';
+import { useLocation } from 'react-router-dom';
 import { IChild } from '../../interfaces/userInterface';
 
 export const PromiseTicket = () => {
+  const location = useLocation();
   const [isParent, setIsParent] = useState<boolean | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [childrenList, setChildrenList] = useState<IChild[]>([]);
@@ -101,6 +103,14 @@ export const PromiseTicket = () => {
         });
     }
   }, [isParent, selectedChild, relenderingKey]);
+
+  useEffect(() => {
+    if (location.state) {
+      if (location.state.addModal) {
+        handleAddModal();
+      }
+    }
+  }, [location]);
 
   const handleDetailModal = (log: IPromiseLogs) => {
     setIsOpen(true);
