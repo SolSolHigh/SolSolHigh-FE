@@ -5,7 +5,7 @@ import { LevelCard } from '../../components/molecules/LevelCard';
 import { Typography } from '../../components/atoms/Typography';
 import { TypographyWithBox } from '../../components/atoms/TypographyWithBox';
 import { IUserInfo } from '../../interfaces/userInterface';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { getExperience } from '../../apis/experienceApi';
 
 export interface HomeChildProps {

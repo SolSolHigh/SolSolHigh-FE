@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { containerStyles, contentStyles, infoBoxStyles } from './styles';
 import { Mascot } from '../../../components/molecules/Mascot';
 import { Icon } from '../../../components/atoms/Icon';
@@ -12,21 +12,20 @@ import {
   getMyParents,
   getMyWaitingParent,
   getUserInfo,
+  refuseRequest,
 } from '../../../apis/userApi';
-import { IChild } from '../../../interfaces/userInterface';
+import { IParent, IRequest } from '../../../interfaces/userInterface';
 import { useNavigate } from 'react-router-dom';
 import { getImgSrc } from '../../../utils/userUtil';
+import { showToast } from '../../../utils/toastUtil';
+import { Button } from '../../../components/atoms/Button';
 
 export const ManageParentFetch = () => {
-  const [userinfoQuery, parentsQuery, waitingQuery] = useSuspenseQueries({
+  const [userinfoQuery, waitingQuery] = useSuspenseQueries({
     queries: [
       {
         queryKey: ['userinfo'],
         queryFn: async () => await getUserInfo(),
-      },
-      {
-        queryKey: ['parents'],
-        queryFn: async () => await getMyParents(),
       },
       {
         queryKey: ['waiting'],
@@ -35,7 +34,7 @@ export const ManageParentFetch = () => {
     ],
   });
 
-  [userinfoQuery, parentsQuery, waitingQuery].some((query) => {
+  [userinfoQuery, waitingQuery].some((query) => {
     if (query.error && !query.isFetching) {
       throw query.error;
     }
@@ -49,6 +48,23 @@ export const ManageParentFetch = () => {
       else return 1;
     });
   };
+  const [parent, setParent] = useState<IParent | null>(null);
+  useEffect(() => {
+    const getParent = async () => {
+      await getMyParents()
+        .then((res) =>
+          setParent(() => {
+            return { ...res.data };
+          }),
+        )
+        .catch(() => {
+          showToast('error', '연결된 부모님이 없습니다');
+        });
+    };
+    getParent();
+  }, []);
+  const [selected, setSelected] = useState<number>(-1);
+
   return (
     <div className={containerStyles()}>
       <Mascot
@@ -70,7 +86,7 @@ export const ManageParentFetch = () => {
             </Typography>
           </div>
           <AvatarWithLabel
-            imageUrl={getImgSrc(userinfoQuery.data.data.gender, 'PARENT')}
+            imageUrl={getImgSrc(userinfoQuery.data.data.gender, 'CHILD')}
             label={userinfoQuery.data.data.nickname}
             altText="avatarwithlabel"
             size="2xl"
@@ -86,20 +102,62 @@ export const ManageParentFetch = () => {
           </div>
           <div className="flex flex-col w-full mt-4 gap-y-4">
             {(!activeTab
-              ? [parentsQuery.data.data]
-              : [waitingQuery.data.data]
-            ).map((parent: IChild) => {
+              ? parent
+                ? [parent]
+                : []
+              : waitingQuery.data.data
+            ).map((parent: IParent | IRequest, idx: number) => {
               return (
-                <MascotCard
+                <div
                   key={parent.nickname}
-                  info={parent}
-                  type="PARENT"
-                  isWaiting={false}
-                  withTrash={false}
-                />
+                  className="flex items-center w-full p-4 rounded-md shadow-sm"
+                  onClick={() => setSelected(() => idx)}
+                >
+                  <MascotCard
+                    key={parent.nickname}
+                    info={parent}
+                    type="PARENT"
+                    isWaiting={activeTab === 0}
+                    withTrash={activeTab === 1}
+                  />
+                </div>
               );
             })}
           </div>
+        </div>
+        <div className="flex flex-col items-center w-full gap-y-1">
+          <Typography>
+            {selected === -1
+              ? ''
+              : waitingQuery.data.data[selected].nickname + ' 부모님'}
+          </Typography>
+          <Button
+            fullWidth
+            onClick={async () => {
+              await refuseRequest(
+                waitingQuery.data.data[selected].requestId,
+                true,
+              )
+                .then(() => window.location.reload())
+                .catch((err) => console.log(err));
+            }}
+          >
+            승인
+          </Button>
+          <Button
+            color="danger"
+            fullWidth
+            onClick={async () => {
+              await refuseRequest(
+                waitingQuery.data.data[selected].requestId,
+                false,
+              )
+                .then(() => window.location.reload())
+                .catch((err) => console.log(err));
+            }}
+          >
+            거절
+          </Button>
         </div>
       </div>
     </div>
