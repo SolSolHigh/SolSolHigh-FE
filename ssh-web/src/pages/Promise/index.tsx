@@ -71,7 +71,6 @@ export const PromiseTicket = () => {
         .get(`/api/promise-tickets?page=0&size=50`)
         .then((response) => {
           setPromiseLogs(response.data.content);
-          console.log(response.data.content);
         })
         .catch((error: Error) => {
           showToast('error', '약속권 로그를 불러오지 못했습니다');
@@ -111,7 +110,7 @@ export const PromiseTicket = () => {
 
   const handleAddModal = () => {
     if (countTicket <= 0) {
-      showToast('error', '보유한 소원권이 없어요');
+      showToast('error', '보유한 약속권이 없어요');
     } else {
       setIsOpen(true);
       setIsDetailModal(false);
@@ -139,15 +138,16 @@ export const PromiseTicket = () => {
   const handlePromiseUpload = async (description: string) => {
     setIsOpen(false);
     try {
-      const response = await api.post(`/api/promise-tickets/request/`, {
+      const response = await api.post(
+        `/api/promise-tickets/request/`,
         description,
-      });
+      );
+      showToast('success', '부모님에게 성공적으로 약속을 요청했어요!');
       setRelenderingKey(relenderingKey + 1);
       return response;
     } catch (error) {
       showToast('error', '약속 요청에 실패했어요');
     }
-    showToast('success', '부모님에게 성공적으로 약속을 요청했어요!');
   };
 
   const handleCloseModal = () => {
