@@ -187,7 +187,7 @@ mock.onGet(`/api/accounts/saving/products`).reply(() => {
   });
 });
 
-mock.onGet(`/api/children/account/deposit/remove-request-1`).reply(() => {
+mock.onGet(`api/children/accounts/deposit/recommanded`).reply(() => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve([

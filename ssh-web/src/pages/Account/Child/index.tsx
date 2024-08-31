@@ -386,6 +386,12 @@ export const DepositAccountCard = ({
   );
 };
 
+interface SendMoneyReqeust {
+  transactionBalance: number;
+  depositAccountNo: string;
+  transactionSummary: string;
+}
+
 export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
   const [accountNumber, setAccountNumber] = useState('');
   const [amount, setAmount] = useState('');
@@ -397,6 +403,7 @@ export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
     'primary',
   );
   const [isFormValid, setIsFormValid] = useState(false);
+  const [memo, setMemo] = useState<string>('');
 
   const validateAccountNumber = (value: string) => {
     if (value.length !== 16) {
@@ -409,6 +416,10 @@ export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
       setErrors((prevErrors) => ({ ...prevErrors, accountNumber: '' }));
       setAccountNumberState('primary');
     }
+  };
+  const handlMemoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setMemo(value);
   };
 
   const validateAmount = (value: string) => {
@@ -503,6 +514,22 @@ export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
             </Typography>
           </div>
         </div>
+
+        <div className="flex w-full relative mt-8">
+          <TextField
+            label="메모"
+            size="xl"
+            fullWidth={true}
+            variant="standard"
+            state={amountState}
+            onChange={handleAmountChange}
+          />
+          <div className="absolute right-0 top-3">
+            <Typography color="secondary" size="lg">
+              (원)
+            </Typography>
+          </div>
+        </div>
         {errors.amount && (
           <Typography color="danger" size="sm" classNameStyles="mt-2">
             {errors.amount}
@@ -515,7 +542,16 @@ export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
             classNameStyles="mt-8"
             disabled={!isFormValid}
             onClick={() => {
-              // todo
+              api
+                .post(`/api/accounts/transfer`, {
+                  transactionBalance: amount,
+                  depositAccountNo: accountNumber,
+                  transactionSummary: memo,
+                })
+                .then((response) => {
+                  showToast('success', '송금이 성공적으로 완료되었습니다.');
+                })
+                .catch((error: Error) => {});
             }}
           >
             송금하기
@@ -603,7 +639,7 @@ export const DeleteAccountModal = ({
   useEffect(() => {
     setIsLoading(true);
     api
-      .get(`/api/children/account/deposit/remove-request-1`)
+      .post(`/api/children/accounts/deposit/recommanded`)
       .then((res) => {
         setImageUrl(res.data.imageUrl);
         setIsLoading(false);
