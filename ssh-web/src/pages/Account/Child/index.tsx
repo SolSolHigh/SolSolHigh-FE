@@ -724,6 +724,9 @@ export const DeleteAccountModal = ({
             color="danger"
             fullWidth={true}
             classNameStyles="duration-200"
+            onClick={() => {
+              setIsOpen(false);
+            }}
           >
             <Typography size="lg" color="light" weight="semibold">
               그래도 해지하기
