@@ -8,6 +8,7 @@ import { getMyChildren, getMyParents, getUserInfo } from '../../apis/userApi';
 import dayjs from 'dayjs';
 import { IChild, IUserInfoMascot } from '../../interfaces/userInterface';
 import { getImgSrc } from '../../utils/userUtil';
+import { showToast } from '../../utils/toastUtil';
 
 export const InformationFetch = () => {
   const userinfoQuery = useSuspenseQuery({
@@ -39,15 +40,19 @@ export const InformationFetch = () => {
         })
         .catch((err) => console.log(err));
     } else {
-      getMyParents().then((res) => {
-        setRelated(() => {
-          const newRelated: IUserInfoMascot = {
-            src: getImgSrc(res.data.gender, 'PARENT'),
-            label: res.data.nickname,
-          };
-          return [newRelated];
+      getMyParents()
+        .then((res) => {
+          setRelated(() => {
+            const newRelated: IUserInfoMascot = {
+              src: getImgSrc(res.data.gender, 'PARENT'),
+              label: res.data.nickname,
+            };
+            return [newRelated];
+          });
+        })
+        .catch(() => {
+          showToast('error', '연결된 부모님이 없습니다');
         });
-      });
     }
   }, []);
 

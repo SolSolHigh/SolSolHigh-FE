@@ -70,7 +70,7 @@ export const ManageParentFetch = () => {
             </Typography>
           </div>
           <AvatarWithLabel
-            imageUrl={getImgSrc(userinfoQuery.data.data.gender, 'PARENT')}
+            imageUrl={getImgSrc(userinfoQuery.data.data.gender, 'CHILD')}
             label={userinfoQuery.data.data.nickname}
             altText="avatarwithlabel"
             size="2xl"
