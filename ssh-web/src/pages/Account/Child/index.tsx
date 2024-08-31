@@ -21,6 +21,7 @@ interface DepositAccountCardProps {
   handleDeleteAccountModal: (
     item: ICommonAccount | ISavingAccount | IDepositAccount | null,
   ) => void;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface InstallmentAccountCardProps {
@@ -177,6 +178,30 @@ export const Account = () => {
     setSelectedAccount(account);
   };
 
+  interface submitSendMoneyProps {
+    amount: string;
+    accountNumber: string;
+    memo: string;
+  }
+
+  const submitSendMoney = ({
+    amount,
+    accountNumber,
+    memo,
+  }: submitSendMoneyProps) => {
+    setIsOpen(false);
+    api
+      .post(`/api/accounts/transfer`, {
+        transactionBalance: amount,
+        depositAccountNo: accountNumber,
+        transactionSummary: memo,
+      })
+      .then((response) => {
+        showToast('success', '송금이 성공적으로 완료되었습니다.');
+      })
+      .catch((error: Error) => {});
+  };
+
   const ReturnTypeModal = () => {
     switch (modalType) {
       case 'SEND':
@@ -224,6 +249,7 @@ export const Account = () => {
                     handleSendMoney={handleSendMoneyModal}
                     handleAccountLogModal={handleAccountLogModal}
                     handleDeleteAccountModal={handleDeleteAccountModal}
+                    setIsOpen={setIsOpen}
                   />
                 );
               } else if (item?.accountType === '3') {
@@ -314,6 +340,7 @@ export const DepositAccountCard = ({
   handleSendMoney,
   handleAccountLogModal,
   handleDeleteAccountModal,
+  setIsOpen,
 }: DepositAccountCardProps) => {
   return (
     <div className="bg-secondary-200 p-4 rounded-lg shadow-lg w-full">
@@ -521,20 +548,9 @@ export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
             size="xl"
             fullWidth={true}
             variant="standard"
-            state={amountState}
-            onChange={handleAmountChange}
+            onChange={handlMemoChange}
           />
-          <div className="absolute right-0 top-3">
-            <Typography color="secondary" size="lg">
-              (원)
-            </Typography>
-          </div>
         </div>
-        {errors.amount && (
-          <Typography color="danger" size="sm" classNameStyles="mt-2">
-            {errors.amount}
-          </Typography>
-        )}
 
         <div className="flex justify-center">
           <Button
@@ -542,6 +558,7 @@ export const SendMoneyModal = ({ account, setIsOpen }: SendMoneyModalProps) => {
             classNameStyles="mt-8"
             disabled={!isFormValid}
             onClick={() => {
+              setIsOpen(false);
               api
                 .post(`/api/accounts/transfer`, {
                   transactionBalance: amount,
