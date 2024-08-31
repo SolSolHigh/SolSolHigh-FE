@@ -7,7 +7,7 @@ import {
   getCurrentEggStatus,
   getMyAccountList,
   updateCurrentEggStatus,
-} from '../../..//apis/eggApi';
+} from '../../../apis/eggApi';
 import { isModalOpenState } from '../../../atoms/modal';
 import { Button } from '../../../components/atoms/Button';
 import { ConfettiLottie } from './Lottie/ConfettiLottie';
@@ -100,9 +100,11 @@ export const TodayEgg = () => {
         setTouchesLeft((prev) => prev - 1);
 
         const savingsMessage = (
-          <Typography weight="semibold" size="2xl" classNameStyles="mt-4">
-            계란을 깨서 100원을 저축했어요!
-          </Typography>
+          <div className="flex flex-col w-full p-4 bg-primary-400">
+            <Typography weight="semibold" size="xl" classNameStyles="mt-4">
+              계란을 깨서 내 계좌에 100원을 저축했어요!
+            </Typography>
+          </div>
         );
 
         if (reward && reward?.isFail === false) {
