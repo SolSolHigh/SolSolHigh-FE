@@ -7,7 +7,7 @@ import {
   getCurrentEggStatus,
   getMyAccountList,
   updateCurrentEggStatus,
-} from '../../../apis/eggApi';
+} from '../../..//apis/eggApi';
 import { isModalOpenState } from '../../../atoms/modal';
 import { Button } from '../../../components/atoms/Button';
 import { ConfettiLottie } from './Lottie/ConfettiLottie';
@@ -53,7 +53,7 @@ export const TodayEgg = () => {
 
   const generateTouchEffect = (event: React.MouseEvent<HTMLDivElement>) => {
     const touchEffect = document.createElement('div');
-    const size = Math.random() * 40 + 10; // 크기 줄임
+    const size = Math.random() * 40 + 20; // 크기 줄임
     const colors = ['#FF6347', '#FFD700', '#4CAF50', '#00BFFF', '#FF69B4'];
     const color = colors[Math.floor(Math.random() * colors.length)];
 
@@ -65,7 +65,7 @@ export const TodayEgg = () => {
     touchEffect.style.left = `${event.clientX - size / 2}px`;
     touchEffect.style.top = `${event.clientY - size / 2}px`;
     touchEffect.style.pointerEvents = 'none';
-    touchEffect.style.opacity = '0.5';
+    touchEffect.style.opacity = '0.7';
     touchEffect.style.transform = 'scale(0.5)';
     touchEffect.style.animation = 'touchEffectAnimation 0.4s ease-out forwards';
 
@@ -111,7 +111,12 @@ export const TodayEgg = () => {
             isOpen: true,
             content: (
               <div className="flex flex-col items-center justify-center gap-4">
-                <ConfettiLottie />
+                <div className="relative w-full h-max flex flex-col justify-center items-center py-8 rounded-3xl">
+                  <img src={reward?.imageUrl} alt="" className="w-[12rem]" />
+                  <div className="absolute inset-0 flex justify-center items-center">
+                    <ConfettiLottie />
+                  </div>
+                </div>
                 <Typography weight="bold" size="6xl" color="primary">
                   축하합니다!
                 </Typography>
@@ -122,9 +127,6 @@ export const TodayEgg = () => {
                 >
                   {reward?.specialEggName}이 나왔어요
                 </Typography>
-                <div className="relative w-full h-max bg-primary-300 flex flex-col justify-center items-center py-8 rounded-3xl">
-                  <img src={reward?.imageUrl} alt="" className="w-[12rem]" />
-                </div>
                 {savingsMessage}
                 <Button
                   fullWidth
@@ -156,7 +158,7 @@ export const TodayEgg = () => {
                 >
                   아무것도 나오지 않았어요.
                 </Typography>
-                <div className="relative w-full h-max bg-secondary-400 flex flex-col justify-center items-center py-8 rounded-3xl">
+                <div className="relative w-full h-max flex flex-col justify-center items-center py-8 rounded-3xl">
                   <img
                     src={'/assets/images/egg_crack.png'}
                     alt=""
