@@ -1,8 +1,8 @@
-name: SolSolHigh-FE Deploy
+name: SolSolHigh-FE feat/#75-sending-image
 
 on:
     push:
-        branches: develop
+        branches: feat/#75-sending-image
 
 jobs:
     deploy:
@@ -17,4 +17,4 @@ jobs:
                   password: ${{ secrets.SSH_PASSWORD }}
                   script: |
                       cd ~/solsol-high
-                      ./static.sh develop
+                      ./static.sh feat/#75-sending-image
