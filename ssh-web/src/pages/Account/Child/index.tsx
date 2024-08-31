@@ -585,11 +585,21 @@ export const AccountLogModal = ({ account }: AccountLogModalProps) => {
   const endDate = dayjs().format('YYYYMMDD'); // 오늘 날짜
 
   useEffect(() => {
-    api
-      .get(`/api/accounts/demand-deposit?startDate=19000101&endDate=${endDate}`)
-      .then((res) => {
-        setTransactions(res.data);
-      });
+    if (account?.accountType === '1') {
+      api
+        .get(
+          `/api/accounts/demand-deposit?startDate=19000101&endDate=${endDate}`,
+        )
+        .then((res) => {
+          setTransactions(res.data);
+        });
+    } else if (account?.accountType === '2') {
+      api
+        .get(`/api/accounts/deposit?startDate=19000101&endDate=${endDate}`)
+        .then((res) => {
+          setTransactions(res.data);
+        });
+    }
   }, []);
 
   return (

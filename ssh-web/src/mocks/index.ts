@@ -187,19 +187,6 @@ mock.onGet(`/api/accounts/saving/products`).reply(() => {
   });
 });
 
-mock.onGet(`api/children/accounts/deposit/recommanded`).reply(() => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        200,
-        {
-          imageUrl: 'https://c.tenor.com/_J-Z2O9x0E0AAAAd/tenor.gif',
-        },
-      ]);
-    }, 5000);
-  });
-});
-
 const endDate = dayjs().format('YYYYMMDD'); // 오늘 날짜
 const startDate = dayjs().subtract(1, 'day').format('YYYYMMDD'); // 어제 날짜
 
